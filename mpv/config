@@ -1,0 +1,27 @@
+# Write your default config options here!
+
+alang=ja,jpn,es,spa
+slang=es,spa,en,eng
+
+autofit=70%
+channels=2
+
+# sub-text-back-color=#RRGGBB
+sub-text-blur=0 # 0 - 20.0
+sub-text-border-color="#000000"
+sub-text-border-size=2.5
+sub-text-color="#FFFFFF"
+sub-text-font='DejaVu Sans:style=Bold'
+sub-text-font-size=60
+sub-text-margin-x=25
+sub-text-margin-y=20
+sub-text-shadow-color="#CCCCCC"
+sub-text-shadow-offset=0
+sub-text-spacing=0
+
+save-position-on-quit=yes
+
+screenshot-format=png
+screenshot-png-compression=7
+screenshot-png-filter=5
+screenshot-template="~/Imágenes/%F_capture%01n"
