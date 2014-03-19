@@ -16,12 +16,12 @@ export LS_COLORS
 
 # Termcap
 export LESS_TERMCAP_mb=$(printf "\e[01;31m")    # Begins blinking.
-export LESS_TERMCAP_md=$(printf "\e[01;31m")	# Begins bold.
-export LESS_TERMCAP_me=$(printf "\e[0m")    	# Ends mode.
-export LESS_TERMCAP_se=$(printf "\e[0m")    	# Ends standout-mode.
-export LESS_TERMCAP_so=$(printf "\e[00;47;30m")	# Begins standout-mode.
-export LESS_TERMCAP_ue=$(printf "\e[0m")    	# Ends underline.
-export LESS_TERMCAP_us=$(printf "\e[01;32m")	# Begins underline.
+export LESS_TERMCAP_md=$(printf "\e[01;31m")    # Begins bold.
+export LESS_TERMCAP_me=$(printf "\e[0m")        # Ends mode.
+export LESS_TERMCAP_se=$(printf "\e[0m")        # Ends standout-mode.
+export LESS_TERMCAP_so=$(printf "\e[00;47;30m") # Begins standout-mode.
+export LESS_TERMCAP_ue=$(printf "\e[0m")        # Ends underline.
+export LESS_TERMCAP_us=$(printf "\e[01;32m")    # Begins underline.
 
 #-------------------------------------------------------------------------------
 # Aliases
@@ -60,18 +60,18 @@ export HISTFILE="${ZDOTDIR:-$HOME}/.zhistory"
 export HISTSIZE=10000
 export SAVEHIST=$HISTSIZE
 
-setopt BANG_HIST		# Treat the '!' character specially during expansion.
-setopt EXTENDED_HISTORY		# Write the history file in the ':start:elapsed;command' format.
-setopt INC_APPEND_HISTORY	# Write to the history file immediately, not when the shell exits.
-setopt SHARE_HISTORY		# Share history between all sessions.
-setopt HIST_EXPIRE_DUPS_FIRST	# Expire a duplicate event first when trimming history.
-setopt HIST_IGNORE_DUPS 	# Do not record an event that was just recorded again.
-setopt HIST_IGNORE_ALL_DUPS 	# Delete an old recorded event if a new event is a duplicate.
-setopt HIST_FIND_NO_DUPS 	# Do not display a previously found event.
-setopt HIST_IGNORE_SPACE	# Do not record an event starting with a space.
-setopt HIST_SAVE_NO_DUPS	# Do not write a duplicate event to the history file.
-setopt HIST_VERIFY		# Do not execute immediately upon history expansion.
-setopt HIST_BEEP		# Beep when accessing non-existent history.
+setopt BANG_HIST              # Treat the '!' character specially during expansion.
+setopt EXTENDED_HISTORY       # Write the history file in the ':start:elapsed;command' format.
+setopt INC_APPEND_HISTORY     # Write to the history file immediately, not when the shell exits.
+setopt SHARE_HISTORY          # Share history between all sessions.
+setopt HIST_EXPIRE_DUPS_FIRST # Expire a duplicate event first when trimming history.
+setopt HIST_IGNORE_DUPS       # Do not record an event that was just recorded again.
+setopt HIST_IGNORE_ALL_DUPS   # Delete an old recorded event if a new event is a duplicate.
+setopt HIST_FIND_NO_DUPS      # Do not display a previously found event.
+setopt HIST_IGNORE_SPACE      # Do not record an event starting with a space.
+setopt HIST_SAVE_NO_DUPS      # Do not write a duplicate event to the history file.
+setopt HIST_VERIFY            # Do not execute immediately upon history expansion.
+setopt HIST_BEEP              # Beep when accessing non-existent history.
 
 #-------------------------------------------------------------------------------
 # Completion
@@ -79,11 +79,11 @@ setopt HIST_BEEP		# Beep when accessing non-existent history.
 autoload -Uz compinit
 compinit
 
-setopt COMPLETE_IN_WORD		# Complete from both ends of a word
-setopt ALWAYS_TO_END		# Move cursor to the end of a completed word
-setopt PATH_DIRS		# Path search even on command names with slashes
-setopt AUTO_MENU		# Show completion menu on succesive tab press
-setopt AUTO_LIST		# Automatically list choices on ambiguous completion
+setopt COMPLETE_IN_WORD # Complete from both ends of a word
+setopt ALWAYS_TO_END    # Move cursor to the end of a completed word
+setopt PATH_DIRS        # Path search even on command names with slashes
+setopt AUTO_MENU        # Show completion menu on succesive tab press
+setopt AUTO_LIST        # Automatically list choices on ambiguous completion
 
 # Use caching to make completion for cammands such as dpkg and apt usable.
 zstyle ':completion::complete:*' use-cache on
@@ -153,6 +153,11 @@ zstyle ':completion:*:*:kill:*' insert-ids single
 zstyle ':completion:*:manuals' separate-sections true
 zstyle ':completion:*:manuals.(^1*)' insert-sections true
 
+# Source command not found (Archlinux 'pacman -S pkgfile')
+if [[ -s '/usr/share/doc/pkgfile/command-not-found.zsh' ]]; then
+    source '/usr/share/doc/pkgfile/command-not-found.zsh'
+fi
+
 #-------------------------------------------------------------------------------
 # Prompt
 #-------------------------------------------------------------------------------
@@ -173,9 +178,9 @@ zstyle ':vcs_info:*' nvcsformats ""
 
 # Check the UID
 # Using 'sudo -s' and adding 'Defaults env_keep += "HOME"' to sudoers does the trick
-if [[ $UID -ge 1000 ]]; then	# Normal user
+if [[ $UID -ge 1000 ]]; then # Normal user
     eval z_pwd="${z_cyan}%~"
-elif [[ $UID -eq 0 ]]; then	# Root
+elif [[ $UID -eq 0 ]]; then  # Root
     eval z_pwd="${z_red}%~"
 fi
 
