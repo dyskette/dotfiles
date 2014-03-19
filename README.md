@@ -35,7 +35,7 @@ Plugins
 ## MPV
 Sometimes you just need a good video player.
 
-I watch a lot of Japanese and Korean stuff, I speak Spanish and ugly English. The config file has those languages configured. Using DejaVu Fonts, because that font is love.
+I watch a lot of Japanese and Korean stuff, I speak Spanish and broken English. The config file has those languages configured. Using DejaVu Fonts, because that font is love.
 
 References
-* MPV manual (man mpv)
+* [MPV manual](https://github.com/mpv-player/mpv/blob/master/DOCS/man/en/options.rst) (man mpv)
