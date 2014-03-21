@@ -22,7 +22,9 @@ References
 * [Amir Salihefendic's Ultimate Configuration](http://amix.dk/vim/vimrc.html)
 * [Steve Francia's Ultimate vim distribution](https://github.com/spf13/spf13-vim)
 * [Auto Installing Vundle From Your Vimrc](http://www.erikzaadi.com/2012/03/19/auto-installing-vundle-from-your-vimrc/)
-* [Making statuslines that own](http://got-ravings.blogspot.mx/2008/08/vim-pr0n-making-statuslines-that-own.html)
+* [Vim Pr0n: Making statuslines that own](http://got-ravings.blogspot.mx/2008/08/vim-pr0n-making-statuslines-that-own.html)
+* [Vim Pr0n: Statuslines flags for bundy whitespaces](http://got-ravings.blogspot.mx/2008/10/vim-pr0n-statusline-whitespace-flags.html)
+* [Listing total number of buffers in the statusline](http://vim.1045645.n5.nabble.com/listing-total-number-of-buffers-in-the-statusline-td1189645.html)
 
 Plugins
 * [Vundle by gmarik](https://github.com/gmarik/Vundle.vim)
@@ -31,6 +33,7 @@ Plugins
 * [nerdcommenter by scrooloose](https://github.com/scrooloose/nerdcommenter)
 * [vim-autoclose by Townk](https://github.com/Townk/vim-autoclose)
 * [SudoEdit by chrisbra](https://github.com/chrisbra/SudoEdit.vim)
+* [vim-liquid](https://github.com/tpope/vim-liquid)
 
 ## MPV
 Sometimes you just need a good video player.

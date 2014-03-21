@@ -33,14 +33,20 @@ Bundle 'gmarik/vundle'
 Bundle 'scrooloose/syntastic'
 " Code completion
 Bundle 'Shougo/neocomplete'
-" Align blocks easy with tabs
+" Align blocks easy
 Bundle 'godlygeek/tabular'
 " Comment code easy
 Bundle 'scrooloose/nerdcommenter'
 " AutoClose brackets
 Bundle 'Townk/vim-autoclose'
+" AutoClose HTML tags
+Bundle 'amirh/HTML-AutoCloseTag'
 " Edit files using sudo/su
 Bundle 'chrisbra/SudoEdit.vim'
+" Liquid syntax highlight (Jekyll)
+Bundle 'tpope/vim-liquid'
+" Pentadactyl syntax highlight
+Bundle 'file:///home/dyskette/.vim/bundle/vim-pentadactyl'
 
 " Installing plugins the first time
 if has_vundle == 0
@@ -72,22 +78,22 @@ set smartcase           " Override ignorecase if search pattern has upper case
 
 set magic               " For regular expressions turn magic on
 
+augroup vim_behaviour
+    autocmd!
+    " Always switch to the current file directory
+    autocmd BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
+augroup END
+
 "-------------------------------------------------------------------------------
 " View
 "-------------------------------------------------------------------------------
 syntax on               " Enable syntax highlighting
 
-augroup vim_view
-    autocmd!
-    " Enable Markdown syntax for .md files, overrides modula highlighting
-    autocmd BufRead,BufNewFile *.md set filetype=markdown
-augroup END
-
 set splitright          " Puts new vsplit windows to the right
-set splitbelow          " Puts new hsplit windows to the bottom
+set splitbelow          " Puts new split windows to the bottom
 
 set wildmenu                    " Tab completion menu on command line
-set wildmode=list:longest,full  " Command <Tab> completion...
+set wildmode=list:full          " Command <Tab> completion...
 set wildignore=*.o,*~,*.pyc     " Ignore compiled files
 
 set showmode            " Display the current mode on message line
@@ -118,7 +124,8 @@ set listchars=tab:›\ ,trail:•,extends:#,nbsp:.
 set laststatus=2
 
 set statusline=
-set statusline+=[%n]    " Buffer number
+" Buffer number and total number of buffers
+set statusline+=[%n/%{len(filter(range(1,bufnr('$')),'buflisted(v:val)'))}]
 set statusline+=%t      " File name
 set statusline+=%h      " Help buffer flag
 set statusline+=%m      " Modified flag
@@ -130,9 +137,39 @@ set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 " }
+" Display a warning if &et is wrong, or we have mixed-indenting {
+set statusline+=%#error#
+set statusline+=%{StatuslineTabWarning()}
+set statusline+=%*
+" }
 set statusline+=%y      " File type
 set statusline+=[%l,%c] " Line and column number
 set statusline+=%P      " Percentage of file
+
+augroup vim_status
+    autocmd!
+    " Recalculate the tab warning flag when idle and after writing
+    autocmd cursorhold,bufwritepost * unlet! b:statusline_tab_warning
+augroup END
+
+" Return '[&et]' if &et is set wrong
+" Return '[mixed-indenting]' if spaces and tabs are used to indent
+" Return an empty string if everything is fine
+function! StatuslineTabWarning()
+    if !exists("b:statusline_tab_warning")
+        let tabs = search('^\t', 'nw') != 0
+        let spaces = search('^ ', 'nw') != 0
+
+        if tabs && spaces
+            let b:statusline_tab_warning =  '[mixed-indenting]'
+        elseif (spaces && !&et) || (tabs && &et)
+            let b:statusline_tab_warning = '[&et]'
+        else
+            let b:statusline_tab_warning = ''
+        endif
+    endif
+    return b:statusline_tab_warning
+endfunction
 
 "-------------------------------------------------------------------------------
 " Editing
@@ -155,8 +192,11 @@ augroup vim_edit
     autocmd!
     " For all text files set 'textwidth' to 80 characters.
     autocmd FileType text set textwidth=80
-    " For all Markdown files set wrap text
-    autocmd FileType markdown set  wrap
+    " For all Markdown (Jekyll style) files set wrap text
+    autocmd BufNewFile,BufRead *.markdown,*.mkd,*.mkdn,*.md
+        \ if getline(1) == '---' |
+        \   set wrap |
+        \ endif
 augroup END
 
 "-------------------------------------------------------------------------------
@@ -240,6 +280,9 @@ map <C-j> <C-W>j
 map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
+
+" Buffer movement
+nnoremap <Leader>b :buffers<CR>:buffer<Space>
 
 " Y yanks from cursor to $, consistent with C and D
 map Y y$
