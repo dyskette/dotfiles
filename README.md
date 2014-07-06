@@ -12,6 +12,7 @@ References
 * [MrElendig Zshrc](https://github.com/MrElendig/dotfiles-alice/blob/master/.zshrc)
 * [Prezto Configuration Framework](https://github.com/sorin-ionescu/prezto)
 * [Git Info in ZSH Prompt](http://mvisser.github.io/2011/07/20/zsh-and-git.html)
+* [Oh! My Zsh Framework](https://github.com/robbyrussell/oh-my-zsh)
 
 ## Vim
 What can I say about THE text editor that hasn't been said. When I started to panic about carpal tunnel I switched to vim, and voila, problem solved. Of course, it needs some tweaking.
