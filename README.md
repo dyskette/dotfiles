@@ -4,14 +4,11 @@ dotfiles
 This is still a work in progress, writing while reading the manuals and docs. Taking other configurations as reference and mixing what I think is best for my needs.
 
 ## Zsh
-This great shell is just what everybody should use. I'm not gonna lie, what I liked first about this software was the autocompletion. But it has a great number of other features ready to configure.
+Great shell. I'm not gonna lie, what I liked first about this software was the autocompletion. But it has a great number of other features ready to configure.
 
 References
-* [Gentoo Wiki Zsh](https://wiki.gentoo.org/wiki/Zsh/HOWTO)
+* [Gentoo Wiki Zsh](https://github.com/zsh-users/antigen)
 * [Archlinux Wiki Zsh](https://wiki.archlinux.org/index.php/zsh)
-* [MrElendig Zshrc](https://github.com/MrElendig/dotfiles-alice/blob/master/.zshrc)
-* [Prezto Configuration Framework](https://github.com/sorin-ionescu/prezto)
-* [Git Info in ZSH Prompt](http://mvisser.github.io/2011/07/20/zsh-and-git.html)
 * [Oh! My Zsh Framework](https://github.com/robbyrussell/oh-my-zsh)
 
 ## Vim
