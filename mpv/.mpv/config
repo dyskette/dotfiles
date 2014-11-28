@@ -8,10 +8,10 @@ slang=es,spa,en,eng             # Spanish, English
 # General
 #-------------------------------------------------------------------------------
 autofit=70%                     # Window size
-channels=2                      # Audio Channels
+audio-channels=2                # Audio Channels
 save-position-on-quit=yes
 use-filedir-conf=yes            # Load config from file directory
-msgcolor=yes
+msg-color=yes
 
 #-------------------------------------------------------------------------------
 # Subtitles Setup
@@ -22,7 +22,7 @@ sub-text-border-color="#000000"
 sub-text-border-size=2.5
 sub-text-color="#FFFFFF"
 sub-text-font="Dejavu Sans:style=Bold"
-sub-text-font-size=60
+sub-text-font-size=48
 sub-text-margin-x=25
 sub-text-margin-y=20
 sub-text-shadow-color="#CCCCCC"
