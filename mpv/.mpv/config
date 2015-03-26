@@ -9,6 +9,7 @@ slang=es,spa,en,eng             # Spanish, English
 #-------------------------------------------------------------------------------
 autofit=70%                     # Window size
 audio-channels=2                # Audio Channels
+af=drc                          # normalize audio
 save-position-on-quit=yes
 use-filedir-conf=yes            # Load config from file directory
 msg-color=yes
