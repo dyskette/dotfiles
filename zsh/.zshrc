@@ -6,7 +6,7 @@ alias sudo='sudo '
 #-------------------------------------------------------------------------------
 # Editor
 #-------------------------------------------------------------------------------
-export EDITOR=vim
+export EDITOR=vi
 
 #-------------------------------------------------------------------------------
 # Antigen
@@ -21,11 +21,16 @@ source ~/.antigen/antigen.zsh
 antigen use oh-my-zsh
 
 # Bundles from the default repo (robbyrussell's oh-my-zsh).
-antigen bundle git
+antigen bundle git								# Completion
 antigen bundle command-not-found
+antigen bundle sudo								# Shortcut keys: [Esc] [Esc]
+antigen bundle systemd						# Completion
 
 # Syntax highlighting bundle.
 antigen bundle zsh-users/zsh-syntax-highlighting
+
+# Completions bundle
+antigen bundle zsh-users/zsh-completions src
 
 # Load the theme.
 antigen theme bira
