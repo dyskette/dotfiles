@@ -1,19 +1,24 @@
 #-------------------------------------------------------------------------------
 # General
 #-------------------------------------------------------------------------------
-alias sudo='sudo '
-unset SSH_ASKPASS
+#unset SSH_ASKPASS
+export WINEARCH=win32
+export EDITOR=vim
+zstyle ":completion:*:commands" rehash 1          #Rehash for each command
+PURE_PROMPT_SYMBOL=$
 
 #-------------------------------------------------------------------------------
-# Editor
+# Alias
 #-------------------------------------------------------------------------------
-export EDITOR=vi
+alias sudo='sudo '
+alias esudo='sudo -E'
+alias lanhosts='nmap -sP 192.168.1.1/24'
 
 #-------------------------------------------------------------------------------
 # Antigen
 #-------------------------------------------------------------------------------
 if [[ ! -d ~/.antigen ]]; then
-	git clone https://github.com/zsh-users/antigen.git ~/.antigen
+    git clone https://github.com/zsh-users/antigen.git ~/.antigen
 fi
 
 source ~/.antigen/antigen.zsh
@@ -21,20 +26,18 @@ source ~/.antigen/antigen.zsh
 # Load the oh-my-zsh's library.
 antigen use oh-my-zsh
 
+# Pure prompt
+antigen bundle sindresorhus/pure
+
 # Bundles from the default repo (robbyrussell's oh-my-zsh).
-antigen bundle git								# Completion
-antigen bundle command-not-found
-antigen bundle sudo								# Shortcut keys: [Esc] [Esc]
-antigen bundle systemd						# Completion
+antigen bundle sudo                               # Shortcut keys: [Esc] [Esc]
 
 # Syntax highlighting bundle.
 antigen bundle zsh-users/zsh-syntax-highlighting
 
-# Completions bundle
-antigen bundle zsh-users/zsh-completions src
-
-# Load the theme.
-antigen theme bira
+# Load the theme. Deactivated because it conflicts with pure.
+#antigen theme bira
 
 # Tell antigen that you're done.
 antigen apply
+
