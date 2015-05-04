@@ -3,28 +3,28 @@
 #-------------------------------------------------------------------------------
 # Editors
 #-------------------------------------------------------------------------------
-export EDITOR='vi'
-export VISUAL='vi'
+export EDITOR='vim'
+export VISUAL='vim'
 export PAGER='less'
 
 #-------------------------------------------------------------------------------
 # Browser
 #-------------------------------------------------------------------------------
 if [[ -n "$DISPLAY" ]]; then
-	export BROWSER='epiphany'
+    export BROWSER='epiphany'
 fi
 
 #-------------------------------------------------------------------------------
 # Language
 #-------------------------------------------------------------------------------
 if [[ -z "$LANG" ]]; then
-	export LANG='es_MX.UTF-8'
+    export LANG=es_MX.UTF-8
 fi
 if [[ -z "$LANGUAGE" ]]; then
-	export LANGUAGE=es_MX.UTF-8
+    export LANGUAGE=es_MX.UTF-8
 fi
 if [[ -z "$LC_ALL" ]]; then
-	export LC_ALL=es_MX.UTF-8
+    export LC_ALL=es_MX.UTF-8
 fi
 
 #-------------------------------------------------------------------------------
