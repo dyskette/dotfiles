@@ -1,15 +1,16 @@
 dotfiles
 ========
 
-This is still a work in progress, writing while reading the manuals and docs. Taking other configurations as reference and mixing what I think is best for my needs.
+Endless work in progress, writing while reading the manuals and docs. Taking other configurations as reference and mixing what I think is best for my needs.
 
 ## Zsh
 Great shell. I'm not gonna lie, what I liked first about this software was the autocompletion. But it has a great number of other features ready to configure.
 
 References
-* [Gentoo Wiki Zsh](https://github.com/zsh-users/antigen)
+* [Antigen](https://github.com/zsh-users/antigen)
 * [Archlinux Wiki Zsh](https://wiki.archlinux.org/index.php/zsh)
 * [Oh! My Zsh Framework](https://github.com/robbyrussell/oh-my-zsh)
+* [Pure prompt](https://github.com/sindresorhus/pure)
 
 ## Vim
 What can I say about THE text editor that hasn't been said. When I started to panic about carpal tunnel I switched to vim, and voila, problem solved. Of course, it needs some tweaking.
@@ -39,4 +40,19 @@ Sometimes you just need a good video player.
 I watch a lot of Japanese and Korean stuff, I speak Spanish and broken English. The config file has those languages configured. Using DejaVu Fonts, because that font is love.
 
 References
-* [MPV manual](https://github.com/mpv-player/mpv/blob/master/DOCS/man/en/options.rst) (man mpv)
+* [MPV manual](http://mpv.io/manual/stable/)
+
+## GIMP
+Quick fix for fonts having mixes of colors inside. What it does is deactivate subpixel rendering.
+
+References
+* [Archlinux forum](https://bbs.archlinux.org/viewtopic.php?pid=1486825#p1486825)
+
+## Fontconfig
+Only fontconfig without adding stuff like infinality. It needs Microsoft Windows fonts for language support. Although they can be replaced with free fonts.
+
+Other fonts, liberation, dejavu, droid and cantarell.
+
+References
+* [Tatsh's fonts.conf](https://gist.github.com/Tatsh/ca2b0cd61cf6ffb5c0e4)
+* [Fonts.conf manual](http://fontconfig.org/fontconfig-user.html)
