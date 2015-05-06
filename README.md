@@ -10,7 +10,6 @@ References
 * [Antigen](https://github.com/zsh-users/antigen)
 * [Archlinux Wiki Zsh](https://wiki.archlinux.org/index.php/zsh)
 * [Oh! My Zsh Framework](https://github.com/robbyrussell/oh-my-zsh)
-* [Pure prompt](https://github.com/sindresorhus/pure)
 
 ## Vim
 What can I say about THE text editor that hasn't been said. When I started to panic about carpal tunnel I switched to vim, and voila, problem solved. Of course, it needs some tweaking.
