@@ -1,15 +1,15 @@
 #-------------------------------------------------------------------------------
 # Languages
 #-------------------------------------------------------------------------------
-alang=ja,jpn,ko,kor,es,spa      # Japanese, Korean, Spanish
-slang=es,spa,en,eng             # Spanish, English
+alang="ja,jpn,ko,kor,es,spa"    # Japanese, Korean, Spanish
+slang="es,esLA,spa,en,eng"      # Spanish, English
 
 #-------------------------------------------------------------------------------
 # General
 #-------------------------------------------------------------------------------
-autofit=70%                     # Window size
+autofit="70%x70%"               # Window size
 audio-channels=2                # Audio Channels
-af=drc                          # normalize audio
+af=drc                          # Normalize audio
 save-position-on-quit=yes
 use-filedir-conf=yes            # Load config from file directory
 msg-color=yes
@@ -33,7 +33,7 @@ sub-text-spacing=0
 #-------------------------------------------------------------------------------
 # Screenshots
 #-------------------------------------------------------------------------------
-screenshot-format=png
+screenshot-format="png"
 screenshot-png-compression=7
 screenshot-png-filter=5
 screenshot-template="~/Imágenes/%F_capture%01n"
