@@ -1,0 +1,4 @@
+# --theme defaults to "auto": bat asks the terminal whether it is light or dark.
+--theme-light="Flexoki Light"
+--theme-dark="Flexoki Dark"
+--style="numbers,changes,header"

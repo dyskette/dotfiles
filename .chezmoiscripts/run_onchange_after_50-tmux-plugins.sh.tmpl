@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# TPM + plugins declared in tmux.conf. hash: {{ include "dot_config/tmux/tmux.conf" | sha256sum }}
+set -euo pipefail
+tpm="$HOME/.config/tmux/plugins/tpm"
+[ -d "$tpm" ] || git clone --depth 1 https://github.com/tmux-plugins/tpm "$tpm"
+# install_plugins needs a running server to read @plugin options.
+tmux start-server \; source-file "$HOME/.config/tmux/tmux.conf" 2>/dev/null || true
+"$tpm/bin/install_plugins" || true
+"$tpm/bin/update_plugins" all || true
+# Remove plugins no longer listed in tmux.conf (e.g. the old catppuccin theme).
+"$tpm/bin/clean_plugins" || true

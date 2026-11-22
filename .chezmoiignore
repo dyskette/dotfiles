@@ -1,0 +1,11 @@
+# Repository-only files: never copied into $HOME.
+README.md
+CHANGELOG.md
+install.sh
+docs
+docs/**
+project-template
+project-template/**
+.research
+.research/**
+.gitignore

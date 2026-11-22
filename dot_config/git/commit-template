@@ -1,0 +1,4 @@
+
+# type(scope): description   ← imperative, lowercase, no period
+# types: feat fix chore docs refactor test ci perf style build
+# Body: why the change was needed. Do NOT add Co-authored-by trailers.

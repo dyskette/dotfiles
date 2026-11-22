@@ -1,0 +1,51 @@
+# lazygit >= 0.64 (git.pagers was renamed to git.diffRenderers)
+gui:
+  nerdFontsVersion: "3"
+  # ANSI color names, so the popup follows Ghostty's Flexoki Light/Dark palette. lazygit asks the
+  # terminal for light/dark at launch and picks the selected-line background itself.
+  # Inside Neovim (<leader>gg) snacks.nvim generates the theme from the colorscheme instead.
+  theme:
+    activeBorderColor: [cyan, bold]
+    inactiveBorderColor: [default]
+    searchingActiveBorderColor: [yellow, bold]
+    optionsTextColor: [blue]
+    cherryPickedCommitFgColor: [magenta]
+    cherryPickedCommitBgColor: [default]
+    unstagedChangesColor: [red]
+    defaultFgColor: [default]
+git:
+  diffRenderers:                 # cycle with '|'
+    - command: "delta --{{colorScheme}} --features flexoki-{{colorScheme}} --paging=never --line-numbers"
+    - type: extDiff
+      command: "difft --color=always --display=inline --background={{colorScheme}}"
+  commitPrefix:                  # branch feat/auth-login -> "feat(auth-login): "
+    - pattern: "^(feat|fix|chore|docs|refactor|test|ci|perf|style|build)/([^/]+)"
+      replace: "$1($2): "
+os:
+  # Popup/standalone lazygit: open files in this tmux session's Neovim
+  edit: "nv-edit {{filename}}"
+  editAtLine: "nv-edit {{filename}} {{line}}"
+  editAtLineAndWait: "nvim +{{line}} {{filename}}"
+customCommands:
+  - key: "C"
+    context: "files"
+    description: "Conventional commit"
+    prompts:
+      - type: "menu"
+        key: "Type"
+        title: "Type"
+        options:
+          - { value: "feat" }
+          - { value: "fix" }
+          - { value: "chore" }
+          - { value: "docs" }
+          - { value: "refactor" }
+          - { value: "test" }
+          - { value: "ci" }
+          - { value: "perf" }
+          - { value: "style" }
+          - { value: "build" }
+      - { type: "input", key: "Scope", title: "Scope (optional)" }
+      - { type: "input", key: "Desc", title: "Description (imperative)" }
+    command: >-
+      git commit -m "{{.Form.Type}}{{if .Form.Scope}}({{.Form.Scope}}){{end}}: {{.Form.Desc}}"

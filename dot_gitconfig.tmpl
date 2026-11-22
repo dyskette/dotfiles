@@ -1,0 +1,37 @@
+[user]
+	name = {{ .name }}
+	email = {{ .email }}
+[init]
+	defaultBranch = main
+[core]
+	pager = delta
+	excludesFile = ~/.config/git/ignore
+[interactive]
+	diffFilter = delta --color-only
+[delta]
+	navigate = true
+	line-numbers = true
+	# Syntax theme lives in features, not here: options in [delta] beat features, and a
+	# --features flag replaces this list, so lazygit can swap in an exact Flexoki theme.
+	features = flexoki-ansi
+# base16 = the terminal's ANSI palette, so it follows Ghostty's Flexoki Light/Dark live.
+# delta detects light/dark itself for the diff backgrounds.
+[delta "flexoki-ansi"]
+	syntax-theme = base16
+# Exact Flexoki colors where the caller knows the mode (lazygit: --features flexoki-<mode>).
+[delta "flexoki-light"]
+	syntax-theme = Flexoki Light
+[delta "flexoki-dark"]
+	syntax-theme = Flexoki Dark
+[merge]
+	conflictStyle = zdiff3
+[diff]
+	colorMoved = default
+[commit]
+	template = ~/.config/git/commit-template
+[pull]
+	rebase = true
+[push]
+	autoSetupRemote = true
+[rerere]
+	enabled = true

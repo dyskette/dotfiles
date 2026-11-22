@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Restore Neovim plugins headlessly. Mason servers/adapters install on the first interactive start.
+# hash: {{ include "dot_config/nvim/lazyvim.json" | sha256sum }}
+{{- if stat (joinPath .chezmoi.sourceDir "dot_config/nvim/lazy-lock.json") }} lock: {{ include "dot_config/nvim/lazy-lock.json" | sha256sum }}{{ end }}
+set -euo pipefail
+export PATH="$HOME/.local/bin:$HOME/.local/share/mise/shims:$HOME/.dotnet/tools:$PATH"
+
+if [ -f "$HOME/.config/nvim/lazy-lock.json" ]; then
+  nvim --headless "+Lazy! restore" +qa
+else
+  nvim --headless "+Lazy! sync" +qa
+  echo "No lazy-lock.json yet: commit ~/.config/nvim/lazy-lock.json back with 'chezmoi re-add'."
+fi
+nvim --headless "+TSUpdate" "+sleep 20" +qa || true

@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# nv — start Neovim with an RPC socket unique to the current tmux session,
+# so tools outside Neovim (lazygit popup, scripts) can open files in it via nv-edit.
+id="$(tmux display -p '#{session_id}' 2>/dev/null | tr -d '$')"
+sock="${XDG_RUNTIME_DIR:-/tmp}/nvim-tmux-${id:-none}.sock"
+# A stale socket from a crashed nvim would make --listen fail.
+if [ -S "$sock" ] && ! nvim --server "$sock" --remote-expr 1 >/dev/null 2>&1; then
+  rm -f "$sock"
+fi
+if [ -S "$sock" ]; then
+  # Session already has an editor: open args there instead of starting a second one.
+  exec nvim "$@"
+fi
+exec nvim --listen "$sock" "$@"

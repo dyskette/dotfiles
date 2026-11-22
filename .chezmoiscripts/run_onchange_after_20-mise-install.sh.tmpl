@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# Installs every runtime and CLI pinned in ~/.config/mise/config.toml.
+# Re-runs when that file changes. hash: {{ include "dot_config/mise/config.toml" | sha256sum }}
+set -euo pipefail
+export PATH="$HOME/.local/bin:$HOME/.local/share/mise/shims:$PATH"
+
+command -v mise >/dev/null || curl -fsSL https://mise.run | sh
+
+mise trust --yes "$HOME/.config/mise/config.toml" >/dev/null 2>&1 || true
+mise install --yes
+mise reshim
+
+# rust-analyzer comes from rustup so it matches the active toolchain.
+mise exec rust -- rustup component add rust-analyzer rust-src clippy rustfmt
+
+mise doctor || true

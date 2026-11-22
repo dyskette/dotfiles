@@ -1,0 +1,28 @@
+# ~/.zshrc — interactive shells.
+
+# --- History / options ---
+HISTFILE="$HOME/.local/state/zsh/history"
+mkdir -p "${HISTFILE:h}"
+HISTSIZE=50000 SAVEHIST=50000
+setopt HIST_IGNORE_DUPS SHARE_HISTORY AUTO_CD INTERACTIVE_COMMENTS
+bindkey -e
+
+autoload -Uz compinit && compinit -d "$HOME/.cache/zcompdump"
+
+# --- mise: PATH mode, recomputed at every prompt (per-project runtimes + [env]) ---
+if [ -x "$HOME/.local/bin/mise" ]; then
+  eval "$("$HOME/.local/bin/mise" activate zsh)"
+fi
+
+# --- Tools (installed by mise; guarded so a half-bootstrapped machine still gets a prompt) ---
+(( $+commands[zoxide] ))   && eval "$(zoxide init zsh)"
+(( $+commands[atuin] ))    && eval "$(atuin init zsh)"
+(( $+commands[starship] )) && eval "$(starship init zsh)"
+
+# --- Aliases ---
+alias vim=nvim
+alias ls='eza --group-directories-first'
+alias ll='eza -la --git --group-directories-first'
+alias lg=lazygit
+# Ghostty 1.4: installs terminfo on the remote host before connecting.
+(( $+commands[ghostty] )) && alias ssh='ghostty +ssh --'

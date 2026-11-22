@@ -1,0 +1,60 @@
+# Per-repo mise config (polyglot example). Copy to the repo root, then:
+#   mise trust && mise install && mise run hooks:install
+# Remove the languages/tasks this repo does not use.
+
+[tools]
+node = "24"
+pnpm = "10"
+python = "3.13"
+uv = "latest"
+go = "1.26"
+dotnet = "10"
+cargo-nextest = "latest"
+gotestsum = "latest"
+golangci-lint = "latest"
+lefthook = "latest"
+
+[env]
+_.python.venv = { path = ".venv", create = true }
+DOTNET_CLI_TELEMETRY_OPTOUT = "1"
+# Secrets: never here. Use mise.local.toml (gitignored) populated from your vault/secret manager.
+
+[tasks."test:cs"]
+run = "dotnet test"
+[tasks."test:py"]
+dir = "services/api"
+run = "uv run pytest -q"
+[tasks."test:ts"]
+dir = "web"
+run = "pnpm vitest run"
+[tasks."test:rs"]
+dir = "cli"
+run = "cargo nextest run"
+[tasks."test:go"]
+dir = "worker"
+run = "gotestsum --format pkgname -- ./..."
+[tasks.test]
+description = "All tests"
+depends = ["test:cs", "test:py", "test:ts", "test:rs", "test:go"]
+
+[tasks."test:watch"]
+description = "Watcher used by the sesh 'test' window"
+dir = "web"
+run = "pnpm vitest"
+
+[tasks.lint]
+run = [
+  "dotnet format --verify-no-changes",
+  "uv run ruff check services/api",
+  "pnpm -C web eslint .",
+  "cargo clippy --manifest-path cli/Cargo.toml -- -D warnings",
+  "golangci-lint run ./worker/...",
+]
+
+[tasks.build]
+depends = ["lint"]
+sources = ["**/*.cs", "web/src/**/*.ts", "cli/src/**/*.rs", "worker/**/*.go"]
+run = ["dotnet build", "pnpm -C web build", "cargo build --manifest-path cli/Cargo.toml", "go build ./worker/..."]
+
+[tasks."hooks:install"]
+run = "lefthook install"

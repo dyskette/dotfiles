@@ -1,0 +1,5 @@
+# ~/.zprofile — login shells (GUI-launched tools, scripts): mise shims.
+# Interactive shells switch to PATH mode in ~/.zshrc; mise then keeps shims behind real bins.
+if [ -x "$HOME/.local/bin/mise" ]; then
+  eval "$("$HOME/.local/bin/mise" activate zsh --shims)"
+fi

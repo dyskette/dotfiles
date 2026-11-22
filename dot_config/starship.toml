@@ -1,0 +1,14 @@
+"$schema" = "https://starship.rs/config-schema.json"
+add_newline = false
+# Keep the prompt fast in large monorepos.
+command_timeout = 500
+
+[directory]
+truncation_length = 3
+truncate_to_repo = true
+
+[git_status]
+disabled = false
+
+[dotnet]
+detect_files = ["global.json", "Directory.Build.props", "*.sln", "*.slnx"]

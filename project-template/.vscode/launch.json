@@ -1,0 +1,16 @@
+{
+  // Read by nvim-dap. `type` must match a registered adapter name:
+  // check with  :lua =vim.tbl_keys(require("dap").adapters)
+  "version": "0.2.0",
+  "configurations": [
+    { "type": "python",   "request": "launch", "name": "api (py)",
+      "program": "${workspaceFolder}/services/api/main.py", "justMyCode": false },
+    { "type": "pwa-node", "request": "launch", "name": "web (ts)",
+      "runtimeExecutable": "pnpm", "runtimeArgs": ["tsx", "src/server.ts"],
+      "cwd": "${workspaceFolder}/web", "sourceMaps": true },
+    { "type": "go",       "request": "launch", "name": "worker (go)",
+      "program": "${workspaceFolder}/cmd/worker", "args": ["--dev"] },
+    { "type": "codelldb", "request": "launch", "name": "cli (rust)",
+      "program": "${workspaceFolder}/target/debug/cli", "cwd": "${workspaceFolder}" }
+  ]
+}

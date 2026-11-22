@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# JetBrainsMono Nerd Font into ~/.local/share/fonts (not packaged by most distros).
+# Bump the version here to update.
+set -euo pipefail
+NF_VERSION="v3.4.0"
+dest="$HOME/.local/share/fonts/JetBrainsMonoNerd"
+
+if [ -f "$dest/.version" ] && [ "$(cat "$dest/.version")" = "$NF_VERSION" ]; then
+  exit 0
+fi
+
+tmp="$(mktemp -d)"; trap 'rm -rf "$tmp"' EXIT
+curl -fsSLo "$tmp/font.tar.xz" \
+  "https://github.com/ryanoasis/nerd-fonts/releases/download/${NF_VERSION}/JetBrainsMono.tar.xz"
+mkdir -p "$dest"
+tar -xJf "$tmp/font.tar.xz" -C "$dest" --wildcards '*.ttf'
+echo "$NF_VERSION" > "$dest/.version"
+fc-cache -f "$dest" >/dev/null 2>&1 || true

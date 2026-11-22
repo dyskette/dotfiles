@@ -1,0 +1,41 @@
+# Global mise config: runtimes and CLIs. Repos override in their own mise.toml.
+# Ownership rule: a binary comes from exactly one of OS packages / mise / Mason / dotnet tool.
+# On work machines, pin exact versions here (or run `mise lock`) for reproducible rollbacks.
+
+[tools]
+# Editor
+neovim = "0.12"
+tree-sitter = "latest"       # nvim-treesitter (main branch) compiles parsers with it
+
+# Runtimes / SDKs
+node = "lts"                 # also runs Mason's node-based servers (vtsls, js-debug)
+python = "3.13"
+uv = "latest"
+go = "latest"
+dotnet = "10"                # LTS; sets DOTNET_ROOT for global dotnet tools
+rust = "stable"              # per-repo rust-toolchain.toml still wins via rustup
+
+# Dev CLIs
+chezmoi = "latest"
+github-cli = "latest"
+lazygit = "latest"
+ripgrep = "latest"
+fd = "latest"
+fzf = "latest"
+bat = "latest"
+eza = "latest"
+zoxide = "latest"
+delta = "latest"
+difftastic = "latest"
+yazi = "latest"
+ast-grep = "latest"
+television = "latest"
+atuin = "latest"
+starship = "latest"
+lefthook = "latest"
+gotestsum = "latest"         # neotest-golang runner; repos may pin their own
+"github:joshmedeski/sesh" = "latest"   # not in the mise registry
+
+[settings]
+# Auto-trust only your own code dir; everything else still needs `mise trust`.
+trusted_config_paths = ["~/code"]

@@ -1,0 +1,12 @@
+# Installed by `mise run hooks:install`. CI repeats commitlint so --no-verify cannot bypass it.
+commit-msg:
+  commands:
+    conventional:
+      run: npx --yes -p @commitlint/cli -p @commitlint/config-conventional commitlint --edit {1}
+    no-coauthor:
+      run: "! grep -qi '^co-authored-by:' {1} || (echo 'Co-authored-by trailers are not allowed' && exit 1)"
+pre-commit:
+  parallel: true
+  commands:
+    lint:
+      run: mise run lint
