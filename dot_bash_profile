@@ -14,6 +14,10 @@ export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/ripgrep/config"
 # Shims for GUI apps and scripts; interactive shells switch to PATH mode in ~/.bashrc.
 if [ -x "$HOME/.local/bin/mise" ]; then
   eval "$("$HOME/.local/bin/mise" activate bash --shims)"
+  # SDK roots for programs that don't look in PATH (.NET global tools, IDEs finding a JDK).
+  # `global` follows the version in ~/.config/mise/config.toml; projects override it in ~/.bashrc.
+  export DOTNET_ROOT="$HOME/.local/share/mise/dotnet-root"
+  export JAVA_HOME="$HOME/.local/share/mise/installs/java/global"
 fi
 
 # WSL: the Windows OpenSSH agent, through ssh-agent-relay.service.

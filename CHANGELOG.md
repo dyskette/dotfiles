@@ -36,5 +36,6 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - fzf and yazi (television and lf replace them).
 
 ### Fixed
+- .NET global tools (easy-dotnet, roslyn-language-server) and JDK lookups failed outside interactive terminals: `DOTNET_ROOT` and `JAVA_HOME` are now set for the whole session.
 - Login-shell script aborted when `$USER` is unset; falls back to `id -un`.
 - .NET SDK crashed on fresh Debian/Ubuntu for lack of ICU.

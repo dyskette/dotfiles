@@ -7,3 +7,9 @@ if (($user -split ';') -notcontains $shims) { [Environment]::SetEnvironmentVaria
 mise trust --yes "$HOME\.config\mise\config.toml"
 mise install --yes
 mise exec rust -- rustup component add rust-analyzer rust-src clippy rustfmt
+
+# SDK roots for programs that don't look in PATH (.NET global tools, IDEs finding a JDK).
+$sdk = mise env --json | ConvertFrom-Json
+foreach ($name in 'DOTNET_ROOT', 'JAVA_HOME') {
+  if ($sdk.$name) { [Environment]::SetEnvironmentVariable($name, $sdk.$name, 'User') }
+}
