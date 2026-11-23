@@ -35,13 +35,14 @@ gotestsum = "latest"
 "github:joshmedeski/sesh" = "latest"
 claude = "latest"
 copilot = "latest"
+"aqua:anomalyco/opencode" = "latest"
 terraform = "latest"
 azure-cli = "latest"
 azure-functions-core-tools = "latest"
 aspire = "latest"
 
 [env]
-# mise updates claude and copilot, not their self-updaters.
+# mise updates claude and copilot, not their self-updaters (opencode: opencode.json).
 DISABLE_AUTOUPDATER = "1"
 COPILOT_AUTO_UPDATE = "false"
 

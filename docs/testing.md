@@ -68,7 +68,7 @@ x() { podman exec -u tester -e TERM=xterm-256color -e COLORTERM=truecolor "$C" b
 ```sh
 x 'miss=""; for t in nvim node python go dotnet cargo rust-analyzer lazygit rg fd bat eza \
    zoxide delta difft sg tv atuin starship lefthook gotestsum sesh gh tree-sitter jq yq \
-   poetry lf java claude copilot terraform az func aspire tmux ghostty projects sesh-dir tm ee nv nv-edit; do
+   poetry lf java claude copilot opencode terraform az func aspire tmux ghostty projects sesh-dir tm ee nv nv-edit; do
    command -v $t >/dev/null || miss="$miss $t"; done; echo "missing:${miss:- none}"'
 ```
 
