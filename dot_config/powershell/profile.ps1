@@ -1,4 +1,7 @@
 # Windows counterpart of ~/.bash_profile + ~/.bashrc, loaded from $PROFILE.
+# UTF-8 with native programs, before any of their output is captured below: the console
+# defaults to the OEM code page, which garbles ñ and á in paths from fd, rg, tv or git.
+[Console]::InputEncoding = [Console]::OutputEncoding = [Text.UTF8Encoding]::new($false)
 $env:XDG_CONFIG_HOME = "$HOME\.config"
 $env:LF_CONFIG_HOME = $env:XDG_CONFIG_HOME
 $env:BAT_CONFIG_DIR = "$env:XDG_CONFIG_HOME\bat"
@@ -15,6 +18,11 @@ if (Test-Path $completions) { . $completions }
 foreach ($t in 'tv', 'zoxide', 'atuin', 'starship') {
   if (Get-Command $t -ErrorAction Ignore) { & $t init powershell | Out-String | Invoke-Expression }
 }
+# Emacs-style keys bash has too; none collide with tv's or atuin's (Ctrl+T, Ctrl+R, Up).
+Set-PSReadLineKeyHandler -Key 'Ctrl+p' -Function HistorySearchBackward  # previous line starting with what's typed
+Set-PSReadLineKeyHandler -Key 'Ctrl+n' -Function HistorySearchForward
+Set-PSReadLineKeyHandler -Key 'Ctrl+y' -Function AcceptSuggestion       # take the grey prediction
+Set-PSReadLineKeyHandler -Key 'Ctrl+d' -Function DeleteCharOrExit
 
 # Built-in aliases win over functions, so drop the ones replaced below.
 'ls', 'cat', 'gl' | ForEach-Object { Remove-Item "Alias:$_" -Force -ErrorAction Ignore }
