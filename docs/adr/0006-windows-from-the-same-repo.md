@@ -17,7 +17,7 @@ The same workflow is needed on Windows machines owned by different companies: sa
 ## Consequences
 - Untested on Windows: psmux's support for the shared tmux config (Alt prefix, `@pane-is-vim`, popups), Noctty's light/dark theme pairs, the PowerShell init of tv and atuin, and some completion generators. Failures there are skipped, not fatal.
 - psmux stays on Flexoki Dark: it has no theme-change hooks.
-- Admin is needed once (ssh-agent service, Build Tools); everything else runs as the user.
+- Admin is needed once (ssh-agent service, Build Tools, Visual Studio); everything else runs as the user.
 
 ## Alternatives
 - **Windows Terminal, no multiplexer:** fewer moving parts, but no sessions or sesh.

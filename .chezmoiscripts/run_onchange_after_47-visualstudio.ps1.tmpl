@@ -1,0 +1,31 @@
+# Visual Studio Enterprise 2026 with the components in .chezmoidata/visualstudio.toml.
+# Installs it, adds what's missing to an existing install, or does nothing when every component is there.
+$components = '{{ .visualstudio.components | join "', '" }}'
+$installer = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer"
+
+# Path of the VS 2026 Enterprise instance that has $Requires (vswhere matches only instances with all of them).
+function Find-VS([string[]]$Requires) {
+  if (-not (Test-Path "$installer\vswhere.exe")) { return }
+  $q = '-products', 'Microsoft.VisualStudio.Product.Enterprise', '-version', '[18.0,19.0)', '-property', 'installationPath'
+  if ($Requires) { $q += @('-requires') + $Requires }
+  & "$installer\vswhere.exe" @q | Select-Object -First 1
+}
+
+if (Find-VS $components) { exit }
+
+# The installer reads --config as strict JSON.
+$config = Join-Path $env:TEMP 'dotfiles.vsconfig'
+@{ version = '1.0'; components = $components } | ConvertTo-Json | Set-Content $config
+try {
+  if ($path = Find-VS) {
+    # The bootstrapper's install verb exits 1 when the product exists, so modify through setup.exe.
+    # It's a GUI program: Start-Process -Wait waits for it, the call operator wouldn't.
+    Start-Process "$installer\setup.exe" -Wait -ArgumentList 'modify', '--installPath', "`"$path`"", '--config', "`"$config`"", '--passive', '--norestart'
+  } else {
+    winget install --id Microsoft.VisualStudio.Enterprise --exact --silent --accept-package-agreements --accept-source-agreements `
+      --override "--wait --passive --norestart --config `"$config`""
+  }
+} finally { Remove-Item $config }
+
+# Exit codes differ between setup.exe and winget (and 3010 means only a pending reboot); vswhere is the answer.
+if (-not (Find-VS $components)) { throw "Visual Studio is missing components; installer logs: $env:TEMP\dd_*.log" }

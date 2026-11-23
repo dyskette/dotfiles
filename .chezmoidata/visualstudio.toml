@@ -1,0 +1,11 @@
+# Visual Studio Enterprise 2026 components, installed by run_onchange_after_47-visualstudio.ps1.tmpl.
+# No MSVC here: the Build Tools own it (10-packages), so rust and tree-sitter don't depend on this IDE.
+[visualstudio]
+components = [
+  "Microsoft.VisualStudio.Workload.CoreEditor",
+  "Microsoft.VisualStudio.Workload.NetWeb",     # ASP.NET, Blazor, Razor
+  "Microsoft.VisualStudio.Workload.Azure",      # Functions, App Service, Storage
+  "Microsoft.Net.Component.4.8.TargetingPack",  # .NET Framework projects
+  "Microsoft.Net.Component.4.8.SDK",
+  "Microsoft.NetCore.Component.Runtime.10.0",
+]

@@ -29,7 +29,7 @@ git clone <this-repo-url> $HOME\.local\share\chezmoi
 powershell -ExecutionPolicy Bypass -File $HOME\.local\share\chezmoi\install.ps1
 ```
 
-`install.ps1` installs Git, PowerShell 7 and mise with winget, enables the Windows OpenSSH agent (one UAC prompt), and runs `chezmoi init --apply`. The `.ps1` scripts in `.chezmoiscripts/` install Noctty, psmux, npiperelay, less, VS Code and the MSVC Build Tools, put mise's shims on the user `PATH` (for VS Code and other apps started outside PowerShell), set Explorer to show file extensions and hidden files, then the same mise toolchain, fonts, .NET tools and Neovim plugins. Then open Noctty and run `psmux`.
+`install.ps1` installs Git, PowerShell 7 and mise with winget, enables the Windows OpenSSH agent (one UAC prompt), and runs `chezmoi init --apply`. The `.ps1` scripts in `.chezmoiscripts/` install Noctty, psmux, npiperelay, less, VS Code and the MSVC Build Tools, put mise's shims on the user `PATH` (for VS Code and other apps started outside PowerShell), set Explorer to show file extensions and hidden files, then the same mise toolchain, fonts, .NET tools and Neovim plugins. They also install Visual Studio Enterprise 2026 with the components in `.chezmoidata/visualstudio.toml`. Then open Noctty and run `psmux`.
 
 The keys and shell commands below are the same; the PowerShell profile is `~/.config/powershell/profile.ps1`, loaded from `$PROFILE`. On company machines: trust the corporate root certificate for mise, uv and npm (`SSL_CERT_FILE`, `NODE_EXTRA_CA_CERTS`) if TLS is inspected; a Defender exclusion for `%LOCALAPPDATA%\mise` and `LongPathsEnabled` speed up and unblock installs (both need admin).
 
