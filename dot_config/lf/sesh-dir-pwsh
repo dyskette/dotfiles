@@ -1,4 +1,4 @@
-# Windows counterpart of ./sesh-dir, sourced only by the sesh-dir function in the PowerShell profile.
+# Windows counterpart of ./sesh-dir, sourced only by ~/.local/bin/sesh-dir.ps1.
 set shell pwsh
 set shellopts '-NoProfile'
 set shellflag '-Command'

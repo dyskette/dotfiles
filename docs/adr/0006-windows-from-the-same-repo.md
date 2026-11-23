@@ -12,7 +12,7 @@ The same workflow is needed on Windows machines owned by different companies: sa
 - **Noctty** (Ghostty's core on Windows) reads the Ghostty config through an include template, plus `command = pwsh.exe`.
 - **psmux** as the multiplexer: `tmux/common.conf` holds what tmux and psmux both support, sourced by `tmux.conf` and `~/.psmux.conf`.
 - The PowerShell profile sets `XDG_CONFIG_HOME` (and lf's and bat's equivalents) so tools read `~/.config` as on Linux; VS Code, Zed and Noctty get one-line include templates for their AppData paths. The profile is loaded from `$PROFILE`, so a OneDrive-redirected Documents folder works.
-- The shell pickers, `tm`, `sesh-dir` and `nv` are profile functions; `nv-edit` and `projects` are `.ps1` scripts with `.cmd` shims for callers that use cmd (lazygit, tv).
+- The shell pickers and `nv` are profile functions; `tm`, `sesh-dir`, `nv-edit` and `projects` are `.ps1` scripts in `~/.local/bin`, so psmux popups (run with `pwsh -NoProfile`) find them, with `.cmd` shims for callers that use cmd (lazygit, tv).
 
 ## Consequences
 - Untested on Windows: psmux's support for the shared tmux config (Alt prefix, `@pane-is-vim`, popups), Noctty's light/dark theme pairs, the PowerShell init of tv and atuin, and some completion generators. Failures there are skipped, not fatal.

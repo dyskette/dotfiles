@@ -72,19 +72,9 @@ function gb {                                    # origin/x → a local x tracki
 }
 function gl { tv git-log }
 
-# --- Sessions (psmux + sesh), as ~/.local/bin/{tm,sesh-dir,nv} on Linux ---
-function tm($Dir) {
-  if ($Dir) { sesh connect (Resolve-Path $Dir).Path; return }
-  $c = tv sesh
-  if ($c) { sesh connect $c }
-}
-function sesh-dir($Start = $PWD.Path) {
-  $env:SESH_DIR_OUT = New-TemporaryFile
-  lf -command "source '$env:XDG_CONFIG_HOME/lf/sesh-dir-pwsh'" $Start
-  $dir = Get-Content $env:SESH_DIR_OUT -Raw
-  Remove-Item $env:SESH_DIR_OUT
-  if ($dir) { sesh connect $dir }
-}
+# --- Sessions (psmux + sesh) ---
+# tm and sesh-dir are scripts in ~/.local/bin: psmux runs its popups without this profile.
+# nv stays a function, as ~/.local/bin/nv on Linux.
 function nv {
   $id = (tmux display -p '#{session_id}' 2>$null) -replace '\$'
   $pipe = "\\.\pipe\nvim-tmux-$(if ($id) { $id } else { 'none' })"
