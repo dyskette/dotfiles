@@ -1,5 +1,0 @@
-# Flexoki flavors (fetched by .chezmoiexternal.toml). Yazi asks the terminal whether it is
-# light or dark at startup and picks one; the flavor's tmtheme.xml colors code previews.
-[flavor]
-dark  = "flexoki-dark"
-light = "flexoki-light"

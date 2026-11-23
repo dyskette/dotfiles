@@ -2,7 +2,7 @@
 # silently alter what lands in $HOME; bump the SHA to update.
 
 # Flexoki TextMate themes for bat (and delta, which reads bat's cache). They ship inside the
-# Yazi flavors by @gosxrgxx (MIT, © Steph Ango) and follow the Flexoki syntax mapping.
+# Yazi flavor repos by @gosxrgxx (MIT, © Steph Ango) and follow the Flexoki syntax mapping.
 [".config/bat/themes/Flexoki Light.tmTheme"]
     type = "file"
     url = "https://raw.githubusercontent.com/gosxrgxx/flexoki-light.yazi/55e3fc596bd24d5f7c725ac45323be16ca1aa471/tmtheme.xml"
@@ -10,19 +10,6 @@
 [".config/bat/themes/Flexoki Dark.tmTheme"]
     type = "file"
     url = "https://raw.githubusercontent.com/gosxrgxx/flexoki-dark.yazi/649e569d9e78f7573703a04135c6c62942b98a34/tmtheme.xml"
-
-# Yazi flavors; selected per terminal background in ~/.config/yazi/theme.toml.
-[".config/yazi/flavors/flexoki-light.yazi"]
-    type = "archive"
-    url = "https://github.com/gosxrgxx/flexoki-light.yazi/archive/55e3fc596bd24d5f7c725ac45323be16ca1aa471.tar.gz"
-    stripComponents = 1
-    include = ["*/flavor.toml", "*/tmtheme.xml", "*/LICENSE*"]
-
-[".config/yazi/flavors/flexoki-dark.yazi"]
-    type = "archive"
-    url = "https://github.com/gosxrgxx/flexoki-dark.yazi/archive/649e569d9e78f7573703a04135c6c62942b98a34.tar.gz"
-    stripComponents = 1
-    include = ["*/flavor.toml", "*/tmtheme.xml", "*/LICENSE*"]
 
 # lf's Nerd Font icons (lf's built-in defaults are plain letters). Pinned to tag r42.
 [".config/lf/icons"]

@@ -1,4 +1,4 @@
--- One palette everywhere: Flexoki (Ghostty, tmux, lazygit, bat/delta, yazi, Neovim). See docs/adr/0003.
+-- One palette everywhere: Flexoki (Ghostty, tmux, lazygit, bat/delta, Neovim). See docs/adr/0003.
 -- variant = "auto" follows 'background'. Neovim 0.12 re-queries the terminal background on a
 -- theme-change notification (DEC mode 2031, forwarded by tmux >= 3.6) and updates 'background',
 -- which reloads the colorscheme — so light/dark switches live with Ghostty.
