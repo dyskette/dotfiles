@@ -112,13 +112,13 @@ Don't grep for bare `error` or `403`: dnf prints package names like `perl-Error`
 Run the checks as `tester` in a login shell, as the real session does:
 
 ```sh
-x() { podman exec -u tester -e TERM=xterm-256color -e COLORTERM=truecolor "$C" zsh -lic "$1"; }
+x() { podman exec -u tester -e TERM=xterm-256color -e COLORTERM=truecolor "$C" bash -lic "$1" 2>/dev/null; }
 ```
 
 | Check | Command | Expect |
 |---|---|---|
 | Install finished | `tail -1 "$T/$D.log"`; `grep -c '^chezmoi:' "$T/$D.log"` | `exit=0`; `0` |
-| Login shell | `x 'getent passwd tester \| cut -d: -f7'` | `/usr/bin/zsh` |
+| Login shell | `x 'getent passwd tester \| cut -d: -f7'` | `/usr/bin/bash` |
 | Tools on PATH | see the loop below | `missing: none` |
 | Runtimes from mise | `x 'which node python go nvim dotnet'` | paths under `~/.local/share/mise/` |
 | .NET | `x 'dotnet --version; dotnet tool list -g'` | 10.x; `easydotnet`, `roslyn-language-server` |
@@ -128,7 +128,7 @@ x() { podman exec -u tester -e TERM=xterm-256color -e COLORTERM=truecolor "$C" z
 | Font | `x 'ls ~/.local/share/fonts/JetBrainsMonoNerd \| wc -l'` | `96` |
 | Neovim plugins | `x 'nvim --headless "+lua print(#require(\"lazy\").plugins())" +qa'` | a plugin count, no errors |
 | bat themes | `x 'bat --list-themes --color=never \| grep Flexoki'` | `Flexoki Dark`, `Flexoki Light` |
-| zsh completions | `x 'ls ~/.local/share/zsh/site-functions \| wc -l; whence -v _rg _eza _lf'` | about 25 files; each `_x` is an autoload function |
+| bash completions | `x 'ls ~/.local/share/bash-completion/completions \| wc -l; _comp_load git && complete -p git'` | about 22 files; `complete ... -F __git_wrap__git_main git` |
 | AI CLIs owned by mise | `x 'which claude copilot; echo $DISABLE_AUTOUPDATER $COPILOT_AUTO_UPDATE'` | paths under `~/.local/share/mise/`; `1 false` |
 
 ```sh
@@ -144,14 +144,14 @@ These check that Flexoki switches with the terminal (see [ADR 0003](adr/0003-fle
 
 ### delta
 
-Use a scratch repo. `COLORTERM=truecolor` (set by `x` above) is required, or delta falls back to 256 colors. In zsh, split flag variables with `${=f}`.
+Use a scratch repo. `COLORTERM=truecolor` (set by `x` above) is required, or delta falls back to 256 colors.
 
 ```sh
 x 'cd /tmp && rm -rf dt && git init -q dt && cd dt && printf "def f(x):\n    return 1\n" > a.py &&
    git add a.py && git -c user.email=t@t -c user.name=t commit -qm init &&
    printf "def f(x):\n    return 2\n" > a.py
    for f in "" "--features flexoki-light --light" "--features flexoki-dark --dark"; do
-     printf "%-34s %s\n" "${f:-(default)}" "$(delta ${=f} --show-config | grep syntax-theme)"; done'
+     printf "%-34s %s\n" "${f:-(default)}" "$(delta $f --show-config | grep syntax-theme)"; done'
 ```
 
 Expect `Base16` by default, then `Flexoki Light` and `Flexoki Dark`. If the features show `Base16`, something set `syntax-theme` in the main `[delta]` section, which beats features.

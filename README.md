@@ -3,9 +3,9 @@
 A [chezmoi](https://www.chezmoi.io/) source repo that turns a blank Linux machine into a terminal IDE for C#, Python, TypeScript, Rust and Go:
 
 ```
-Ghostty → tmux (+ sesh: one session per repo/worktree) → zsh + mise activate → nvim (LazyVim)
-                                                                     ├─ LSP / DAP / neotest
-lazygit (<leader>gg or prefix+g popup) ──── nv-edit ────────────────┘
+Ghostty → tmux (+ sesh: one session per repo/worktree) → bash + mise activate → nvim (LazyVim)
+                                                                      ├─ LSP / DAP / neotest
+lazygit (<leader>gg or prefix+g popup) ──── nv-edit ─────────────────┘
 ```
 
 Each layer has one job and hands the next a predictable environment: Ghostty draws, tmux/sesh own sessions, mise owns runtimes and env vars, Neovim inherits them and starts language servers, debuggers and test runners.
@@ -14,7 +14,7 @@ Each layer has one job and hands the next a predictable environment: Ghostty dra
 
 | Layer | Owner | Examples |
 |---|---|---|
-| System / GUI | OS package manager (`dnf`, `rpm-ostree`, `apt`, `pacman`) | ghostty, tmux, zsh, gcc, wl-clipboard |
+| System / GUI | OS package manager (`dnf`, `rpm-ostree`, `apt`, `pacman`) | ghostty, tmux, bash-completion, gcc, wl-clipboard |
 | Runtimes, CLIs, Neovim | **mise** (`dot_config/mise/config.toml`, plus each repo's `mise.toml`) | node, python, uv, go, rust, dotnet, neovim, lazygit, sesh, lf, rg, fd, claude, copilot… |
 | Editor-only servers / debug adapters | **Mason** (via LazyVim extras) | basedpyright, vtsls, gopls, codelldb, js-debug-adapter, delve, debugpy, csharpier |
 | .NET editor tooling | `dotnet tool install -g` | EasyDotnet, roslyn-language-server |
@@ -38,13 +38,13 @@ git clone <this-repo-url> ~/.local/share/chezmoi
 |---|---|---|
 | `before_10-packages` | OS packages, Ghostty (COPR on Fedora), inotify limits | the script changes |
 | `after_20-mise-install` | `mise install` for all global tools; rust-analyzer via rustup | `mise/config.toml` changes |
-| `after_25-zsh-completions` | `_tool` completion files → `~/.local/share/zsh/site-functions` | `mise/config.toml` changes |
+| `after_26-bash-completions` | one completion file per command → `~/.local/share/bash-completion/completions` | `mise/config.toml` changes |
 | `after_30-fonts` | JetBrainsMono Nerd Font → `~/.local/share/fonts` | font version bump |
 | `after_35-bat-cache` | `bat cache --build` for the Flexoki themes (bat + delta) | bat config / externals change |
 | `after_40-dotnet-tools` | EasyDotnet + roslyn-language-server | `mise/config.toml` changes |
 | `after_50-tmux-plugins` | TPM + plugins | `tmux.conf` changes |
 | `after_60-nvim-plugins` | headless `Lazy! restore`/`sync`, `TSUpdate` | `lazyvim.json` / `lazy-lock.json` change |
-| `once_after_90-login-shell` | sets zsh as login shell | once |
+| `once_after_90-login-shell` | sets bash as login shell | once |
 
 **Fedora Atomic:** packages are layered with `rpm-ostree`. Reboot when asked, then run `chezmoi apply` again.
 
@@ -124,7 +124,7 @@ Picker keys: `Tab` select, `C-j/C-k` move, `C-d/C-u` scroll list, `C-f/C-b` scro
 
 In the session picker (`prefix s`, `tm`, `~/.config/television/cable/sesh.toml`): `C-s` cycles All / Projects / Tmux / Zoxide, `C-d` kills the highlighted session.
 
-Tab completion covers the mise-managed CLIs (generated into `~/.local/share/zsh/site-functions` whenever the mise config changes); git, tmux, jq, go and npm completions ship with zsh. After `mise up` with `"latest"` pins, refresh them with `chezmoi state delete-bucket --bucket=scriptState && chezmoi apply`.
+Tab completion covers the mise-managed CLIs (generated into `~/.local/share/bash-completion/completions` whenever the mise config changes, loaded on the first Tab after each command); git, tmux, ssh and the rest come from the `bash-completion` package. After `mise up` with `"latest"` pins, refresh them with `chezmoi state delete-bucket --bucket=scriptState && chezmoi apply`.
 
 `sg` hides shadow-utils' `/usr/bin/sg` in interactive shells only. Plain `rg` reads `~/.config/ripgrep/config`, which has snacks' grep defaults.
 
@@ -132,14 +132,14 @@ Tab completion covers the mise-managed CLIs (generated into `~/.local/share/zsh/
 
 | Variable | Set by | Purpose |
 |---|---|---|
-| `XDG_CONFIG_HOME` | `~/.zshenv` | lazygit and others read `~/.config` |
-| `EDITOR`, `VISUAL` | `~/.zshenv` | `nvim` |
-| `PATH` | `~/.zshenv`, `~/.zprofile` (shims), `~/.zshrc` (`mise activate`) | `~/.local/bin`, `~/.dotnet/tools`, mise |
+| `XDG_CONFIG_HOME` | `~/.bash_profile` | lazygit and others read `~/.config` |
+| `EDITOR`, `VISUAL` | `~/.bash_profile` | `nvim` |
+| `PATH` | `~/.bash_profile` (and mise shims), `~/.bashrc` (`mise activate`) | `~/.local/bin`, `~/.dotnet/tools`, mise |
 | `DOTNET_ROOT`, `DOTNET_MULTILEVEL_LOOKUP` | mise (dotnet backend) | global dotnet tools find the mise SDK |
 | `NVIM` | Neovim `:terminal` | used by the `<leader>gg` lazygit edit commands |
-| `RIPGREP_CONFIG_PATH` | `~/.zshenv` | `~/.config/ripgrep/config`: snacks grep defaults |
+| `RIPGREP_CONFIG_PATH` | `~/.bash_profile` | `~/.config/ripgrep/config`: snacks grep defaults |
 | `DISABLE_AUTOUPDATER`, `COPILOT_AUTO_UPDATE` | mise `[env]` | Claude Code and Copilot CLI don't self-update; mise owns them (`mise up`) |
-| `GHOSTTY_RESOURCES_DIR` | Ghostty (inherited by the tmux server) | `~/.zshrc` sources Ghostty's zsh integration from it, also inside tmux |
+| `GHOSTTY_RESOURCES_DIR` | Ghostty (inherited by the tmux server) | `~/.bashrc` sources Ghostty's bash integration from it, also inside tmux |
 | `PROJECT_ROOTS`, `PROJECT_DEPTH` | optional | override the roots and depth `projects` scans |
 
 No secrets live in this repo. Put per-repo secrets in `mise.local.toml` (git-ignored), generated from your vault; for dotfiles secrets use chezmoi's password-manager template functions.
@@ -170,17 +170,17 @@ Read the LazyVim CHANGELOG and easy-dotnet `news.md` before updating.
 | "No version is set" inside Neovim | `mise trust` in the repo; check `~/.local/state/mise/ignored-configs/` |
 | neotest-golang finds no tests | `:TSUpdate go` (LazyVim uses nvim-treesitter `main`) |
 | Roslyn/LSP stops watching files | inotify limits live in `/etc/sysctl.d/90-dev-inotify.conf` |
-| tmux bindings can't find `sesh`/`tv` | start tmux from a login zsh (Ghostty's `command` does this); `tmux kill-server` and reopen |
+| tmux bindings can't find `sesh`/`tv` | start tmux from a login bash (Ghostty's `command` does this); `tmux kill-server` and reopen |
 | tmux or Neovim stays dark after switching to light | needs tmux ≥ 3.6 (`tmux -V`) and a terminal that reports theme changes (Ghostty does); `prefix r` re-sources the config |
 
 ## Layout
 
 ```
 .chezmoi.toml.tmpl        machine data (name, email, work)
-.chezmoiexternal.toml     Flexoki bat themes, lf icons, _eza/_lf completions (pinned commits)
+.chezmoiexternal.toml     Flexoki bat themes, lf icons, eza/lf bash completions (pinned commits)
 .chezmoiignore            repo-only files
 .chezmoiscripts/          bootstrap steps (see table above)
-dot_zshenv, dot_zprofile, dot_zshrc, dot_gitconfig.tmpl
+dot_bash_profile, dot_bashrc, dot_gitconfig.tmpl
 dot_local/bin/            nv, nv-edit, projects, sesh-dir, tm, ee
 dot_config/               ghostty, tmux, sesh, mise, lazygit, git, bat, television, ripgrep, lf, atuin, starship, nvim
 project-template/         per-repo files (not applied to $HOME)

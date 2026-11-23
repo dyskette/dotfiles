@@ -25,11 +25,11 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - television `sesh` channel (tmux `prefix s`, `tm`; `C-s` cycles All/Projects/Tmux/Zoxide), `sesh-dir` (tmux `prefix a`, lf as folder picker), `tm [DIR]`.
 - lf (GitHub backend in mise) with rounded borders and Nerd Font icons, as the tmux folder chooser.
 - Claude Code and GitHub Copilot CLI through mise, with their self-updaters disabled.
-- zsh completions for the mise-managed CLIs (`run_onchange_after_25-zsh-completions`, `_eza`/`_lf` externals) and a
-  once-a-day `compinit` rescan.
+- bash completions for the mise-managed CLIs (`run_onchange_after_26-bash-completions`, eza/lf externals),
+  loaded by the `bash-completion` package.
 - Neovim picker layouts (`plugins/picker.lua`, wide and narrow): query, results and preview in separate rounded
   boxes, like the shell's television pickers; both stack the preview below the list under ~120 columns.
-- Ghostty's zsh shell integration sourced from `~/.zshrc`, so it also works inside tmux (OSC 133 marks, OSC 7).
+- Ghostty's bash shell integration sourced from `~/.bashrc`, so it also works inside tmux (OSC 133 marks, OSC 7).
 - tmux: pane and full-width/full-height splits, vi copy-mode keys, window titles, `update-environment` for `TERM`/`TERM_PROGRAM`.
 - Shell pickers named after LazyVim's keys (`ff`, `fF`, `sg`, `sG`, `gb`, `gl`) and Ctrl-T, as television
   (`tv`) channels with its defaults; ripgrep config with snacks.nvim's search defaults.
@@ -39,6 +39,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - `docs/testing.md`: runbook for testing a fresh install in Fedora and Ubuntu podman containers.
 
 ### Changed
+- The shell is bash instead of zsh: `~/.bash_profile` and `~/.bashrc` replace `~/.zshenv`, `~/.zprofile`
+  and `~/.zshrc`, Ghostty starts tmux from a login bash, bash is set as the login shell, and the `zsh`
+  package is no longer installed.
 - tmux prefix is now `M-a` (Alt-a) instead of `C-Space`.
 - Moving between Neovim splits and tmux panes is now `M-h/j/k/l` (Alt) instead of `C-h/j/k/l`, and
   `M-H/J/K/L` resizes them; smart-splits.nvim replaces vim-tmux-navigator (ADR 0004).
