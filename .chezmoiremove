@@ -1,4 +1,0 @@
-# Targets chezmoi deletes from $HOME: leftovers of files this repo no longer manages.
-# Catppuccin bat themes, replaced by Flexoki (docs/adr/0003).
-.config/bat/themes/Catppuccin Mocha.tmTheme
-.config/bat/themes/Catppuccin Latte.tmTheme
