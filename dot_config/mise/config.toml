@@ -21,6 +21,7 @@ fd = "latest"
 bat = "latest"
 jq = "latest"
 yq = "latest"
+pandoc = "latest"            # Office/PDF documents to Markdown and back
 eza = "latest"
 zoxide = "latest"
 delta = "latest"

@@ -23,6 +23,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - `project-template/` with mise tasks, lefthook, commitlint and CI.
 - WSL: SSH through the Windows OpenSSH agent (systemd relay) and SSH config/public keys synced from Windows (ADR 0005).
 - Windows setup from the same repo: `install.ps1`, Noctty, psmux (shared `tmux/common.conf`), a PowerShell profile with the same pickers and commands, and `.ps1` setup scripts (ADR 0006).
+- pandoc through mise, with bash completion.
 - Windows: `less` from winget, so `bat` and `delta` page outside git.
 - Windows: `tm` and `sesh-dir` are `~/.local/bin` scripts instead of profile functions, so psmux's `prefix s` and `prefix a` popups find them.
 - PowerShell profile: UTF-8 console encoding with native programs; `Ctrl+p`/`Ctrl+n` prefix history search, `Ctrl+y` accept suggestion, `Ctrl+d` delete or exit.
