@@ -14,10 +14,48 @@ if [ -x "$HOME/.local/bin/mise" ]; then
   eval "$("$HOME/.local/bin/mise" activate zsh)"
 fi
 
+# --- television (tv): Ctrl-T picks from what the command line needs (`cd ` → folders,
+# `git checkout ` → branches, `nvim ` → files...), ~/.config/television/config.toml.
+# Loaded before atuin, which then takes Ctrl-R back from tv's history widget.
+(( $+commands[tv] )) && eval "$(tv init zsh)"
+
 # --- Tools (installed by mise; guarded so a half-bootstrapped machine still gets a prompt) ---
 (( $+commands[zoxide] ))   && eval "$(zoxide init zsh)"
 (( $+commands[atuin] ))    && eval "$(atuin init zsh)"
 (( $+commands[starship] )) && eval "$(starship init zsh)"
+
+# --- Pickers: television channels (f = find, s = search, g = git), names after LazyVim's keys ---
+# Root = git toplevel, else the cwd. `sg` shadows shadow-utils' /usr/bin/sg in interactive shells.
+# tv's `text` greps the whole folder once, then filters as you type (not a live rg).
+__tv_root() { git rev-parse --show-toplevel 2>/dev/null || print -r -- "$PWD" }
+__tv_files() {                         # DIR [QUERY...]: pick files, open them in nvim
+  local dir=$1 out; shift
+  out="$(tv files --input "$*" "$dir")" && [[ -n $out ]] || return 0
+  local files=("${(@f)out}")
+  nvim -- "${files[@]/#/$dir/}"
+}
+__tv_grep() {                          # DIR [QUERY...]: one hit opens at its line, several → quickfix
+  local dir=$1 out; shift
+  out="$(tv text --input "$*" "$dir")" && [[ -n $out ]] || return 0
+  local hits=("${(@f)out}")
+  if (( $#hits == 1 )); then
+    nvim "+${hits[1]##*:}" -- "$dir/${hits[1]%:*}"
+  else
+    nvim -q =(printf "$dir/%s: \n" "${hits[@]}") +copen   # =(): a temp file zsh removes after
+  fi
+}
+ff() { __tv_files "$(__tv_root)" "$@" }   # <leader>ff  files, root dir
+fF() { __tv_files "$PWD" "$@" }           # <leader>fF  files, cwd
+sg() { __tv_grep "$(__tv_root)" "$@" }    # <leader>sg  grep, root dir
+sG() { __tv_grep "$PWD" "$@" }            # <leader>sG  grep, cwd
+gb() {                                    # git branch → switch (origin/x → a local x tracking it)
+  local b; b="$(tv git-branch)" && [[ -n $b ]] || return 0
+  if [[ $b == */* ]] && ! git rev-parse -q --verify "refs/heads/$b" >/dev/null; then
+    git switch "${b#*/}" && return
+  fi
+  git switch "$b"
+}
+gl() { tv git-log }                       # git log → prints the picked commit hashes
 
 # --- Aliases ---
 alias vim=nvim

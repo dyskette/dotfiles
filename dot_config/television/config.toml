@@ -1,0 +1,39 @@
+# television (tv): the shell's pickers. ~/.zshrc: ff/fF (files), sg/sG (text), gb (git-branch),
+# gl (git-log), Ctrl-T (`tv init zsh`: picks the channel from the command typed, e.g. `cd ` →
+# dirs). tmux prefix+s / `tm`: cable/sesh.toml. tv merges this file over its built-in defaults,
+# so only changes are listed. The built-in "default" theme uses ANSI colours only, so tv follows
+# the terminal's palette (Flexoki light/dark from Ghostty).
+
+[ui]
+theme = "default"
+
+# Rounded boxes, query on top, preview at half width: the same shape as LazyVim's pickers.
+[ui.input_bar]
+position = "top"
+prompt = "\uf105 " # snacks' prompt glyph, as a TOML escape
+border_type = "rounded"
+
+[ui.results_panel]
+border_type = "rounded"
+
+[ui.preview_panel]
+size = 50
+border_type = "rounded"
+
+[ui.theme_overrides]
+match_fg = "cyan" # matches snacks' match colour
+
+# Keys closer to snacks.nvim's (C-j/C-k, Tab, Esc are tv defaults already).
+[keybindings]
+ctrl-f = "scroll_preview_half_page_down"
+ctrl-b = "scroll_preview_half_page_up"
+ctrl-d = "select_next_page"
+ctrl-u = "select_prev_page"
+alt-p = "toggle_preview"
+
+# Ctrl-T triggers (a channel's list here replaces tv's default list for that channel).
+# tv sends `nvim ` to git-repos by default; here it lists files, like `vim `.
+[shell_integration.channel_triggers]
+"files" = ["nvim", "vim", "cat", "less", "head", "tail", "nano", "bat", "cp", "mv", "rm", "touch",
+  "chmod", "chown", "ln", "tar", "zip", "unzip", "gzip", "gunzip", "xz"]
+"git-repos" = ["git clone"]

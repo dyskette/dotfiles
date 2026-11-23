@@ -16,5 +16,5 @@ clipboard-read = ask
 window-decoration = auto
 
 # Always land in the "main" tmux session. Login shell so ~/.zprofile puts mise shims on PATH
-# for the tmux server (sesh, fzf and lazygit bindings run from it).
+# for the tmux server (sesh, tv and lazygit bindings run from it).
 command = /usr/bin/env zsh -lc "tmux new-session -A -s main"

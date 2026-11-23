@@ -4,6 +4,8 @@ typeset -U path PATH
 path=("$HOME/.local/bin" "$HOME/.dotnet/tools" $path)
 export EDITOR=nvim VISUAL=nvim
 
+export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/ripgrep/config" # snacks grep defaults
+
 # fzf in Flexoki via the terminal's ANSI palette, so it follows Ghostty's light/dark live.
 # Lives here (not .zshrc) so the tmux server, started from a login shell, passes it to the
 # sesh picker. ANSI 0 and 15 are skipped: they are the same in both Flexoki palettes.
