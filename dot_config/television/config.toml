@@ -1,5 +1,5 @@
-# television (tv): the shell's pickers. ~/.zshrc: ff/fF (files), sg/sG (text), gb (git-branch),
-# gl (git-log), Ctrl-T (`tv init zsh`: picks the channel from the command typed, e.g. `cd ` →
+# television (tv): the shell's pickers. ~/.bashrc: ff/fF (files), sg/sG (text), gb (git-branch),
+# gl (git-log), Ctrl-T (`tv init bash`: picks the channel from the command typed, e.g. `cd ` →
 # dirs). tmux prefix+s / `tm`: cable/sesh.toml. tv merges this file over its built-in defaults,
 # so only changes are listed. The built-in "default" theme uses ANSI colours only, so tv follows
 # the terminal's palette (Flexoki light/dark from Ghostty).

@@ -1,4 +1,4 @@
-# ripgrep defaults (RIPGREP_CONFIG_PATH, set in ~/.zshenv), matching what snacks.nvim's
+# ripgrep defaults (RIPGREP_CONFIG_PATH, set in ~/.bash_profile), matching what snacks.nvim's
 # grep picker passes (picker/source/grep.lua), so `rg` in the shell finds what
 # <leader>sg finds. Hidden and ignored files stay out by default, as in snacks;
 # `--hidden` / `--no-ignore` (or -u/-uu) bring them in. `rg --no-config` skips this file.

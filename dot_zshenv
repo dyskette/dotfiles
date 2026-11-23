@@ -1,7 +1,0 @@
-# ~/.zshenv — every zsh (login, interactive, scripts). Keep it minimal.
-export XDG_CONFIG_HOME="$HOME/.config"
-typeset -U path PATH
-path=("$HOME/.local/bin" "$HOME/.dotnet/tools" $path)
-export EDITOR=nvim VISUAL=nvim
-
-export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/ripgrep/config" # snacks grep defaults

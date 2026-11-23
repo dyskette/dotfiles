@@ -49,4 +49,4 @@ else
   die "Run from a clone of the repo, or pass the git URL as the first argument."
 fi
 
-log "Done. Log out and back in (login shell → zsh), then open Ghostty."
+log "Done. Log out and back in (login shell → bash), then open Ghostty."
