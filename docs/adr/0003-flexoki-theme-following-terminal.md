@@ -2,6 +2,7 @@
 
 ## Status
 Accepted — 2026-11-21
+Amended — 2026-11-22: fzf and yazi were removed (television and lf replace them), so their rows below no longer apply. The bat themes still come from the Yazi flavor repos.
 
 ## Context
 The stack used Catppuccin (Latte/Mocha) in Ghostty, tmux, Neovim, lazygit and bat/delta. Several tools hard-coded the Mocha (dark) variant, so switching the desktop to light mode left most of the stack dark. We want [Flexoki](https://stephango.com/flexoki) instead, in light and dark, switching with the OS without restarting anything that can avoid it.

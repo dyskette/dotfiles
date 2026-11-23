@@ -15,7 +15,7 @@ Each layer has one job and hands the next a predictable environment: Ghostty dra
 | Layer | Owner | Examples |
 |---|---|---|
 | System / GUI | OS package manager (`dnf`, `rpm-ostree`, `apt`, `pacman`) | ghostty, tmux, zsh, gcc, wl-clipboard |
-| Runtimes, CLIs, Neovim | **mise** (`dot_config/mise/config.toml`, plus each repo's `mise.toml`) | node, python, uv, go, rust, dotnet, neovim, lazygit, sesh, rg, fd… |
+| Runtimes, CLIs, Neovim | **mise** (`dot_config/mise/config.toml`, plus each repo's `mise.toml`) | node, python, uv, go, rust, dotnet, neovim, lazygit, sesh, lf, rg, fd, claude, copilot… |
 | Editor-only servers / debug adapters | **Mason** (via LazyVim extras) | basedpyright, vtsls, gopls, codelldb, js-debug-adapter, delve, debugpy, csharpier |
 | .NET editor tooling | `dotnet tool install -g` | EasyDotnet, roslyn-language-server |
 | rust-analyzer | `rustup component add` | — |
@@ -38,6 +38,7 @@ git clone <this-repo-url> ~/.local/share/chezmoi
 |---|---|---|
 | `before_10-packages` | OS packages, Ghostty (COPR on Fedora), inotify limits | the script changes |
 | `after_20-mise-install` | `mise install` for all global tools; rust-analyzer via rustup | `mise/config.toml` changes |
+| `after_25-zsh-completions` | `_tool` completion files → `~/.local/share/zsh/site-functions` | `mise/config.toml` changes |
 | `after_30-fonts` | JetBrainsMono Nerd Font → `~/.local/share/fonts` | font version bump |
 | `after_35-bat-cache` | `bat cache --build` for the Flexoki themes (bat + delta) | bat config / externals change |
 | `after_40-dotnet-tools` | EasyDotnet + roslyn-language-server | `mise/config.toml` changes |
@@ -81,11 +82,11 @@ chezmoi cd && git add dot_config/nvim/lazy-lock.json && git commit -m "chore(nvi
 mise trust && mise install && mise run hooks:install
 ```
 
-Repos under `~/code` are trusted automatically (`trusted_config_paths`) and get a sesh layout with three windows: `nv`, `test`, `git`.
+Repos under the project roots `~/Proyectos`, `~/Projects`, `~/source/repos` and `/c/s` are trusted automatically (`trusted_config_paths`), listed in the session picker (`~/.local/bin/projects`, git repos up to three levels deep) and get a sesh layout with three windows: `nv`, `test`, `git`. The roots are listed in three places — `dot_config/sesh/sesh.toml`, `dot_config/mise/config.toml` and `dot_local/bin/executable_projects` (or `PROJECT_ROOTS`) — keep them in sync.
 
 ## Theme: Flexoki light/dark
 
-Ghostty is the only switch: it follows the OS light/dark setting and tells programs when it changes. tmux (≥ 3.6) reloads `flexoki-light.conf` / `flexoki-dark.conf` from its theme hooks and forwards the change to Neovim, which reloads its colorscheme. Tools that use the 16 ANSI colors (starship, eza, atuin, fzf, delta in the pager, difftastic, television) re-color instantly. bat, lazygit and yazi pick light or dark when they start. Details: [ADR 0003](docs/adr/0003-flexoki-theme-following-terminal.md).
+Ghostty is the only switch: it follows the OS light/dark setting and tells programs when it changes. tmux (≥ 3.6) reloads `flexoki-light.conf` / `flexoki-dark.conf` from its theme hooks and forwards the change to Neovim, which reloads its colorscheme. Tools that use the 16 ANSI colors (starship, eza, atuin, delta in the pager, difftastic, television) re-color instantly. bat and lazygit pick light or dark when they start. Details: [ADR 0003](docs/adr/0003-flexoki-theme-following-terminal.md).
 
 To check it: switch the desktop theme with Ghostty open; the tmux status bar and Neovim should flip within a second.
 
@@ -93,13 +94,39 @@ To check it: switch the desktop theme with Ghostty open; the tmux status bar and
 
 | Action | Key |
 |---|---|
-| Move between splits and panes | `C-h/j/k/l` |
-| Switch project / previous project | `prefix T` / `prefix L` (prefix = `C-Space`) |
+| Move between splits and panes / resize them | `M-h/j/k/l` / `M-H/J/K/L` (Alt, Alt-Shift) |
+| Switch session or project / previous session | `prefix s` (or `tm` in a shell) / `prefix L` (prefix = `M-a`, i.e. Alt-a) |
+| Open a session in any folder (lf: Enter on the folder; `q` cancels) | `prefix a` |
+| Open a folder's session from a shell | `tm DIR` |
+| Split pane / split whole window (full height, full width) | `prefix \|` `prefix -` / `prefix \` `prefix _` |
+| Copy mode select char / line / block, copy | `v` / `V` / `C-v`, `y` or mouse drag |
 | Git UI | `<leader>gg` (in Neovim), `prefix g` (popup) |
 | Guided Conventional Commit (lazygit files panel) | `C` |
 | Nearest test / debug nearest test | `<leader>tr` / `<leader>td` |
 | Breakpoint / continue | `<leader>db` / `<leader>dc` |
 | .NET: solution, build, run, debug, test runner | `<leader>N` + `s`/`b`/`r`/`d`/`t` |
+
+### Shell
+
+The pickers are [television](https://github.com/alexpasmantier/television) (`tv`) channels with its defaults, in rounded boxes like LazyVim's snacks.nvim pickers. The names follow LazyVim's leader keys: `f` find, `s` search, `g` git. The root is the git toplevel, else the cwd.
+
+| Command | What it does |
+|---|---|
+| `ff [q]` / `fF [q]` | find files from the git root / the cwd, open in nvim (like `<leader>ff` / `<leader>fF`) |
+| `sg [q]` / `sG [q]` | grep from the git root / the cwd (reads the tree once, then filters); one hit opens at its line, several go to the quickfix list (like `<leader>sg` / `<leader>sG`) |
+| `gb` / `gl` | switch branch (`origin/x` switches to `x`) / browse the log (prints the picked hashes) |
+| `e` / `gg` | lf / lazygit |
+| `ee [path]` | open in the file manager: Nautilus, or Windows Explorer inside WSL |
+| `ls` `ll` `la` `lt [level]` / `cat` | eza (icons, git, hyperlinks, tree) / bat; `man` pages render through bat |
+| `Ctrl-T` | tv picks for the command typed: files after `nvim`, `cat`, `cp`…, folders after `cd`, repos after `git clone` (Ctrl-R stays atuin) |
+
+Picker keys: `Tab` select, `C-j/C-k` move, `C-d/C-u` scroll list, `C-f/C-b` scroll preview, `A-p` toggle preview, `C-s` cycle sources, `C-h` help (tv defaults plus snacks-like scrolling in `~/.config/television/config.toml`).
+
+In the session picker (`prefix s`, `tm`, `~/.config/television/cable/sesh.toml`): `C-s` cycles All / Projects / Tmux / Zoxide, `C-d` kills the highlighted session.
+
+Tab completion covers the mise-managed CLIs (generated into `~/.local/share/zsh/site-functions` whenever the mise config changes); git, tmux, jq, go and npm completions ship with zsh. After `mise up` with `"latest"` pins, refresh them with `chezmoi state delete-bucket --bucket=scriptState && chezmoi apply`.
+
+`sg` hides shadow-utils' `/usr/bin/sg` in interactive shells only. Plain `rg` reads `~/.config/ripgrep/config`, which has snacks' grep defaults.
 
 ## Environment variables
 
@@ -110,7 +137,10 @@ To check it: switch the desktop theme with Ghostty open; the tmux status bar and
 | `PATH` | `~/.zshenv`, `~/.zprofile` (shims), `~/.zshrc` (`mise activate`) | `~/.local/bin`, `~/.dotnet/tools`, mise |
 | `DOTNET_ROOT`, `DOTNET_MULTILEVEL_LOOKUP` | mise (dotnet backend) | global dotnet tools find the mise SDK |
 | `NVIM` | Neovim `:terminal` | used by the `<leader>gg` lazygit edit commands |
-| `FZF_DEFAULT_OPTS` | `~/.zshenv` | Flexoki colors via the ANSI palette (also reaches the tmux server) |
+| `RIPGREP_CONFIG_PATH` | `~/.zshenv` | `~/.config/ripgrep/config`: snacks grep defaults |
+| `DISABLE_AUTOUPDATER`, `COPILOT_AUTO_UPDATE` | mise `[env]` | Claude Code and Copilot CLI don't self-update; mise owns them (`mise up`) |
+| `GHOSTTY_RESOURCES_DIR` | Ghostty (inherited by the tmux server) | `~/.zshrc` sources Ghostty's zsh integration from it, also inside tmux |
+| `PROJECT_ROOTS`, `PROJECT_DEPTH` | optional | override the roots and depth `projects` scans |
 
 No secrets live in this repo. Put per-repo secrets in `mise.local.toml` (git-ignored), generated from your vault; for dotfiles secrets use chezmoi's password-manager template functions.
 
@@ -127,6 +157,8 @@ Read the LazyVim CHANGELOG and easy-dotnet `news.md` before updating.
 
 **Rollback:** `git revert` the update commit, `chezmoi apply`, then `:Lazy restore` in Neovim.
 
+**Testing on fresh machines:** before merging changes to `.chezmoiscripts/`, `install.sh`, the mise toolchain or the theme, run the container tests in [docs/testing.md](docs/testing.md) (Fedora and Ubuntu with podman, including the light/dark theme checks).
+
 **Troubleshooting:**
 
 | Symptom | Fix |
@@ -138,22 +170,22 @@ Read the LazyVim CHANGELOG and easy-dotnet `news.md` before updating.
 | "No version is set" inside Neovim | `mise trust` in the repo; check `~/.local/state/mise/ignored-configs/` |
 | neotest-golang finds no tests | `:TSUpdate go` (LazyVim uses nvim-treesitter `main`) |
 | Roslyn/LSP stops watching files | inotify limits live in `/etc/sysctl.d/90-dev-inotify.conf` |
-| tmux bindings can't find `sesh`/`fzf` | start tmux from a login zsh (Ghostty's `command` does this); `tmux kill-server` and reopen |
+| tmux bindings can't find `sesh`/`tv` | start tmux from a login zsh (Ghostty's `command` does this); `tmux kill-server` and reopen |
 | tmux or Neovim stays dark after switching to light | needs tmux ≥ 3.6 (`tmux -V`) and a terminal that reports theme changes (Ghostty does); `prefix r` re-sources the config |
 
 ## Layout
 
 ```
 .chezmoi.toml.tmpl        machine data (name, email, work)
-.chezmoiexternal.toml     Flexoki bat themes and yazi flavors (pinned commits)
-.chezmoiremove            leftovers to delete from $HOME
+.chezmoiexternal.toml     Flexoki bat themes, lf icons, _eza/_lf completions (pinned commits)
 .chezmoiignore            repo-only files
 .chezmoiscripts/          bootstrap steps (see table above)
 dot_zshenv, dot_zprofile, dot_zshrc, dot_gitconfig.tmpl
-dot_local/bin/            nv, nv-edit
-dot_config/               ghostty, tmux, sesh, mise, lazygit, git, bat, yazi, atuin, starship, nvim
+dot_local/bin/            nv, nv-edit, projects, sesh-dir, tm, ee
+dot_config/               ghostty, tmux, sesh, mise, lazygit, git, bat, television, ripgrep, lf, atuin, starship, nvim
 project-template/         per-repo files (not applied to $HOME)
 docs/adr/                 architecture decisions
+docs/testing.md           container test runbook
 install.sh                bootstrap entrypoint
 ```
 
@@ -162,3 +194,4 @@ install.sh                bootstrap entrypoint
 - [ADR 0001 — chezmoi + single-owner toolchain](docs/adr/0001-chezmoi-and-tool-ownership.md)
 - [ADR 0002 — easy-dotnet.nvim for C#](docs/adr/0002-easy-dotnet-for-csharp.md)
 - [ADR 0003 — Flexoki, following the terminal's light/dark](docs/adr/0003-flexoki-theme-following-terminal.md)
+- [ADR 0004 — smart-splits.nvim for moving and resizing across Neovim and tmux](docs/adr/0004-smart-splits-for-panes.md)
