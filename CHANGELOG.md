@@ -13,6 +13,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Shell pickers named after LazyVim's keys (`ff`, `fF`, `sg`, `sG`, `gb`, `gl`), `tm`, `e`, `gg`, `ee`.
 - bash completions for the mise-managed CLIs.
 - Claude Code, GitHub Copilot CLI and opencode through mise; opencode's config and Copilot 1M-context plugin.
+- Claude Code settings: no commit/PR attribution, auto permission mode, theme following the terminal.
 - terraform, Azure CLI, Azure Functions Core Tools and the Aspire CLI through mise.
 - Java (Temurin 21) through mise.
 - `project-template/` with mise tasks, lefthook, commitlint and CI.
