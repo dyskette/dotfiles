@@ -1,293 +1,33 @@
 [
-  // Scoped off the chat input: it is a plain text box, not a vim-ified editor,
-  // so ctrl+z there should fall through to its own undo instead of toggling
-  // the terminal.
-  {
-    "key": "ctrl+z",
-    "command": "workbench.action.terminal.toggleTerminal",
-    "when": "!inChatInput"
-  },
-  {
-    "key": "ctrl+y",
-    "command": "acceptSelectedSuggestion",
-    "when": "suggestWidgetHasFocusedSuggestion && suggestWidgetVisible"
-  },
-  {
-    "key": "Ctrl+n",
-    "command": "workbench.action.quickOpenSelectNext",
-    "when": "inQuickOpen"
-  },
-  {
-    "key": "Ctrl+p",
-    "command": "workbench.action.quickOpenSelectPrevious",
-    "when": "inQuickOpen"
-  },
-  {
-    "key": "ctrl+n",
-    "command": "selectNextCodeAction",
-    "when": "codeActionMenuVisible"
-  },
-  {
-    "key": "ctrl+p",
-    "command": "selectPrevCodeAction",
-    "when": "codeActionMenuVisible"
-  },
-  {
-    "key": "ctrl+w d",
-    "command": "workbench.action.compareEditor.focusOtherSide",
-    "when": "textCompareEditorActive"
-  },
-  // Pane navigation is layered on purpose: navigate* crosses workbench parts
-  // (sidebar / panel / terminal) but does not hop between editor groups;
-  // focus*Group does the opposite and is a no-op at the edge of the grid.
-  // VS Code applies the LAST keybinding whose `when` matches, so navigate* is
-  // the base and focus*Group overrides it only while the editor has focus and
-  // a group really exists in that direction.
-  {
-    "key": "ctrl+w h",
-    "command": "workbench.action.navigateLeft"
-  },
-  {
-    "key": "ctrl+w h",
-    "command": "workbench.action.focusLeftGroup",
-    "when": "editorFocus && multipleEditorGroups && activeEditorGroupIndex != 1"
-  },
-  {
-    "key": "ctrl+w l",
-    "command": "workbench.action.navigateRight"
-  },
-  {
-    "key": "ctrl+w l",
-    "command": "workbench.action.focusRightGroup",
-    "when": "editorFocus && multipleEditorGroups && !activeEditorGroupLast"
-  },
-  // A side-by-side diff is one editor group, so neither layer above reaches it:
-  // focus*Group needs multipleEditorGroups and navigate* crosses workbench parts.
-  // Listed last because VS Code applies the last matching keybinding.
-  {
-    "key": "ctrl+w h",
-    "command": "workbench.action.compareEditor.focusSecondarySide",
-    "when": "textCompareEditorActive"
-  },
-  {
-    "key": "ctrl+w l",
-    "command": "workbench.action.compareEditor.focusPrimarySide",
-    "when": "textCompareEditorActive"
-  },
-  // No context key marks the top/bottom row of the grid, so vertical movement
-  // stays on navigate* (group below -> panel -> terminal); ctrl+w ctrl+<hjkl>
-  // stays pinned to editor groups for when that guesses wrong.
-  {
-    "key": "ctrl+w k",
-    "command": "workbench.action.navigateUp"
-  },
-  {
-    "key": "ctrl+w j",
-    "command": "workbench.action.navigateDown"
-  },
-  {
-    "key": "ctrl+w ctrl+k",
-    "command": "workbench.action.focusAboveGroup"
-  },
-  {
-    "key": "ctrl+w ctrl+j",
-    "command": "workbench.action.focusBelowGroup"
-  },
-  {
-    "key": "ctrl+w ctrl+h",
-    "command": "workbench.action.focusLeftGroup"
-  },
-  {
-    "key": "ctrl+w ctrl+l",
-    "command": "workbench.action.focusRightGroup"
-  },
-  // VSCodeVim's own <C-w> v/s/q never fire: the ctrl+w chords above put VS Code
-  // into chord mode, so the key never reaches the extension. Rebound here.
-  {
-    "key": "ctrl+w v",
-    "command": "workbench.action.splitEditorRight"
-  },
-  {
-    "key": "ctrl+w s",
-    "command": "workbench.action.splitEditorDown"
-  },
-  {
-    "key": "ctrl+w q",
-    "command": "workbench.action.closeActiveEditor"
-  },
-  {
-    "key": "q",
-    "command": "workbench.action.toggleSidebarVisibility",
-    "when": "explorerViewletFocus && !inputFocus"
-  },
-  {
-    "key": "enter",
-    "command": "list.closeFind",
-    "when": "listFocus && treeFindOpen && inputFocus"
-  },
-  {
-    "key": "r",
-    "command": "renameFile",
-    "when": "explorerViewletVisible && filesExplorerFocus && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus"
-  },
-  {
-    "key": "d",
-    "command": "moveFileToTrash",
-    "when": "explorerViewletVisible && filesExplorerFocus && !explorerResourceReadonly && !inputFocus"
-  },
-  {
-    "key": "y",
-    "command": "filesExplorer.copy",
-    "when": "explorerViewletVisible && filesExplorerFocus && !explorerResourceIsRoot && !inputFocus"
-  },
-  {
-    "key": "x",
-    "command": "filesExplorer.cut",
-    "when": "explorerViewletVisible && filesExplorerFocus && !explorerResourceIsRoot && !inputFocus"
-  },
-  {
-    "key": "p",
-    "command": "filesExplorer.paste",
-    "when": "explorerViewletVisible && filesExplorerFocus && !explorerResourceReadonly && !inputFocus"
-  },
-  {
-    "key": "v",
-    "command": "explorer.openToSide",
-    "when": "explorerViewletFocus && explorerViewletVisible && !inputFocus"
-  },
-  {
-    "key": "a",
-    "command": "explorer.newFile",
-    "when": "filesExplorerFocus && !inputFocus"
-  },
-  // Explorer tree verbs, mirroring the zed project panel.
-  {
-    "key": "shift+a",
-    "command": "explorer.newFolder",
-    "when": "filesExplorerFocus && !inputFocus"
-  },
-  {
-    "key": "o",
-    "command": "filesExplorer.openFilePreserveFocus",
-    "when": "filesExplorerFocus && !inputFocus"
-  },
-  // openFilePreserveFocus filters out directories, so folders need the tree
-  // toggle instead; layered after, since VS Code applies the last match.
-  {
-    "key": "o",
-    "command": "list.toggleExpand",
-    "when": "filesExplorerFocus && !inputFocus && explorerResourceIsFolder"
-  },
-  // o previews and keeps focus in the tree; enter pins and jumps to the editor.
-  {
-    "key": "enter",
-    "command": "list.select",
-    "when": "filesExplorerFocus && !inputFocus"
-  },
-  {
-    "key": "s",
-    "command": "runCommands",
-    "args": { "commands": ["explorer.openAndPassFocus", "workbench.action.moveEditorToBelowGroup"] },
-    "when": "filesExplorerFocus && !inputFocus"
-  },
-  {
-    "key": "-",
-    "command": "list.focusParent",
-    "when": "filesExplorerFocus && !inputFocus"
-  },
-  {
-    "key": "ctrl+i",
-    "command": "composerMode.agent"
-  },
-  {
-    "key": "g g",
-    "command": "cursorTop",
-    "when": "editorTextFocus && editorLangId == 'magit' && vim.mode =~ /^(?!SearchInProgressMode|CommandlineInProgress).*$/"
-  },
-  {
-    "key": "g r",
-    "command": "magit.refresh",
-    "when": "editorTextFocus && editorLangId == 'magit' && vim.mode =~ /^(?!SearchInProgressMode|CommandlineInProgress).*$/"
-  },
-  {
-    "key": "tab",
-    "command": "extension.vim_tab",
-    "when": "editorTextFocus && vim.active && !inDebugRepl && vim.mode != 'Insert' && !inlineEditIsVisible && editorLangId != 'magit'"
-  },
-  {
-    "key": "tab",
-    "command": "-extension.vim_tab"
-  },
-  {
-    "key": "x",
-    "command": "magit.discard-at-point",
-    "when": "editorTextFocus && editorLangId == 'magit' && vim.mode =~ /^(?!SearchInProgressMode|CommandlineInProgress).*$/"
-  },
-  {
-    "key": "k",
-    "command": "-magit.discard-at-point"
-  },
-  {
-    "key": "-",
-    "command": "magit.reverse-at-point",
-    "when": "editorTextFocus && editorLangId == 'magit' && vim.mode =~ /^(?!SearchInProgressMode|CommandlineInProgress).*$/"
-  },
-  {
-    "key": "v",
-    "command": "-magit.reverse-at-point"
-  },
-  {
-    "key": "shift+-",
-    "command": "magit.reverting",
-    "when": "editorTextFocus && editorLangId == 'magit' && vim.mode =~ /^(?!SearchInProgressMode|CommandlineInProgress).*$/"
-  },
-  {
-    "key": "shift+v",
-    "command": "-magit.reverting"
-  },
-  {
-    "key": "shift+o",
-    "command": "magit.resetting",
-    "when": "editorTextFocus && editorLangId == 'magit' && vim.mode =~ /^(?!SearchInProgressMode|CommandlineInProgress).*$/"
-  },
-  {
-    "key": "shift+x",
-    "command": "-magit.resetting"
-  },
-  {
-    "key": "x",
-    "command": "-magit.reset-mixed"
-  },
-  {
-    "key": "ctrl+u x",
-    "command": "-magit.reset-hard"
-  },
-  // Scoped to oil buffers rather than living in vim.normalModeKeyBindings,
-  // which has no `when` and would claim these keys in every buffer.
-  {
-    "key": "enter",
-    "command": "oil-code.select",
-    "when": "editorTextFocus && editorLangId == 'oil' && vim.mode == 'Normal'"
-  },
-  {
-    "key": "ctrl+l",
-    "command": "oil-code.refresh",
-    "when": "editorTextFocus && editorLangId == 'oil' && vim.mode == 'Normal'"
-  },
-  {
-    "key": "`",
-    "command": "oil-code.cd",
-    "when": "editorTextFocus && editorLangId == 'oil' && vim.mode == 'Normal'"
-  },
-  {
-    "key": "g d",
-    "command": "oil-code.toggleDetails",
-    "when": "editorTextFocus && editorLangId == 'oil' && vim.mode == 'Normal'"
-  },
-  // Reclaims gg, which the g chord above would otherwise swallow in oil buffers.
-  {
-    "key": "g g",
-    "command": "cursorTop",
-    "when": "editorTextFocus && editorLangId == 'oil' && vim.mode == 'Normal'"
-  }
+  // Neovim (vscode-neovim) gets normal/visual keys; these are the VS Code-side ones (ADR 0007).
+  // Alt-h/j/k/l and Alt-H/J/K/L: move and resize across editors and panels, as smart-splits does
+  // across Neovim splits and tmux panes.
+  { "key": "alt+h", "command": "workbench.action.navigateLeft" },
+  { "key": "alt+j", "command": "workbench.action.navigateDown" },
+  { "key": "alt+k", "command": "workbench.action.navigateUp" },
+  { "key": "alt+l", "command": "workbench.action.navigateRight" },
+  { "key": "alt+shift+h", "command": "workbench.action.decreaseViewWidth" },
+  { "key": "alt+shift+l", "command": "workbench.action.increaseViewWidth" },
+  { "key": "alt+shift+j", "command": "workbench.action.decreaseViewHeight" },
+  { "key": "alt+shift+k", "command": "workbench.action.increaseViewHeight" },
+  // Ctrl-/ toggles the terminal from anywhere, including from inside it (LazyVim's <C-/>).
+  { "key": "ctrl+/", "command": "workbench.action.terminal.toggleTerminal" },
+  // Completion and pickers like blink.cmp: C-n/C-p move, C-y accepts.
+  { "key": "ctrl+y", "command": "acceptSelectedSuggestion", "when": "suggestWidgetVisible" },
+  { "key": "ctrl+n", "command": "workbench.action.quickOpenSelectNext", "when": "inQuickOpen" },
+  { "key": "ctrl+p", "command": "workbench.action.quickOpenSelectPrevious", "when": "inQuickOpen" },
+  { "key": "ctrl+n", "command": "selectNextCodeAction", "when": "codeActionMenuVisible" },
+  { "key": "ctrl+p", "command": "selectPrevCodeAction", "when": "codeActionMenuVisible" },
+  // Explorer keys after snacks' explorer.
+  { "key": "l", "command": "list.select", "when": "filesExplorerFocus && !inputFocus" },
+  { "key": "h", "command": "list.collapse", "when": "filesExplorerFocus && !inputFocus" },
+  { "key": "a", "command": "explorer.newFile", "when": "filesExplorerFocus && !inputFocus" },
+  { "key": "shift+a", "command": "explorer.newFolder", "when": "filesExplorerFocus && !inputFocus" },
+  { "key": "d", "command": "moveFileToTrash", "when": "filesExplorerFocus && !explorerResourceReadonly && !inputFocus" },
+  { "key": "r", "command": "renameFile", "when": "filesExplorerFocus && !explorerResourceIsRoot && !inputFocus" },
+  { "key": "c", "command": "filesExplorer.copy", "when": "filesExplorerFocus && !explorerResourceIsRoot && !inputFocus" },
+  { "key": "m", "command": "filesExplorer.cut", "when": "filesExplorerFocus && !explorerResourceIsRoot && !inputFocus" },
+  { "key": "p", "command": "filesExplorer.paste", "when": "filesExplorerFocus && !explorerResourceReadonly && !inputFocus" },
+  { "key": "y", "command": "copyRelativeFilePath", "when": "filesExplorerFocus && !inputFocus" },
+  { "key": "q", "command": "workbench.action.toggleSidebarVisibility", "when": "filesExplorerFocus && !inputFocus" }
 ]

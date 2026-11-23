@@ -15,6 +15,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Claude Code, GitHub Copilot CLI and opencode through mise; opencode's config and Copilot 1M-context plugin.
 - Claude Code settings: no commit/PR attribution, auto permission mode, theme following the terminal.
 - VS Code (native and Flatpak), Zed and JetBrains IdeaVim settings.
+- VS Code runs LazyVim through vscode-neovim with LazyVim's keys (`plugins/vscode.lua`, ADR 0007); VSCodeVim, magit and oil keymaps removed; language extensions matching the LazyVim lang extras.
 - VS Code installed on Linux (Flathub) and Windows (winget), extensions from `.chezmoidata/vscode.yaml`, Flexoki theme following the OS, host bash / PowerShell 7 terminals; mise shims on the Windows user `PATH`.
 - terraform, Azure CLI, Azure Functions Core Tools and the Aspire CLI through mise.
 - Java (Temurin 21) through mise.

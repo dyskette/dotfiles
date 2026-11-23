@@ -51,6 +51,8 @@ Repos under `~/Proyectos`, `~/Projects`, `~/source/repos` and `/c/s` are auto-tr
 | `ff`/`fF`, `sg`/`sG`, `gb`, `gl` | shell pickers (tv), named after LazyVim's keys |
 | `e`, `gg`, `ee` | lf, lazygit, desktop file manager |
 
+VS Code runs the same LazyVim config through vscode-neovim, with LazyVim's keys mapped to VS Code commands ([ADR 0007](docs/adr/0007-vscode-runs-lazyvim.md)); uninstall VSCodeVim first.
+
 ## Theme
 
 Flexoki follows Ghostty's light/dark; tmux (≥ 3.6) and Neovim switch live ([ADR 0003](docs/adr/0003-flexoki-theme-following-terminal.md)).
@@ -98,3 +100,4 @@ No secrets live in this repo: per-repo secrets go in `mise.local.toml` (git-igno
 - [ADR 0004 — smart-splits.nvim across Neovim and tmux](docs/adr/0004-smart-splits-for-panes.md)
 - [ADR 0005 — WSL uses the Windows OpenSSH agent](docs/adr/0005-wsl-ssh-through-windows-agent.md)
 - [ADR 0006 — Windows from the same repo](docs/adr/0006-windows-from-the-same-repo.md)
+- [ADR 0007 — VS Code runs LazyVim through vscode-neovim](docs/adr/0007-vscode-runs-lazyvim.md)

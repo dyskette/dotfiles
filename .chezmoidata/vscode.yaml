@@ -1,5 +1,14 @@
 # VS Code extensions, installed by run_onchange_after_45-vscode-extensions (.sh / .ps1).
+# vscode-neovim runs ~/.config/nvim; the language ones match the LazyVim lang extras.
 vscode:
-  extensions: [vscodevim.vim, kahole.magit, haphazarddev.oil-code, mthierman.theme-flexoki]
+  extensions:
+    - asvetliakov.vscode-neovim
+    - mthierman.theme-flexoki
+    - detachhead.basedpyright
+    - charliermarsh.ruff
+    - golang.go
+    - rust-lang.rust-analyzer
+    - ms-dotnettools.csharp
+    - redhat.vscode-yaml
   linux: [ms-vscode-remote.remote-containers]
   windows: [ms-vscode-remote.remote-wsl]
