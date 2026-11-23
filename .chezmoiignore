@@ -2,6 +2,7 @@
 README.md
 CHANGELOG.md
 install.sh
+install.ps1
 docs
 docs/**
 project-template
@@ -14,4 +15,27 @@ project-template/**
 .config/environment.d
 .config/systemd
 .local/bin/ssh-sync
+{{ end }}
+
+{{ if eq .chezmoi.os "windows" }}
+.bash_profile
+.bashrc
+.chezmoiscripts/*.sh
+.config/Code
+.config/ghostty
+.config/lf/sesh-dir
+.config/zed
+.local/bin/*
+!.local/bin/*.ps1
+!.local/bin/*.cmd
+.local/share/bash-completion
+.var
+{{ else }}
+.chezmoiscripts/*.ps1
+.config/lf/sesh-dir-pwsh
+.config/powershell
+.local/bin/*.ps1
+.local/bin/*.cmd
+.psmux.conf
+AppData
 {{ end }}

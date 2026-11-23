@@ -10,4 +10,10 @@ sourceDir = {{ .chezmoi.sourceDir | quote }}
     name  = {{ $name | quote }}
     email = {{ $email | quote }}
     work  = {{ $work }}
-    wsl   = {{ .chezmoi.kernel.osrelease | lower | contains "microsoft" }}
+    wsl   = {{ and (eq .chezmoi.os "linux") (.chezmoi.kernel.osrelease | lower | contains "microsoft") }}
+{{- if eq .chezmoi.os "windows" }}
+
+[interpreters.ps1]
+    command = "pwsh"
+    args    = ["-NoLogo", "-NoProfile", "-ExecutionPolicy", "Bypass"]
+{{- end }}

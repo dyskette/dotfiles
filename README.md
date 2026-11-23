@@ -1,9 +1,10 @@
 # dotfiles — terminal-first LazyVim IDE
 
-A [chezmoi](https://www.chezmoi.io/) source repo that turns a blank Linux machine into a terminal IDE for C#, Python, TypeScript, Rust and Go:
+A [chezmoi](https://www.chezmoi.io/) source repo that turns a blank Linux or Windows machine into a terminal IDE for C#, Python, TypeScript, Rust and Go:
 
 ```
 Ghostty → tmux + sesh (one session per repo) → bash + mise → nvim (LazyVim)
+Noctty  → psmux + sesh                     → pwsh + mise → nvim (LazyVim)     (Windows, ADR 0006)
 ```
 
 Each binary has one owner: OS packages, mise, Mason (editor-only servers, appended to Neovim's `PATH` so a repo's mise pins win), `dotnet tool` or rustup ([ADR 0001](docs/adr/0001-chezmoi-and-tool-ownership.md)).
@@ -20,6 +21,17 @@ git clone <this-repo-url> ~/.local/share/chezmoi
 `install.sh` installs mise and chezmoi, then `chezmoi init --apply` asks for your git name/email and runs `.chezmoiscripts/`. On Fedora Atomic, reboot when asked and run `chezmoi apply` again.
 
 Then log out and back in, open Ghostty, run `tmux new -A -s main`, start `nvim` once so Mason installs servers, and run `:checkhealth`. Commit the generated `lazy-lock.json` (`chezmoi re-add ~/.config/nvim/lazy-lock.json`).
+
+### Windows
+
+```powershell
+git clone <this-repo-url> $HOME\.local\share\chezmoi
+powershell -ExecutionPolicy Bypass -File $HOME\.local\share\chezmoi\install.ps1
+```
+
+`install.ps1` installs Git, PowerShell 7 and mise with winget, enables the Windows OpenSSH agent (one UAC prompt), and runs `chezmoi init --apply`. The `.ps1` scripts in `.chezmoiscripts/` install Noctty, psmux, npiperelay and the MSVC Build Tools, then the same mise toolchain, fonts, .NET tools and Neovim plugins. Then open Noctty and run `psmux`.
+
+The keys and shell commands below are the same; the PowerShell profile is `~/.config/powershell/profile.ps1`, loaded from `$PROFILE`. On company machines: trust the corporate root certificate for mise, uv and npm (`SSL_CERT_FILE`, `NODE_EXTRA_CA_CERTS`) if TLS is inspected; a Defender exclusion for `%LOCALAPPDATA%\mise` and `LongPathsEnabled` speed up and unblock installs (both need admin).
 
 ## Per-project setup
 
@@ -49,6 +61,7 @@ Flexoki follows Ghostty's light/dark; tmux (≥ 3.6) and Neovim switch live ([AD
 |---|---|---|
 | `PATH`, `EDITOR`, `VISUAL`, `XDG_CONFIG_HOME` | `~/.bash_profile`, mise | |
 | `RIPGREP_CONFIG_PATH` | `~/.bash_profile` | `rg` uses snacks' grep defaults |
+| `XDG_CONFIG_HOME`, `LF_CONFIG_HOME`, `BAT_CONFIG_DIR` | Windows: PowerShell profile | tools read `~/.config` as on Linux |
 | `DISABLE_AUTOUPDATER`, `COPILOT_AUTO_UPDATE` | mise `[env]` | mise updates Claude Code and Copilot CLI |
 | `PROJECT_ROOTS`, `PROJECT_DEPTH` | optional | override what `projects` scans |
 | `WIN_SSH_DIR`, `NPIPERELAY` | WSL: `~/.config/environment.d`, resolved by `chezmoi apply` | Windows `~/.ssh` and `npiperelay.exe` for the SSH relay ([ADR 0005](docs/adr/0005-wsl-ssh-through-windows-agent.md)) |
@@ -84,3 +97,4 @@ No secrets live in this repo: per-repo secrets go in `mise.local.toml` (git-igno
 - [ADR 0003 — Flexoki, following the terminal's light/dark](docs/adr/0003-flexoki-theme-following-terminal.md)
 - [ADR 0004 — smart-splits.nvim across Neovim and tmux](docs/adr/0004-smart-splits-for-panes.md)
 - [ADR 0005 — WSL uses the Windows OpenSSH agent](docs/adr/0005-wsl-ssh-through-windows-agent.md)
+- [ADR 0006 — Windows from the same repo](docs/adr/0006-windows-from-the-same-repo.md)

@@ -6,6 +6,12 @@
 [core]
 	pager = delta
 	excludesFile = ~/.config/git/ignore
+{{- if eq .chezmoi.os "windows" }}
+	# Windows OpenSSH, so git uses the Windows agent instead of Git for Windows' own ssh.
+{{- with lookPath "ssh.exe" }}
+	sshCommand = {{ . | replace "\\" "/" }}
+{{- end }}
+{{- end }}
 [interactive]
 	diffFilter = delta --color-only
 [delta]

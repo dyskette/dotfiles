@@ -1,0 +1,5 @@
+# hash: {{ include "dot_config/mise/config.toml" | sha256sum }}
+$env:PATH = "$env:LOCALAPPDATA\mise\shims;$HOME\.dotnet\tools;$env:PATH"; $env:XDG_CONFIG_HOME = "$HOME\.config"
+mise trust --yes "$HOME\.config\mise\config.toml"
+mise install --yes
+mise exec rust -- rustup component add rust-analyzer rust-src clippy rustfmt

@@ -1,0 +1,4 @@
+# hash: {{ include "dot_config/bat/config" | sha256sum }} {{ include ".chezmoiexternal.toml" | sha256sum }}
+$env:PATH = "$env:LOCALAPPDATA\mise\shims;$HOME\.dotnet\tools;$env:PATH"; $env:XDG_CONFIG_HOME = "$HOME\.config"
+$env:BAT_CONFIG_DIR = "$HOME\.config\bat"
+bat cache --build | Out-Null

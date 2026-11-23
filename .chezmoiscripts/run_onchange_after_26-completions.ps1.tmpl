@@ -1,0 +1,12 @@
+# PowerShell completions for the mise-managed CLIs, loaded by the profile. hash: {{ include "dot_config/mise/config.toml" | sha256sum }}
+$env:PATH = "$env:LOCALAPPDATA\mise\shims;$HOME\.dotnet\tools;$env:PATH"; $env:XDG_CONFIG_HOME = "$HOME\.config"
+$gen = 'mise completion powershell', 'chezmoi completion powershell', 'gh completion -s powershell',
+  'rg --generate complete-powershell', 'fd --gen-completions powershell', 'bat --completion ps1',
+  'delta --generate-completion powershell', 'ast-grep completions powershell', 'atuin gen-completions --shell powershell',
+  'starship completions powershell', 'lefthook completion powershell', 'sesh completion powershell',
+  'yq shell-completion powershell', 'uv generate-shell-completion powershell', 'dotnet completions script pwsh',
+  'opencode --completions pwsh', 'rustup completions powershell rustup', 'rustup completions powershell cargo'
+$gen | ForEach-Object {
+  $exe, $rest = -split $_
+  if (Get-Command $exe -ErrorAction Ignore) { & $exe @rest 2>$null | Out-String }
+} | Set-Content "$env:LOCALAPPDATA\powershell-completions.ps1"

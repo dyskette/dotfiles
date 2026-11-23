@@ -19,7 +19,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Java (Temurin 21) through mise.
 - `project-template/` with mise tasks, lefthook, commitlint and CI.
 - WSL: SSH through the Windows OpenSSH agent (systemd relay) and SSH config/public keys synced from Windows (ADR 0005).
-- ADRs 0001–0005 and `docs/testing.md`.
+- Windows setup from the same repo: `install.ps1`, Noctty, psmux (shared `tmux/common.conf`), a PowerShell profile with the same pickers and commands, and `.ps1` setup scripts (ADR 0006).
+- ADRs 0001–0006 and `docs/testing.md`.
 
 ### Changed
 - The shell is bash instead of zsh.

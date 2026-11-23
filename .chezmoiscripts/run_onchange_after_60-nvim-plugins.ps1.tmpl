@@ -1,0 +1,5 @@
+# hash: {{ include "dot_config/nvim/lazyvim.json" | sha256sum }}
+{{- if stat (joinPath .chezmoi.sourceDir "dot_config/nvim/lazy-lock.json") }} lock: {{ include "dot_config/nvim/lazy-lock.json" | sha256sum }}{{ end }}
+$env:PATH = "$env:LOCALAPPDATA\mise\shims;$HOME\.dotnet\tools;$env:PATH"; $env:XDG_CONFIG_HOME = "$HOME\.config"
+if (Test-Path "$HOME\.config\nvim\lazy-lock.json") { nvim --headless "+Lazy! restore" +qa } else { nvim --headless "+Lazy! sync" +qa }
+nvim --headless "+TSUpdate" "+sleep 20" +qa
