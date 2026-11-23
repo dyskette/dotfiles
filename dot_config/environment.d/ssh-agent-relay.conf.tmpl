@@ -1,0 +1,8 @@
+{{- /* Resolved on each machine at apply time: user services have no Windows PATH. */ -}}
+{{- if lookPath "cmd.exe" }}
+{{- $winHome := output "cmd.exe" "/c" "echo %USERPROFILE%" | trim -}}
+WIN_SSH_DIR={{ output "wslpath" "-u" $winHome | trim }}/.ssh
+{{- end }}
+{{- with lookPath "npiperelay.exe" }}
+NPIPERELAY={{ . }}
+{{- end }}

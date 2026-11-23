@@ -16,4 +16,7 @@ if [ -x "$HOME/.local/bin/mise" ]; then
   eval "$("$HOME/.local/bin/mise" activate bash --shims)"
 fi
 
+# WSL: the Windows OpenSSH agent, through ssh-agent-relay.service.
+[ -S "${XDG_RUNTIME_DIR:-}/ssh-agent.sock" ] && export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.sock"
+
 [[ $- == *i* && -r "$HOME/.bashrc" ]] && . "$HOME/.bashrc"

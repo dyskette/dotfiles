@@ -51,6 +51,8 @@ Flexoki follows Ghostty's light/dark; tmux (≥ 3.6) and Neovim switch live ([AD
 | `RIPGREP_CONFIG_PATH` | `~/.bash_profile` | `rg` uses snacks' grep defaults |
 | `DISABLE_AUTOUPDATER`, `COPILOT_AUTO_UPDATE` | mise `[env]` | mise updates Claude Code and Copilot CLI |
 | `PROJECT_ROOTS`, `PROJECT_DEPTH` | optional | override what `projects` scans |
+| `WIN_SSH_DIR`, `NPIPERELAY` | WSL: `~/.config/environment.d`, resolved by `chezmoi apply` | Windows `~/.ssh` and `npiperelay.exe` for the SSH relay ([ADR 0005](docs/adr/0005-wsl-ssh-through-windows-agent.md)) |
+| `SSH_AUTH_SOCK` | WSL: `~/.bash_profile` | the relay to the Windows OpenSSH agent |
 
 No secrets live in this repo: per-repo secrets go in `mise.local.toml` (git-ignored) from your vault; dotfiles secrets use chezmoi's password-manager functions.
 
@@ -72,6 +74,8 @@ No secrets live in this repo: per-repo secrets go in `mise.local.toml` (git-igno
 | Completions stale after `mise up` | `chezmoi state delete-bucket --bucket=scriptState && chezmoi apply` |
 | tmux bindings can't find `sesh`/`tv` | `tmux kill-server`, start tmux from a shell that has them on `PATH` |
 | tmux or Neovim stays dark | needs tmux ≥ 3.6; `prefix r` |
+| WSL: `ssh-add -l` fails | `systemctl --user status ssh-agent-relay`; needs systemd, interop and npiperelay on Windows; after moving them, `chezmoi apply` and log in again |
+| WSL: SSH config or keys out of date | `ssh-sync` (also runs every 5 minutes) |
 
 ## Decisions
 
@@ -79,3 +83,4 @@ No secrets live in this repo: per-repo secrets go in `mise.local.toml` (git-igno
 - [ADR 0002 — easy-dotnet.nvim for C#](docs/adr/0002-easy-dotnet-for-csharp.md)
 - [ADR 0003 — Flexoki, following the terminal's light/dark](docs/adr/0003-flexoki-theme-following-terminal.md)
 - [ADR 0004 — smart-splits.nvim across Neovim and tmux](docs/adr/0004-smart-splits-for-panes.md)
+- [ADR 0005 — WSL uses the Windows OpenSSH agent](docs/adr/0005-wsl-ssh-through-windows-agent.md)

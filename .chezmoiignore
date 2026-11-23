@@ -9,3 +9,9 @@ project-template/**
 .research
 .research/**
 .gitignore
+
+{{ if not .wsl }}
+.config/environment.d
+.config/systemd
+.local/bin/ssh-sync
+{{ end }}

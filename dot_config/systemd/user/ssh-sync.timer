@@ -1,0 +1,11 @@
+[Unit]
+Description=Copy SSH public files from Windows periodically
+ConditionVirtualization=wsl
+
+[Timer]
+# Windows-side edits under /mnt/c raise no inotify events, so poll.
+OnStartupSec=0
+OnUnitActiveSec=5min
+
+[Install]
+WantedBy=timers.target

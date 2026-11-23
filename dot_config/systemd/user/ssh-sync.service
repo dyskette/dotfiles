@@ -1,0 +1,7 @@
+[Unit]
+Description=Copy SSH config, known_hosts and public keys from Windows
+ConditionVirtualization=wsl
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/ssh-sync

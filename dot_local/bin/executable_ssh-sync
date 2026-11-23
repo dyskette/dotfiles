@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# Copy config, known_hosts and *.pub from Windows' ~/.ssh; private keys stay in the Windows agent.
+# WIN_SSH_DIR is set per machine in ~/.config/environment.d, which systemd passes to ssh-sync.service.
+set -euo pipefail
+
+: "${WIN_SSH_DIR:=$(sed -n 's/^WIN_SSH_DIR=//p' "${XDG_CONFIG_HOME:-$HOME/.config}/environment.d/ssh-agent-relay.conf" 2>/dev/null)}"
+[ -n "$WIN_SSH_DIR" ] && [ -d "$WIN_SSH_DIR" ] || { echo "ssh-sync: WIN_SSH_DIR not found: ${WIN_SSH_DIR:-unset}" >&2; exit 1; }
+
+mkdir -p "$HOME/.ssh"
+chmod 700 "$HOME/.ssh"
+
+for src in "$WIN_SSH_DIR/config" "$WIN_SSH_DIR/known_hosts" "$WIN_SSH_DIR"/*.pub; do
+  [ -f "$src" ] || continue
+  name="${src##*/}"
+  dst="$HOME/.ssh/$name"
+  [ -e "$dst" ] && [ ! "$src" -nt "$dst" ] && continue
+  # OpenSSH on Linux would keep the \r in every value.
+  tr -d '\r' <"$src" >"$dst.tmp"
+  mv -f "$dst.tmp" "$dst"
+  # Windows' mtime, so the next -nt compares against Windows edits.
+  touch -r "$src" "$dst"
+  case "$name" in *.pub) chmod 644 "$dst" ;; *) chmod 600 "$dst" ;; esac
+done
+
+# A key removed on Windows goes away here too.
+for dst in "$HOME/.ssh"/*.pub; do
+  [ -f "$dst" ] && [ ! -e "$WIN_SSH_DIR/${dst##*/}" ] && rm -f -- "$dst"
+done
+exit 0

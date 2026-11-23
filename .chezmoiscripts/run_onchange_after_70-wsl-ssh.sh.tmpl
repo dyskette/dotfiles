@@ -1,0 +1,14 @@
+{{ if .wsl -}}
+#!/usr/bin/env bash
+# hash: {{ include "dot_config/systemd/user/ssh-agent-relay.service" | sha256sum }} {{ include "dot_config/systemd/user/ssh-sync.timer" | sha256sum }} {{ include "dot_config/environment.d/ssh-agent-relay.conf.tmpl" | sha256sum }}
+set -euo pipefail
+if ! systemctl --user show-environment >/dev/null 2>&1; then
+  echo "wsl-ssh: no systemd user manager; set [boot] systemd=true in /etc/wsl.conf" >&2
+  exit 0
+fi
+# Re-runs the environment.d generator.
+systemctl --user daemon-reload
+systemctl --user enable --now ssh-sync.timer
+systemctl --user enable ssh-agent-relay.service
+systemctl --user restart ssh-agent-relay.service
+{{ end -}}

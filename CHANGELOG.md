@@ -18,7 +18,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - terraform, Azure CLI, Azure Functions Core Tools and the Aspire CLI through mise.
 - Java (Temurin 21) through mise.
 - `project-template/` with mise tasks, lefthook, commitlint and CI.
-- ADRs 0001–0004 and `docs/testing.md`.
+- WSL: SSH through the Windows OpenSSH agent (systemd relay) and SSH config/public keys synced from Windows (ADR 0005).
+- ADRs 0001–0005 and `docs/testing.md`.
 
 ### Changed
 - The shell is bash instead of zsh.

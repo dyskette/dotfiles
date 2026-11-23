@@ -1,0 +1,12 @@
+[Unit]
+Description=Relay to the Windows OpenSSH agent
+ConditionVirtualization=wsl
+
+[Service]
+# socat strips quotes, so an empty IFS keeps a NPIPERELAY path with spaces one word; $$ is a literal $.
+ExecStart=socat UNIX-LISTEN:%t/ssh-agent.sock,fork,unlink-early "SYSTEM:IFS=; exec $$NPIPERELAY -ei -s //./pipe/openssh-ssh-agent,nofork"
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target

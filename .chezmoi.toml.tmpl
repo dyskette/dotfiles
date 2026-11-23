@@ -10,3 +10,4 @@ sourceDir = {{ .chezmoi.sourceDir | quote }}
     name  = {{ $name | quote }}
     email = {{ $email | quote }}
     work  = {{ $work }}
+    wsl   = {{ .chezmoi.kernel.osrelease | lower | contains "microsoft" }}
