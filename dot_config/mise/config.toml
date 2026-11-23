@@ -34,6 +34,10 @@ gotestsum = "latest"
 "github:joshmedeski/sesh" = "latest"
 claude = "latest"
 copilot = "latest"
+terraform = "latest"
+azure-cli = "latest"
+azure-functions-core-tools = "latest"
+aspire = "latest"
 
 [env]
 # mise updates claude and copilot, not their self-updaters.

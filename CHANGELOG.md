@@ -13,6 +13,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Shell pickers named after LazyVim's keys (`ff`, `fF`, `sg`, `sG`, `gb`, `gl`), `tm`, `e`, `gg`, `ee`.
 - bash completions for the mise-managed CLIs.
 - Claude Code and GitHub Copilot CLI through mise.
+- terraform, Azure CLI, Azure Functions Core Tools and the Aspire CLI through mise.
 - `project-template/` with mise tasks, lefthook, commitlint and CI.
 - ADRs 0001–0004 and `docs/testing.md`.
 
