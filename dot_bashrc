@@ -21,10 +21,10 @@ HISTCONTROL=ignoredups
 shopt -s histappend autocd checkwinsize
 
 # --- Ghostty shell integration, also inside tmux ---
-# Ghostty only auto-injects it when it can see the shell, and here it starts `env bash -lc
-# "tmux ..."`, so it never does; even then it would not reach shells inside tmux. Ghostty
-# still exports GHOSTTY_RESOURCES_DIR to the tmux server, so source it by hand: OSC 133
-# prompt marks (tmux copy-mode next/previous-prompt), OSC 7 cwd, the prompt cursor shape.
+# Ghostty auto-injects it only into the shell it starts, not into the shells inside tmux. The
+# tmux server inherits GHOSTTY_RESOURCES_DIR, so source it by hand: OSC 133 prompt marks (tmux
+# copy-mode next/previous-prompt), OSC 7 cwd, the prompt cursor shape. Sourcing it twice (after
+# the injection) is harmless: bash >= 5 registers its hooks only once.
 # First: it loads bash-preexec, which atuin and starship then reuse.
 if [[ -n $GHOSTTY_RESOURCES_DIR && -r $GHOSTTY_RESOURCES_DIR/shell-integration/bash/ghostty.bash ]]; then
   . "$GHOSTTY_RESOURCES_DIR/shell-integration/bash/ghostty.bash"

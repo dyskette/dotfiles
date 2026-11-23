@@ -250,7 +250,7 @@ x 'chezmoi apply --force'
 
 ```sh
 ssh -p 2222 tester@127.0.0.1         # password: tester; Ubuntu on 2223
-tmux new -A -s main                  # what Ghostty runs on a real machine
+tmux new -A -s main                  # attach to (or start) the main session
 ```
 
 Each new container generates a new host key. If ssh warns about a changed key, run `ssh-keygen -R '[127.0.0.1]:2222'`.

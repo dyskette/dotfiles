@@ -4,8 +4,8 @@ theme = light:Flexoki Light,dark:Flexoki Dark
 font-family = "JetBrainsMono Nerd Font"
 font-size = 12
 
-# Auto-injection can't see bash behind `env bash -lc` (see `command` below), so ~/.bashrc sources
-# the integration itself; Ghostty still exports these features for it to read.
+# Auto-injected into the bash Ghostty starts; ~/.bashrc also sources it, for the shells inside tmux,
+# which read these features from the environment.
 shell-integration = detect
 # ssh-terminfo installs Ghostty's terminfo on remote hosts; ssh-env falls back to xterm-256color.
 shell-integration-features = cursor,sudo,title,ssh-env,ssh-terminfo
@@ -16,7 +16,3 @@ clipboard-read = ask
 # Linux default (primary selection) is kept for copy-on-select.
 
 window-decoration = auto
-
-# Always land in the "main" tmux session. Login shell so ~/.bash_profile puts mise shims on PATH
-# for the tmux server (sesh, tv and lazygit bindings run from it).
-command = /usr/bin/env bash -lc "tmux new-session -A -s main"

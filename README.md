@@ -48,7 +48,7 @@ git clone <this-repo-url> ~/.local/share/chezmoi
 
 **Fedora Atomic:** packages are layered with `rpm-ostree`. Reboot when asked, then run `chezmoi apply` again.
 
-Then log out and back in, open Ghostty (it attaches to tmux session `main`), start `nvim` once so Mason installs servers, and run `:checkhealth`.
+Then log out and back in, open Ghostty, run `tmux new -A -s main`, start `nvim` once so Mason installs servers, and run `:checkhealth`.
 
 ### Verify
 
@@ -170,7 +170,7 @@ Read the LazyVim CHANGELOG and easy-dotnet `news.md` before updating.
 | "No version is set" inside Neovim | `mise trust` in the repo; check `~/.local/state/mise/ignored-configs/` |
 | neotest-golang finds no tests | `:TSUpdate go` (LazyVim uses nvim-treesitter `main`) |
 | Roslyn/LSP stops watching files | inotify limits live in `/etc/sysctl.d/90-dev-inotify.conf` |
-| tmux bindings can't find `sesh`/`tv` | start tmux from a login bash (Ghostty's `command` does this); `tmux kill-server` and reopen |
+| tmux bindings can't find `sesh`/`tv` | start tmux from a shell that has them on PATH (`~/.bash_profile` / `~/.bashrc`); `tmux kill-server` and reopen |
 | tmux or Neovim stays dark after switching to light | needs tmux ≥ 3.6 (`tmux -V`) and a terminal that reports theme changes (Ghostty does); `prefix r` re-sources the config |
 
 ## Layout

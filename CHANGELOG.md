@@ -7,7 +7,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 - chezmoi source tree and `install.sh` bootstrap for Fedora, Fedora Atomic, Debian/Ubuntu and Arch.
-- Ghostty 1.4 config (OSC 52, ssh terminfo, auto-attach to tmux).
+- Ghostty 1.4 config (OSC 52, ssh terminfo).
 - tmux config with sesh project switching, lazygit popup and vim-tmux-navigator.
 - sesh config (wildcard with editor, test-watcher and lazygit windows).
 - mise global toolchain (Neovim, runtimes, dev CLIs, sesh via the GitHub backend).
@@ -40,8 +40,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Changed
 - The shell is bash instead of zsh: `~/.bash_profile` and `~/.bashrc` replace `~/.zshenv`, `~/.zprofile`
-  and `~/.zshrc`, Ghostty starts tmux from a login bash, bash is set as the login shell, and the `zsh`
-  package is no longer installed.
+  and `~/.zshrc`, bash is set as the login shell, and the `zsh` package is no longer installed.
+- Ghostty no longer starts tmux on its own; it opens the login shell, and tmux is started by hand.
 - tmux prefix is now `M-a` (Alt-a) instead of `C-Space`.
 - Moving between Neovim splits and tmux panes is now `M-h/j/k/l` (Alt) instead of `C-h/j/k/l`, and
   `M-H/J/K/L` resizes them; smart-splits.nvim replaces vim-tmux-navigator (ADR 0004).

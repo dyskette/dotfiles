@@ -1,4 +1,4 @@
-# ~/.bash_profile — login shells (Ghostty's tmux server, tmux panes, ssh).
+# ~/.bash_profile — login shells (desktop session, tmux panes, ssh).
 # The environment every program started from here inherits, then ~/.bashrc for the
 # interactive part: bash reads only this file in a login shell, never ~/.bashrc on its own.
 export XDG_CONFIG_HOME="$HOME/.config"
