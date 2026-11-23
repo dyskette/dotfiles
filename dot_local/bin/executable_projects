@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Print every git repository or worktree under the project roots, one path per line.
+# Print every git repository or worktree under the project roots, as tv's sesh channel lists them.
 #   PROJECT_ROOTS  colon-separated roots; keep the default in sync with sesh.toml and mise
 #   PROJECT_DEPTH  how deep to look for .git (default 3: <root>/<org>/<repo>/.git)
 set -euo pipefail
@@ -15,4 +15,4 @@ done
 
 # .git is a directory in a clone and a file in a worktree.
 fd --hidden --no-ignore --type d --type f --max-depth "$depth" --prune \
-  --format '{//}' '^\.git$' "${existing[@]}" | sort -u
+  --format '{//}' '^\.git$' "${existing[@]}" | sort -u | sed "s|^$HOME|~|; s|^| |"

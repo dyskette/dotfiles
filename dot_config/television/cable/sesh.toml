@@ -7,7 +7,7 @@ requirements = ["sesh", "projects"]
 [source]
 command = [
   { name = "All",      run = "sesh list --icons" },
-  { name = "Projects", run = "projects | sed \"s|^$HOME|~|; s|^| |\"" },
+  { name = "Projects", run = "projects" },
   { name = "Tmux",     run = "sesh list -t --icons" },
   { name = "Zoxide",   run = "sesh list -z --icons" },
 ]
@@ -17,12 +17,12 @@ frecency = false
 output = "{strip_ansi|split: :1..|join: }"
 
 [preview]
-command = "sesh preview '{strip_ansi|split: :1..|join: }'"
+command = "sesh preview \"{strip_ansi|split: :1..|join: }\""
 
 [keybindings]
 ctrl-d = ["actions:kill_session", "reload_source"]
 
 [actions.kill_session]
 description = "Kill the highlighted tmux session"
-command = "tmux kill-session -t '{strip_ansi|split: :1..|join: }'"
+command = "tmux kill-session -t \"{strip_ansi|split: :1..|join: }\""
 mode = "fork"
