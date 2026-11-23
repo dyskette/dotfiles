@@ -40,7 +40,7 @@ podman run -d --init --name "$C" -p 127.0.0.1:$PORT:22 -v "$REPO":/src:ro,Z dotf
 podman exec -u tester -w /home/tester "$C" bash -c '
   mkdir -p ~/.local/share ~/.config/chezmoi
   cp -a /src ~/.local/share/chezmoi
-  printf "[data]\n  name = \"Test User\"\n  email = \"test@example.com\"\n  work = false\n" \
+  printf "[data]\n  name = \"Test User\"\n  email = \"test@example.com\"\n" \
     > ~/.config/chezmoi/chezmoi.toml'
 podman exec -u tester -w /home/tester "$C" ~/.local/share/chezmoi/install.sh \
   </dev/null >"$T/$D.log" 2>&1; echo "exit=$?" >>"$T/$D.log"

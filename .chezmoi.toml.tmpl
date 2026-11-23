@@ -1,7 +1,6 @@
 {{- /* Machine data, asked once on `chezmoi init` and cached in ~/.config/chezmoi/chezmoi.toml. */ -}}
 {{- $name  := promptStringOnce . "name"  "Git author name" -}}
 {{- $email := promptStringOnce . "email" "Git author email" -}}
-{{- $work  := promptBoolOnce   . "work"  "Is this a work machine" -}}
 
 # Remember where the source lives, so later `chezmoi apply` works from any clone path.
 sourceDir = {{ .chezmoi.sourceDir | quote }}
@@ -9,7 +8,6 @@ sourceDir = {{ .chezmoi.sourceDir | quote }}
 [data]
     name  = {{ $name | quote }}
     email = {{ $email | quote }}
-    work  = {{ $work }}
     wsl   = {{ and (eq .chezmoi.os "linux") (.chezmoi.kernel.osrelease | lower | contains "microsoft") }}
 {{- if eq .chezmoi.os "windows" }}
 
