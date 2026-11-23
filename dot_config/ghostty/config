@@ -1,18 +1,11 @@
-# Ghostty 1.4 — leave TERM alone (xterm-ghostty); tmux sets pane TERM.
-# Theme names come from `ghostty +list-themes`.
 theme = light:Flexoki Light,dark:Flexoki Dark
 font-family = "JetBrainsMono Nerd Font"
 font-size = 12
 
-# Auto-injected into the bash Ghostty starts; ~/.bashrc also sources it, for the shells inside tmux,
-# which read these features from the environment.
 shell-integration = detect
-# ssh-terminfo installs Ghostty's terminfo on remote hosts; ssh-env falls back to xterm-256color.
 shell-integration-features = cursor,sudo,title,ssh-env,ssh-terminfo
 
-# OSC 52: allow writes (nvim/tmux/ssh yanks), prompt on reads.
 clipboard-write = allow
 clipboard-read = ask
-# Linux default (primary selection) is kept for copy-on-select.
 
 window-decoration = auto

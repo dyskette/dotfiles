@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
-# tm [DIR] — open DIR's tmux session through sesh (creating it with the sesh.toml layout),
-# or pick one with television's sesh channel (~/.config/television/cable/sesh.toml; also tmux
-# prefix+s): tmux sessions, sesh.toml sessions, zoxide and the repos under the project roots
-# (C-s cycles them). Switches inside tmux, attaches outside.
+# tm [DIR]: open DIR's sesh session, or pick one with tv's sesh channel.
 set -euo pipefail
 if (($#)); then
   exec sesh connect "$(realpath -- "$1")"

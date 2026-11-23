@@ -1,7 +1,4 @@
-# Sessions for tmux prefix+s and `tm` (~/.local/bin/tm connects to what this prints).
-# Based on tv's community sesh channel, plus a Projects source: the git repos under the project
-# roots (~/.local/bin/projects), shown with sesh's zoxide folder icon. C-s cycles the sources,
-# C-d kills the highlighted tmux session.
+# tv's community sesh channel plus a Projects source (~/.local/bin/projects).
 [metadata]
 name = "sesh"
 description = "tmux sessions, sesh.toml sessions, zoxide and project repos"

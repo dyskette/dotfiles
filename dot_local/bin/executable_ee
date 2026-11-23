@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
-# ee [PATH] — open PATH (default: the current folder) in the desktop file manager.
-# WSL: Windows File Explorer (as \\wsl.localhost\<distro>\..., so drag and drop works).
-# Linux: Nautilus, or whatever xdg-open picks when Nautilus is not installed.
+# ee [PATH]: open PATH (default: .) in the desktop file manager.
 set -euo pipefail
 target="${1:-.}"
 

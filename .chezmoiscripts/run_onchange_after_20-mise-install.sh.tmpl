@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-# Installs every runtime and CLI pinned in ~/.config/mise/config.toml.
-# Re-runs when that file changes. hash: {{ include "dot_config/mise/config.toml" | sha256sum }}
+# hash: {{ include "dot_config/mise/config.toml" | sha256sum }}
 set -euo pipefail
 export PATH="$HOME/.local/bin:$HOME/.local/share/mise/shims:$PATH"
 

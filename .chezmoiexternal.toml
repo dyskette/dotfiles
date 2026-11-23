@@ -1,8 +1,6 @@
-# Third-party files fetched by chezmoi. Pinned to commits so an upstream change can't
-# silently alter what lands in $HOME; bump the SHA to update.
+# Pinned to commits; bump the SHA to update.
 
-# Flexoki TextMate themes for bat (and delta, which reads bat's cache). They ship inside the
-# Yazi flavor repos by @gosxrgxx (MIT, © Steph Ango) and follow the Flexoki syntax mapping.
+# Flexoki themes for bat and delta (MIT, © Steph Ango).
 [".config/bat/themes/Flexoki Light.tmTheme"]
     type = "file"
     url = "https://raw.githubusercontent.com/gosxrgxx/flexoki-light.yazi/55e3fc596bd24d5f7c725ac45323be16ca1aa471/tmtheme.xml"
@@ -11,13 +9,11 @@
     type = "file"
     url = "https://raw.githubusercontent.com/gosxrgxx/flexoki-dark.yazi/649e569d9e78f7573703a04135c6c62942b98a34/tmtheme.xml"
 
-# lf's Nerd Font icons (lf's built-in defaults are plain letters). Pinned to tag r42.
 [".config/lf/icons"]
     type = "file"
     url = "https://raw.githubusercontent.com/gokcehan/lf/5b6c393d547970a264bd4f0a78fd6513227f8e10/etc/icons.example"
 
-# bash completions for tools without a generator (the rest come from
-# .chezmoiscripts/run_onchange_after_26-bash-completions). Pinned like the themes.
+# bash completions for tools without a generator.
 [".local/share/bash-completion/completions/eza"]
     type = "file"
     url = "https://raw.githubusercontent.com/eza-community/eza/98442ab17c2c3738701b62a7e060b1431ae2d6ea/completions/bash/eza"  # v0.23.5

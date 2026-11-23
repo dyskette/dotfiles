@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# Make bash the login shell once (tmux panes start it too, as login shells).
 set -euo pipefail
 bash_path="$(command -v bash)"
 # $USER is unset without a login session (containers, cron, systemd units); fall back to id.

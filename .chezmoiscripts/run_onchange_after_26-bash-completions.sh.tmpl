@@ -1,15 +1,7 @@
 #!/usr/bin/env bash
-# bash completions for the mise-managed CLIs, one file per command in
-# ~/.local/share/bash-completion/completions, where bash-completion (OS package, loaded from
-# ~/.bashrc) finds them the first time you press Tab after that command. Generated once here
-# instead of `eval "$(tool completion bash)"` at every shell start (~20 processes per shell).
-# mise does not ship completions for aqua/github-backend tools, so each tool generates its own.
-# Not covered here: git, tmux, jq (bash-completion or the package itself), eza and lf
-# (.chezmoiexternal.toml), zoxide (registered by `zoxide init`), tv (`tv init bash`);
-# lazygit, difftastic, gotestsum, claude and copilot have no completion generator.
-#
-# Re-runs when the mise config changes. With "latest" pins `mise up` does not change it;
-# then refresh with: chezmoi state delete-bucket --bucket=scriptState && chezmoi apply
+# bash completions for the mise-managed CLIs, generated once instead of at every shell start.
+# `mise up` doesn't change the hash; refresh with:
+#   chezmoi state delete-bucket --bucket=scriptState && chezmoi apply
 # hash: {{ include "dot_config/mise/config.toml" | sha256sum }}
 set -euo pipefail
 export PATH="$HOME/.local/bin:$HOME/.local/share/mise/shims:$PATH"
@@ -17,9 +9,7 @@ export PATH="$HOME/.local/bin:$HOME/.local/share/mise/shims:$PATH"
 dir="${XDG_DATA_HOME:-$HOME/.local/share}/bash-completion/completions"
 mkdir -p "$dir"
 
-# gen NAME CMD...: NAME is the command being completed. Keep the output only if it looks like
-# a bash completion (registers one, or sources one, like cargo's), so a tool that misreads
-# the arguments can't leave a broken file behind.
+# gen NAME CMD...: keep the output only if it looks like a completion (cargo's sources one).
 gen() {
   local out="$dir/$1"
   shift

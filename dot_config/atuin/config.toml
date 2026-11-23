@@ -1,4 +1,3 @@
-# Local-only history by default; enable sync explicitly with `atuin login` if desired.
 auto_sync = false
 update_check = false
 search_mode = "fuzzy"

@@ -1,7 +1,4 @@
-# ripgrep defaults (RIPGREP_CONFIG_PATH, set in ~/.bash_profile), matching what snacks.nvim's
-# grep picker passes (picker/source/grep.lua), so `rg` in the shell finds what
-# <leader>sg finds. Hidden and ignored files stay out by default, as in snacks;
-# `--hidden` / `--no-ignore` (or -u/-uu) bring them in. `rg --no-config` skips this file.
+# Matches snacks.nvim's grep defaults, so `rg` finds what <leader>sg finds.
 --smart-case
 --max-columns=500
 --max-columns-preview

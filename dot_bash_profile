@@ -1,9 +1,7 @@
-# ~/.bash_profile — login shells (desktop session, tmux panes, ssh).
-# The environment every program started from here inherits, then ~/.bashrc for the
-# interactive part: bash reads only this file in a login shell, never ~/.bashrc on its own.
+# Login shells read only this file, so it sources ~/.bashrc at the end.
 export XDG_CONFIG_HOME="$HOME/.config"
 
-# Prepend once: tmux panes are login shells too, and would otherwise add them again.
+# Once: tmux panes are login shells too.
 for dir in "$HOME/.dotnet/tools" "$HOME/.local/bin"; do
   case ":$PATH:" in *":$dir:"*) ;; *) PATH="$dir:$PATH" ;; esac
 done
@@ -11,10 +9,9 @@ unset dir
 export PATH
 
 export EDITOR=nvim VISUAL=nvim
-export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/ripgrep/config" # snacks grep defaults
+export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/ripgrep/config"
 
-# mise shims, so GUI-launched tools and scripts find mise's binaries. Interactive shells
-# switch to PATH mode in ~/.bashrc; mise then keeps the shims behind the real bins.
+# Shims for GUI apps and scripts; interactive shells switch to PATH mode in ~/.bashrc.
 if [ -x "$HOME/.local/bin/mise" ]; then
   eval "$("$HOME/.local/bin/mise" activate bash --shims)"
 fi

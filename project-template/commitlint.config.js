@@ -1,7 +1,4 @@
-/**
- * commitlint config restricted to the organization's Conventional Commit types.
- * @type {import('@commitlint/types').UserConfig}
- */
+/** @type {import('@commitlint/types').UserConfig} */
 module.exports = {
   extends: ["@commitlint/config-conventional"],
   rules: {

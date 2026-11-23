@@ -1,14 +1,7 @@
 #!/usr/bin/env bash
-# projects — print every git repository (or worktree) under the project roots, one
-# absolute path per line. Feeds the Projects source of the session picker
-# (~/.config/television/cable/sesh.toml). sesh has no directory lister of its own:
-# its [[wildcard]] blocks only configure a session, they never list.
-#
-#   PROJECT_ROOTS   colon-separated roots (default below; missing roots are skipped)
-#   PROJECT_DEPTH   how deep to look for a .git entry (default 3: <root>/<org>/<repo>/.git)
-#
-# Keep the default roots in sync with dot_config/sesh/sesh.toml and mise's
-# trusted_config_paths.
+# Print every git repository or worktree under the project roots, one path per line.
+#   PROJECT_ROOTS  colon-separated roots; keep the default in sync with sesh.toml and mise
+#   PROJECT_DEPTH  how deep to look for .git (default 3: <root>/<org>/<repo>/.git)
 set -euo pipefail
 
 IFS=: read -r -a roots <<<"${PROJECT_ROOTS:-$HOME/Proyectos:$HOME/Projects:$HOME/source/repos:/c/s}"
@@ -20,7 +13,6 @@ for r in "${roots[@]}"; do
 done
 ((${#existing[@]})) || exit 0
 
-# .git is a directory in a clone and a file in a worktree. --prune stops descending
-# into a repo once found; {//} is the parent directory, i.e. the repository itself.
+# .git is a directory in a clone and a file in a worktree.
 fd --hidden --no-ignore --type d --type f --max-depth "$depth" --prune \
   --format '{//}' '^\.git$' "${existing[@]}" | sort -u

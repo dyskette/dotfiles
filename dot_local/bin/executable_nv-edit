@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-# nv-edit FILE [LINE] — open FILE in this tmux session's Neovim (started by `nv`);
-# fall back to a new nvim when the session has none.
+# nv-edit FILE [LINE]: open FILE in this tmux session's Neovim (`nv`), else a new nvim.
 set -u
 file="${1:?usage: nv-edit FILE [LINE]}"
 line="${2:-}"
@@ -9,7 +8,6 @@ sock="${XDG_RUNTIME_DIR:-/tmp}/nvim-tmux-${id:-none}.sock"
 if [ -S "$sock" ] && nvim --server "$sock" --remote-expr 1 >/dev/null 2>&1; then
   nvim --server "$sock" --remote "$(realpath "$file")"
   [ -n "$line" ] && nvim --server "$sock" --remote-send "<C-\\><C-n>:${line}<CR>"
-  # Jump to the window running that Neovim (window 1 by sesh convention).
   tmux select-window -t "$(tmux display -p '#S'):1" 2>/dev/null || true
 else
   exec nvim ${line:+"+$line"} "$file"

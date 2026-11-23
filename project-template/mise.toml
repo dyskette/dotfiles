@@ -1,6 +1,5 @@
-# Per-repo mise config (polyglot example). Copy to the repo root, then:
+# Copy to the repo root, drop what it doesn't use, then:
 #   mise trust && mise install && mise run hooks:install
-# Remove the languages/tasks this repo does not use.
 
 [tools]
 node = "24"
@@ -17,7 +16,7 @@ lefthook = "latest"
 [env]
 _.python.venv = { path = ".venv", create = true }
 DOTNET_CLI_TELEMETRY_OPTOUT = "1"
-# Secrets: never here. Use mise.local.toml (gitignored) populated from your vault/secret manager.
+# Secrets: never here; mise.local.toml (gitignored), filled from your vault.
 
 [tasks."test:cs"]
 run = "dotnet test"

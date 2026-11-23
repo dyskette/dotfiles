@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
-# .NET editor tooling is owned by `dotnet tool` (that is how easy-dotnet.nvim expects it).
-# mise sets DOTNET_ROOT for the selected SDK, so the global tools find the runtime.
-# Re-runs when the mise config changes. hash: {{ include "dot_config/mise/config.toml" | sha256sum }}
+# .NET editor tools, as easy-dotnet.nvim expects them. hash: {{ include "dot_config/mise/config.toml" | sha256sum }}
 set -euo pipefail
 export PATH="$HOME/.local/bin:$HOME/.local/share/mise/shims:$HOME/.dotnet/tools:$PATH"
 
@@ -15,5 +13,4 @@ ensure_tool() {
 }
 
 ensure_tool EasyDotnet
-# easy-dotnet installs this on demand too; installing up front avoids a first-open delay.
 ensure_tool roslyn-language-server --prerelease

@@ -1,5 +1,4 @@
--- Mason owns editor-only servers/adapters. Append its bin dir to PATH so binaries
--- pinned by a repo's mise.toml (e.g. ruff, golangci-lint) always win inside Neovim.
+-- Mason's bin dir goes last, so binaries a repo pins in mise.toml win.
 ---@type LazySpec
 return {
   "mason-org/mason.nvim",
