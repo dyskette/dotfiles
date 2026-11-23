@@ -4,7 +4,7 @@ theme = light:Flexoki Light,dark:Flexoki Dark
 font-family = "JetBrainsMono Nerd Font"
 font-size = 12
 
-# Auto-injection can't see zsh behind `env zsh -lc` (see `command` below), so ~/.zshrc sources
+# Auto-injection can't see bash behind `env bash -lc` (see `command` below), so ~/.bashrc sources
 # the integration itself; Ghostty still exports these features for it to read.
 shell-integration = detect
 # ssh-terminfo installs Ghostty's terminfo on remote hosts; ssh-env falls back to xterm-256color.
@@ -17,6 +17,6 @@ clipboard-read = ask
 
 window-decoration = auto
 
-# Always land in the "main" tmux session. Login shell so ~/.zprofile puts mise shims on PATH
+# Always land in the "main" tmux session. Login shell so ~/.bash_profile puts mise shims on PATH
 # for the tmux server (sesh, tv and lazygit bindings run from it).
-command = /usr/bin/env zsh -lc "tmux new-session -A -s main"
+command = /usr/bin/env bash -lc "tmux new-session -A -s main"

@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
-# Make zsh the login shell once.
+# Make bash the login shell once (tmux panes start it too, as login shells).
 set -euo pipefail
-zsh_path="$(command -v zsh || true)"
-[ -n "$zsh_path" ] || { echo "zsh not installed yet (Atomic: reboot first)"; exit 0; }
+bash_path="$(command -v bash)"
 # $USER is unset without a login session (containers, cron, systemd units); fall back to id.
 user="${USER:-$(id -un)}"
 current="$(getent passwd "$user" | cut -d: -f7)"
-if [ "$current" != "$zsh_path" ]; then
-  grep -qx "$zsh_path" /etc/shells || echo "$zsh_path" | sudo tee -a /etc/shells >/dev/null
-  sudo usermod --shell "$zsh_path" "$user"
-  echo "Login shell set to $zsh_path (takes effect at next login)."
+if [ "$current" != "$bash_path" ]; then
+  grep -qx "$bash_path" /etc/shells || echo "$bash_path" | sudo tee -a /etc/shells >/dev/null
+  sudo usermod --shell "$bash_path" "$user"
+  echo "Login shell set to $bash_path (takes effect at next login)."
 fi
