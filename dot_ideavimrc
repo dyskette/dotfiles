@@ -1,92 +1,184 @@
-set relativenumber
-set number
-set incsearch
-set ideajoin
-set hls
-set scrolloff=5
-
+" IdeaVim (JetBrains IDEs) with LazyVim's options and keys. Action IDs: `:actionlist`, or
+" `:set ideatrackactionids` to see the ID of whatever you run.
 let mapleader = " "
+let maplocalleader = "\\"
+let g:is_rider = &ide =~? 'rider'
 
+" --- Options (LazyVim's) ---
+set number relativenumber
+set scrolloff=4 sidescrolloff=8
+set ignorecase smartcase incsearch hlsearch
+set nowrap shiftround
+set clipboard+=unnamedplus,ideaput
+set ideajoin
+set idearefactormode=keep
+set ideastatusicon=gray
+set notimeout                     " which-key waits for the next key
+
+" --- Plugins bundled with IdeaVim ---
+set which-key                     " needs the Which-Key plugin from the Marketplace
+set commentary                    " gc, gcc
+set surround                      " ys, cs, ds
+set highlightedyank
+set mini-ai                       " a/i + q (quotes), b (brackets)
+set textobj-entire                " ag/ig: whole buffer, as mini.ai's g
+xmap ag <Plug>textobj-entire-a
+omap ag <Plug>textobj-entire-a
+xmap ig <Plug>textobj-entire-i
+omap ig <Plug>textobj-entire-i
+set matchit
+Plug 'justinmk/vim-sneak'         " s/S + two characters: the nearest thing to flash's s
+set NERDTree                      " <leader>e, with snacks explorer's keys
+let g:NERDTreeMapActivateNode = "l"
+let g:NERDTreeMapCloseDir = "h"
+let g:NERDTreeMapNewFile = "a"
+let g:NERDTreeMapNewDir = "A"
+
+" which-key group names
+let g:WhichKeyDesc_b = "<leader>b +buffer"
+let g:WhichKeyDesc_c = "<leader>c +code"
+let g:WhichKeyDesc_d = "<leader>d +debug"
+let g:WhichKeyDesc_f = "<leader>f +file/find"
+let g:WhichKeyDesc_g = "<leader>g +git"
+let g:WhichKeyDesc_q = "<leader>q +quit"
+let g:WhichKeyDesc_s = "<leader>s +search"
+let g:WhichKeyDesc_t = "<leader>t +test"
+let g:WhichKeyDesc_u = "<leader>u +ui"
+let g:WhichKeyDesc_w = "<leader>w +windows"
+let g:WhichKeyDesc_x = "<leader>x +diagnostics"
+
+" --- Editing ---
+nnoremap <Esc> :nohlsearch<CR><Esc>
 nnoremap · ^
 vnoremap · ^
-
-" Clipboard
-nnoremap <leader>y "+y
-vnoremap <leader>y "+y
-nnoremap <leader>p "+p
-vnoremap <leader>p "+p
-
-" Completion
+vnoremap < <gv
+vnoremap > >gv
+vmap <A-j> <Action>(MoveLineDown)
+vmap <A-k> <Action>(MoveLineUp)
+imap <A-j> <Esc><Action>(MoveLineDown)i
+imap <A-k> <Esc><Action>(MoveLineUp)i
 imap <C-y> <Action>(EditorChooseLookupItem)
 imap <C-n> <Action>(EditorDown)
 imap <C-p> <Action>(EditorUp)
-
-" Select
-nnoremap <leader>a ggVG
-
-" Indent while remaining in visual mode
-vnoremap < <gv
-vnoremap > >gv
-
-" built-in navigation to navigated items works better
 nmap <C-o> <Action>(Back)
 nmap <C-i> <Action>(Forward)
 
-" Git
-nmap <leader>gb <Action>(Annotate)
-
-" Show information
-nmap <leader>vd <Action>(ShowErrorDescription)
-
-" Move lines
-vmap J <Action>(MoveLineDown)
-vmap K <Action>(MoveLineUp)
-
-" Refactoring
-map <leader>va <Action>(ShowIntentionActions)
-map <leader>rn <Action>(RenameElement)
-map <leader>rm <Action>(ExtractMethod)
-map <leader>rr <Action>(Refactorings.QuickListPopupAction)
-
-" File navigation
-nmap <leader>sw viw<Action>(FindInPath)
-vmap <leader>sw <Action>(FindInPath)
-map <leader>ss <Action>(SearchEverywhere)
-map <leader>sf <Action>(GotoFile)
-map <leader>sr <Action>(RecentFiles)
+" --- Find / search ---
+nmap <leader><space> <Action>(GotoFile)
+nmap <leader>ff <Action>(GotoFile)
+nmap <leader>fr <Action>(RecentFiles)
+nmap <leader>, <Action>(Switcher)
+nmap <leader>fb <Action>(Switcher)
+nmap <leader>/ <Action>(FindInPath)
 nmap <leader>sg <Action>(FindInPath)
-map <leader>so <Action>(GotoSymbol)
-map <leader>sl <Action>(SelectInProjectView)
+nmap <leader>sw mzviw<Action>(FindInPath)
+vmap <leader>sw <Action>(FindInPath)
+nmap <leader>ss <Action>(FileStructurePopup)
+nmap <leader>sS <Action>(GotoSymbol)
+nmap <leader>sC <Action>(GotoAction)
+nmap <leader>sk :map<CR>
+nmap <leader>sj <Action>(RecentLocations)
+nmap <leader>e :NERDTreeToggle<CR>
+nmap <leader>E :NERDTreeFind<CR>
+nmap <leader>ft <Action>(ActivateTerminalToolWindow)
+nmap <C-/> <Action>(ActivateTerminalToolWindow)
 
-" Find navigation
-nmap <leader>tj <Action>(NextOccurence)
-nmap <leader>tk <Action>(PreviousOccurence)
-
-" Go to code
+" --- Code (LSP) ---
 nmap gd <Action>(GotoDeclaration)
-nmap go <Action>(GotoTypeDeclaration)
-nmap gi <Action>(GotoImplementation)
-nmap gr <Action>(ShowUsages)
+nmap gD <Action>(GotoDeclaration)
+nmap gr <Action>(FindUsages)
+nmap gI <Action>(GotoImplementation)
+nmap gy <Action>(GotoTypeDeclaration)
+nmap gK <Action>(ParameterInfo)
+imap <C-k> <C-o><Action>(ParameterInfo)
+nmap <leader>ca <Action>(ShowIntentionActions)
+vmap <leader>ca <Action>(ShowIntentionActions)
+nmap <leader>cA <Action>(RefactoringMenu)
+vmap <leader>cA <Action>(RefactoringMenu)
+nmap <leader>cr <Action>(RenameElement)
+nmap <leader>cf <Action>(ReformatCode)
+vmap <leader>cf <Action>(ReformatCode)
+nmap <leader>cs <Action>(FileStructurePopup)
+nmap <leader>cd <Action>(ShowErrorDescription)
+nmap ]] <Action>(GotoNextElementUnderCaretUsage)
+nmap [[ <Action>(GotoPrevElementUnderCaretUsage)
+if g:is_rider
+  nmap <leader>cR <Action>(RiderRenameFile)
+else
+  nmap <leader>cR <Action>(RenameFile)
+endif
 
-" Diagnostic navigation
-nmap <leader>dj <Action>(ReSharperGotoNextErrorInSolution)
-nmap <leader>dk <Action>(ReSharperGotoPrevErrorInSolution)
+" --- Diagnostics ---
+nmap ]d <Action>(GotoNextError)
+nmap [d <Action>(GotoPreviousError)
+nmap ]e <Action>(GotoNextError)
+nmap [e <Action>(GotoPreviousError)
+nmap <leader>xx <Action>(ActivateProblemsViewToolWindow)
+nmap <leader>sd <Action>(ActivateProblemsViewToolWindow)
 
-" Unit tests
-nmap <leader>tt <Action>(RiderUnitTestRunSolutionAction)
-nmap <leader>tr <Action>(RiderUnitTestRunContextAction)
-nmap <leader>td <Action>(RiderUnitTestDebugContextAction)
+" --- Git ---
+nmap <leader>gg <Action>(Lazygit.Toggle)
+nmap <leader>gs <Action>(ActivateCommitToolWindow)
+nmap <leader>gb <Action>(Annotate)
+nmap <leader>gl <Action>(Vcs.ShowTabbedFileHistory)
+nmap ]h <Action>(VcsShowNextChangeMarker)
+nmap [h <Action>(VcsShowPrevChangeMarker)
+nmap <leader>ghp <Action>(VcsShowCurrentChangeMarker)
+nmap <leader>ghr <Action>(Vcs.RollbackChangedLines)
 
-" Debug
-nmap <leader>dd <Action>(ActivateDebugToolWindow)
+" --- Buffers and windows ---
+nmap <S-h> <Action>(PreviousTab)
+nmap <S-l> <Action>(NextTab)
+nmap [b <Action>(PreviousTab)
+nmap ]b <Action>(NextTab)
+nmap <leader>bd <Action>(CloseContent)
+nmap <leader>bo <Action>(CloseAllEditorsButActive)
+nmap <leader>- <C-w>s
+nmap <leader><bar> <C-w>v
+nmap <leader>wd <Action>(CloseContent)
+nmap <leader>wm <Action>(HideAllWindows)
+" Ctrl-h/j/k/l (LazyVim) and Alt-h/j/k/l (as across Neovim and tmux) move between splits.
+nmap <C-h> <C-w>h
+nmap <C-j> <C-w>j
+nmap <C-k> <C-w>k
+nmap <C-l> <C-w>l
+nmap <A-h> <C-w>h
+nmap <A-j> <C-w>j
+nmap <A-k> <C-w>k
+nmap <A-l> <C-w>l
 
-" Hide all windows
-nmap <leader><leader> <Action>(HideAllWindows)
+" --- Debug (dap.core) ---
+nmap <leader>db <Action>(ToggleLineBreakpoint)
+nmap <leader>dB <Action>(AddConditionalBreakpoint)
+nmap <leader>dc <Action>(Resume)
+nmap <leader>dC <Action>(ForceRunToCursor)
+nmap <leader>di <Action>(StepInto)
+nmap <leader>dO <Action>(StepOver)
+nmap <leader>do <Action>(StepOut)
+nmap <leader>dP <Action>(Pause)
+nmap <leader>dt <Action>(Stop)
+nmap <leader>du <Action>(ActivateDebugToolWindow)
+nmap <leader>de <Action>(EvaluateExpression)
+vmap <leader>de <Action>(EvaluateExpression)
 
-" Plugins
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-commentary'
-Plug 'preservim/nerdtree'
-Plug 'machakann/vim-highlightedyank'
+" --- Tests (test.core) ---
+if g:is_rider
+  nmap <leader>tr <Action>(RiderUnitTestRunContextAction)
+  nmap <leader>tt <Action>(RiderUnitTestRunContextAction)
+  nmap <leader>tT <Action>(RiderUnitTestRunSolutionAction)
+  nmap <leader>td <Action>(RiderUnitTestDebugContextAction)
+  nmap <leader>tl <Action>(RiderUnitTestRunCurrentSessionAction)
+  nmap <leader>ts <Action>(ActivateUnitTestsToolWindow)
+else
+  nmap <leader>tr <Action>(RunClass)
+  nmap <leader>tt <Action>(RunClass)
+  nmap <leader>td <Action>(ChooseDebugConfiguration)
+  nmap <leader>tl <Action>(Run)
+  nmap <leader>ts <Action>(ActivateRunToolWindow)
+endif
+nmap <leader>tS <Action>(Stop)
 
-map <leader>e :NERDTreeToggle<cr>
+" --- UI / quit ---
+nmap <leader>uw :setlocal wrap!<CR>
+nmap <leader>uz <Action>(ToggleDistractionFreeMode)
+nmap <leader>qq <Action>(Exit)
