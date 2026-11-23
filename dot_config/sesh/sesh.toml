@@ -3,6 +3,9 @@
 #   [[window]] uses `startup_script`; sessions/wildcards/worktrees use `startup_command`.
 sort_order = ["tmux", "config", "zoxide"]
 
+# The picker (tmux prefix+s, `tm`) is television's sesh channel:
+# ~/.config/television/cable/sesh.toml.
+
 [default_session]
 startup_command = "nv"                       # nv = nvim with a per-session RPC socket
 preview_command = "eza --all --git --icons --color=always {}"
@@ -16,22 +19,40 @@ startup_script = "mise run test:watch"
 name = "git"
 startup_script = "lazygit"
 
-# Every repo under ~/code gets editor + test watcher + lazygit
+# Every folder under a project root gets editor + test watcher + lazygit.
+# "/**" matches at any depth (sesh lister/config_wildcard.go), so ~/Proyectos/<org>/<repo> works.
+# Wildcards only configure sessions; ~/.local/bin/projects is what lists these roots in the picker.
+# Keep the roots in sync with that script and mise's trusted_config_paths.
 [[wildcard]]
-pattern = "~/code/*"
+pattern = "~/Proyectos/**"
+startup_command = "nv"
+windows = ["test", "git"]
+
+[[wildcard]]
+pattern = "~/Projects/**"
+startup_command = "nv"
+windows = ["test", "git"]
+
+[[wildcard]]
+pattern = "~/source/repos/**"
+startup_command = "nv"
+windows = ["test", "git"]
+
+[[wildcard]]
+pattern = "/c/s/**"
 startup_command = "nv"
 windows = ["test", "git"]
 
 # Example: a specific polyglot repo
 # [[session]]
 # name = "platform"
-# path = "~/code/platform"
+# path = "~/Proyectos/acme/platform"
 # startup_command = "nv"
 # windows = ["test", "git"]
 
 # Example: `sesh worktree connect 2345` creates/attaches the worktree for issue/PR 2345.
 # [[worktree]]
 # repo = "acme/platform"
-# path = "~/code/platform"
+# path = "~/Proyectos/acme/platform"
 # create_command = "mise trust && mise install && dotnet restore && nv"   # first connect only
 # startup_command = "nv"                                                   # later connects

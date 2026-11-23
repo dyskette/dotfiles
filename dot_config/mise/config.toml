@@ -49,5 +49,6 @@ DISABLE_AUTOUPDATER = "1"        # Claude Code: no background self-update
 COPILOT_AUTO_UPDATE = "false"    # Copilot CLI: no self-update, and no newer cached copy run instead
 
 [settings]
-# Auto-trust only your own code dir; everything else still needs `mise trust`.
-trusted_config_paths = ["~/code"]
+# Auto-trust only your project roots (same list as sesh.toml / ~/.local/bin/projects);
+# everything else still needs `mise trust`.
+trusted_config_paths = ["~/Proyectos", "~/Projects", "~/source/repos", "/c/s"]

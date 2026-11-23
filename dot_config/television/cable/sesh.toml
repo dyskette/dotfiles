@@ -1,0 +1,31 @@
+# Sessions for tmux prefix+s and `tm` (~/.local/bin/tm connects to what this prints).
+# Based on tv's community sesh channel, plus a Projects source: the git repos under the project
+# roots (~/.local/bin/projects), shown with sesh's zoxide folder icon. C-s cycles the sources,
+# C-d kills the highlighted tmux session.
+[metadata]
+name = "sesh"
+description = "tmux sessions, sesh.toml sessions, zoxide and project repos"
+requirements = ["sesh", "projects"]
+
+[source]
+command = [
+  { name = "All",      run = "sesh list --icons" },
+  { name = "Projects", run = "projects | sed \"s|^$HOME|~|; s|^| |\"" },
+  { name = "Tmux",     run = "sesh list -t --icons" },
+  { name = "Zoxide",   run = "sesh list -z --icons" },
+]
+ansi = true
+no_sort = true   # sesh orders them
+frecency = false
+output = "{strip_ansi|split: :1..|join: }"
+
+[preview]
+command = "sesh preview '{strip_ansi|split: :1..|join: }'"
+
+[keybindings]
+ctrl-d = ["actions:kill_session", "reload_source"]
+
+[actions.kill_session]
+description = "Kill the highlighted tmux session"
+command = "tmux kill-session -t '{strip_ansi|split: :1..|join: }'"
+mode = "fork"
