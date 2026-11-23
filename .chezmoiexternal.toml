@@ -25,3 +25,13 @@
 [".local/share/zsh/site-functions/_lf"]
     type = "file"
     url = "https://raw.githubusercontent.com/gokcehan/lf/5b6c393d547970a264bd4f0a78fd6513227f8e10/etc/lf.zsh"  # r42
+
+# bash completions for the same two (the rest come from
+# .chezmoiscripts/run_onchange_after_26-bash-completions).
+[".local/share/bash-completion/completions/eza"]
+    type = "file"
+    url = "https://raw.githubusercontent.com/eza-community/eza/98442ab17c2c3738701b62a7e060b1431ae2d6ea/completions/bash/eza"  # v0.23.5
+
+[".local/share/bash-completion/completions/lf"]
+    type = "file"
+    url = "https://raw.githubusercontent.com/gokcehan/lf/5b6c393d547970a264bd4f0a78fd6513227f8e10/etc/lf.bash"  # r42

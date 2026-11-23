@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+# bash completions for the mise-managed CLIs, one file per command in
+# ~/.local/share/bash-completion/completions, where bash-completion (OS package, loaded from
+# ~/.bashrc) finds them the first time you press Tab after that command. Generated once here
+# instead of `eval "$(tool completion bash)"` at every shell start (~20 processes per shell).
+# mise does not ship completions for aqua/github-backend tools, so each tool generates its own.
+# Not covered here: git, tmux, jq (bash-completion or the package itself), eza and lf
+# (.chezmoiexternal.toml), zoxide (registered by `zoxide init`), tv (`tv init bash`);
+# lazygit, difftastic, gotestsum, claude and copilot have no completion generator.
+#
+# Re-runs when the mise config changes. With "latest" pins `mise up` does not change it;
+# then refresh with: chezmoi state delete-bucket --bucket=scriptState && chezmoi apply
+# hash: {{ include "dot_config/mise/config.toml" | sha256sum }}
+set -euo pipefail
+export PATH="$HOME/.local/bin:$HOME/.local/share/mise/shims:$PATH"
+
+dir="${XDG_DATA_HOME:-$HOME/.local/share}/bash-completion/completions"
+mkdir -p "$dir"
+
+# gen NAME CMD...: NAME is the command being completed. Keep the output only if it looks like
+# a bash completion (registers one, or sources one, like cargo's), so a tool that misreads
+# the arguments can't leave a broken file behind.
+gen() {
+  local out="$dir/$1"
+  shift
+  command -v "$1" >/dev/null || return 0
+  if "$@" >"$out.tmp" 2>/dev/null </dev/null && grep -qE 'complete|bash_completion' "$out.tmp"; then
+    mv -f "$out.tmp" "$out"
+  else
+    rm -f "$out.tmp"
+    printf 'bash-completions: skipped %s\n' "$1" >&2
+  fi
+}
+
+gen mise        mise completion bash
+gen chezmoi     chezmoi completion bash
+gen gh          gh completion -s bash
+gen rg          rg --generate complete-bash
+gen fd          fd --gen-completions bash
+gen bat         bat --completion bash
+gen delta       delta --generate-completion bash
+gen ast-grep    ast-grep completions bash
+gen atuin       atuin gen-completions --shell bash
+gen starship    starship completions bash
+gen lefthook    lefthook completion bash
+gen sesh        sesh completion bash
+gen yq          yq shell-completion bash
+gen uv          uv generate-shell-completion bash
+gen uvx         uvx --generate-shell-completion bash
+gen poetry      poetry completions bash
+gen tree-sitter tree-sitter complete --shell bash
+gen dotnet      dotnet completions script bash
+gen rustup      mise exec rust -- rustup completions bash rustup
+gen cargo       mise exec rust -- rustup completions bash cargo
