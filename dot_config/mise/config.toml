@@ -11,6 +11,7 @@ tree-sitter = "latest"       # nvim-treesitter (main branch) compiles parsers wi
 node = "lts"                 # also runs Mason's node-based servers (vtsls, js-debug)
 python = "3.13"
 uv = "latest"
+poetry = "latest"           # vfox backend; needs the python above
 go = "latest"
 dotnet = "10"                # LTS; sets DOTNET_ROOT for global dotnet tools
 rust = "stable"              # per-repo rust-toolchain.toml still wins via rustup
@@ -23,6 +24,8 @@ ripgrep = "latest"
 fd = "latest"
 fzf = "latest"
 bat = "latest"
+jq = "latest"
+yq = "latest"                # mikefarah/yq (Go), not the python jq wrapper
 eza = "latest"
 zoxide = "latest"
 delta = "latest"
@@ -35,6 +38,15 @@ starship = "latest"
 lefthook = "latest"
 gotestsum = "latest"         # neotest-golang runner; repos may pin their own
 "github:joshmedeski/sesh" = "latest"   # not in the mise registry
+
+# AI coding CLIs. mise owns the binaries (ADR 0001), so their self-updaters are off in [env];
+# update with `mise up`. Pin exact versions on work machines.
+claude = "latest"            # Claude Code (registry alias claude-code)
+copilot = "latest"           # GitHub Copilot CLI, standalone binary (not the retired `gh copilot` extension)
+
+[env]
+DISABLE_AUTOUPDATER = "1"        # Claude Code: no background self-update
+COPILOT_AUTO_UPDATE = "false"    # Copilot CLI: no self-update, and no newer cached copy run instead
 
 [settings]
 # Auto-trust only your own code dir; everything else still needs `mise trust`.
