@@ -1,0 +1,33 @@
+# Visual Studio 2026 extensions from .chezmoidata/visualstudio.toml. Numbered last: when Visual Studio
+# is open it fails, and that shouldn't stop the scripts after it.
+$urls = '{{ .visualstudio.extensions | join "', '" }}'
+$vs = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -products Microsoft.VisualStudio.Product.Enterprise -version '[18.0,19.0)' -format json |
+  ConvertFrom-Json | Select-Object -First 1
+if (-not $vs) { throw 'Visual Studio 2026 Enterprise is not installed.' }
+
+# Extension Id -> installed version, per user and for all users.
+$installed = @{}
+Get-ChildItem "$env:LOCALAPPDATA\Microsoft\VisualStudio\18.0_$($vs.instanceId)\Extensions", "$($vs.installationPath)\Common7\IDE\Extensions" `
+  -Filter extension.vsixmanifest -Recurse -Depth 1 -ErrorAction Ignore | ForEach-Object {
+    $i = ([xml](Get-Content $_.FullName -Raw)).PackageManifest.Metadata.Identity
+    if ($i) { $installed[$i.Id] = $i.Version }
+  }
+
+Add-Type -AssemblyName System.IO.Compression.FileSystem
+$dir = New-Item -ItemType Directory (Join-Path $env:TEMP "dotfiles-vsix-$PID") -Force
+try {
+  foreach ($url in $urls) {
+    $vsix = Join-Path $dir "$([guid]::NewGuid()).vsix"
+    Invoke-WebRequest $url -OutFile $vsix -MaximumRetryCount 3 -RetryIntervalSec 2
+    # The identity inside the package, not the URL, is what Visual Studio records; reading it also rejects a non-VSIX download.
+    $zip = [IO.Compression.ZipFile]::OpenRead($vsix)
+    try { $id = ([xml]([IO.StreamReader]::new($zip.GetEntry('extension.vsixmanifest').Open()).ReadToEnd())).PackageManifest.Metadata.Identity }
+    finally { $zip.Dispose() }
+    if ($installed[$id.Id] -and [version]$installed[$id.Id] -ge [version]$id.Version) { continue }
+
+    if (Get-Process devenv -ErrorAction Ignore) { throw "Close Visual Studio and run chezmoi apply again to install $url." }
+    # Scoped to the instance: VsVim also targets SSMS, which shares the shell.
+    $p = Start-Process "$($vs.installationPath)\Common7\IDE\VSIXInstaller.exe" -ArgumentList '/quiet', "/instanceIds:$($vs.instanceId)", "`"$vsix`"" -Wait -PassThru
+    if ($p.ExitCode) { throw "VSIXInstaller exited with $($p.ExitCode) for $url; logs: $env:TEMP\dd_VSIXInstaller_*.log" }
+  }
+} finally { Remove-Item $dir -Recurse -Force }
