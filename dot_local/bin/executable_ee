@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# ee [PATH] — open PATH (default: the current folder) in the desktop file manager.
+# WSL: Windows File Explorer (as \\wsl.localhost\<distro>\..., so drag and drop works).
+# Linux: Nautilus, or whatever xdg-open picks when Nautilus is not installed.
+set -euo pipefail
+target="${1:-.}"
+
+if [[ -n "${WSL_DISTRO_NAME:-}" ]]; then
+  # explorer.exe exits 1 even when the window opens.
+  explorer.exe "$(wslpath -w "$target")" || true
+elif command -v nautilus >/dev/null; then
+  setsid -f nautilus --new-window -- "$target" >/dev/null 2>&1
+else
+  setsid -f xdg-open "$target" >/dev/null 2>&1
+fi

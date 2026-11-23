@@ -4,6 +4,8 @@ theme = light:Flexoki Light,dark:Flexoki Dark
 font-family = "JetBrainsMono Nerd Font"
 font-size = 12
 
+# Auto-injection can't see zsh behind `env zsh -lc` (see `command` below), so ~/.zshrc sources
+# the integration itself; Ghostty still exports these features for it to read.
 shell-integration = detect
 # ssh-terminfo installs Ghostty's terminfo on remote hosts; ssh-env falls back to xterm-256color.
 shell-integration-features = cursor,sudo,title,ssh-env,ssh-terminfo

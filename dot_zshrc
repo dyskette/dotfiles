@@ -9,6 +9,15 @@ bindkey -e
 
 autoload -Uz compinit && compinit -d "$HOME/.cache/zcompdump"
 
+# --- Ghostty shell integration, also inside tmux ---
+# Ghostty only auto-injects it when it can see the shell, and here it starts `env zsh -lc
+# "tmux ..."`, so it never does; even then it would not reach shells inside tmux. Ghostty
+# still exports GHOSTTY_RESOURCES_DIR to the tmux server, so source it by hand: OSC 133
+# prompt marks (tmux copy-mode next/previous-prompt), OSC 7 cwd, the prompt cursor shape.
+if [[ -n $GHOSTTY_RESOURCES_DIR && -r $GHOSTTY_RESOURCES_DIR/shell-integration/zsh/ghostty-integration ]]; then
+  source "$GHOSTTY_RESOURCES_DIR/shell-integration/zsh/ghostty-integration"
+fi
+
 # --- mise: PATH mode, recomputed at every prompt (per-project runtimes + [env]) ---
 if [ -x "$HOME/.local/bin/mise" ]; then
   eval "$("$HOME/.local/bin/mise" activate zsh)"
@@ -23,6 +32,32 @@ fi
 (( $+commands[zoxide] ))   && eval "$(zoxide init zsh)"
 (( $+commands[atuin] ))    && eval "$(atuin init zsh)"
 (( $+commands[starship] )) && eval "$(starship init zsh)"
+
+# --- eza / bat ---
+if (( $+commands[eza] )); then
+  # --hyperlink needs "=auto": eza >= 0.23 otherwise takes the next argument as its value.
+  alias ls='eza --group-directories-first --icons=auto --hyperlink=auto'
+  alias ll='eza --long --all --git --header --time-style=relative --group-directories-first --icons=auto --hyperlink=auto'
+  alias la='eza --all --group-directories-first --icons=auto --hyperlink=auto'
+  # lt [level] [path...]: tree, two levels by default, gitignored files left out.
+  lt() {
+    local level=2
+    [[ $1 == <-> ]] && { level=$1; shift }
+    eza --tree --level="$level" --group-directories-first --icons=auto --git-ignore "$@"
+  }
+fi
+if (( $+commands[bat] )); then
+  # Piped output stays plain, so `cat x | ...` behaves like cat.
+  alias cat='bat --paging=never --style=plain'
+  # man pages through bat; col strips man's backspace bold.
+  export MANPAGER="sh -c 'col -bx | bat --language=man --plain'"
+  export MANROFFOPT="-c"
+fi
+
+# --- File managers and git UI ---
+# e/gg start lf/lazygit as they are; ee (~/.local/bin/ee) opens the desktop file manager.
+alias e=lf
+alias gg=lazygit
 
 # --- Pickers: television channels (f = find, s = search, g = git), names after LazyVim's keys ---
 # Root = git toplevel, else the cwd. `sg` shadows shadow-utils' /usr/bin/sg in interactive shells.
@@ -59,8 +94,5 @@ gl() { tv git-log }                       # git log → prints the picked commit
 
 # --- Aliases ---
 alias vim=nvim
-alias ls='eza --group-directories-first'
-alias ll='eza -la --git --group-directories-first'
-alias lg=lazygit
 # Ghostty 1.4: installs terminfo on the remote host before connecting.
 (( $+commands[ghostty] )) && alias ssh='ghostty +ssh --'
