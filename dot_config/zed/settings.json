@@ -1,0 +1,83 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run `zed: open default settings` from the
+// command palette (cmd-shift-p / ctrl-shift-p)
+//
+// Only non-default values live here, except where an explicit choice is
+// worth pinning (telemetry, format_on_save).
+{
+    "ssh_connections": [
+        {
+            "host": "win",
+            "args": [],
+            "projects": []
+        }
+    ],
+    "agent_servers": {
+        "claude-acp": {
+            "type": "registry"
+        }
+    },
+    // Explicit choice (matches current defaults).
+    "telemetry": {
+        "diagnostics": true,
+        "metrics": true
+    },
+    "buffer_font_size": 14,
+    "theme": {
+        "mode": "system",
+        "light": "Everforest Light Medium (regular)",
+        "dark": "Everforest Dark Medium (regular)"
+    },
+    "auto_install_extensions": {
+        "everforest": true
+    },
+    // Upstream light bright black is grey1; use grey2 like ghostty/windows_terminal.
+    "theme_overrides": {
+        "Everforest Light Medium (regular)": {
+            "terminal.ansi.bright_black": "#829181"
+        }
+    },
+
+    // Vim mode configuration
+    "vim_mode": true,
+    "vim": {
+        // keymap.json maps space y / space p to the "+ register.
+        "use_system_clipboard": "never",
+        "use_smartcase_find": true,
+        // Focused editor: relative in normal mode, absolute in insert mode.
+        // Unfocused editors follow relative_line_numbers below.
+        "toggle_relative_line_numbers": true
+    },
+
+    // Editor appearance
+    "buffer_font_family": "JetBrainsMonoNL Nerd Font",
+    "relative_line_numbers": "enabled",
+    "scroll_beyond_last_line": "off",
+    "vertical_scroll_margin": 999,          // keep the cursor centred (scrolloff=999)
+    "wrap_guides": [120],
+    "preferred_line_length": 120,           // also the width vim `gq` rewraps to
+    "show_whitespaces": "all",
+
+    // File tree and project
+    "project_panel": {
+        "dock": "left"
+    },
+
+    // Git
+    "git": {
+        "inline_blame": {
+            "enabled": false
+        }
+    },
+
+    // Explicit choice (matches current default).
+    "format_on_save": "off",
+
+    // Cursor
+    "cursor_blink": false
+}

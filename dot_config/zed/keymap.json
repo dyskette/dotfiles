@@ -1,0 +1,329 @@
+// Amazing keys
+//
+// Zed keymap
+//
+// For information on binding keys, see the Zed
+// documentation: https://zed.dev/docs/key-bindings
+//
+// To see the default key bindings run `zed: open default keymap`
+// from the command palette.
+//
+// Custom vim-style keybindings for Zed editor
+
+[
+    // Context notes:
+    // - VimControl is set exactly when vim_mode is normal, visual or operator,
+    //   so "VimControl && !menu" is the leader-key context (menu = completion or
+    //   code-action popup open, or a list panel such as the git panel).
+    // - vim_mode only exists on editors, so "Editor && vim_mode == x" == "vim_mode == x".
+    // - Pane navigation (ctrl-w h/j/k/l) comes from Zed's vim keymap, in normal
+    //   mode and in every panel except the terminal.
+
+    // ============================================================================
+    // FILE NAVIGATION & SEARCH
+    // ============================================================================
+    {
+        "context": "VimControl && !menu",
+        "bindings": {
+            "space s s": ["projects::OpenRecent", { "create_new_window": false }],
+
+            // File search (matching fzf keymaps)
+            "space s f": "file_finder::Toggle",         // Search files
+            "space s i": "file_finder::Toggle",         // Search git files (fallback)
+            "space s r": "file_finder::Toggle",         // Search recent files
+            "space s b": "tab_switcher::Toggle",        // Search buffers
+            "space s g": "pane::DeploySearch",          // Search by grep
+            "space s w": "pane::DeploySearch",          // Search current word
+            "space s o": "outline::Toggle",             // Symbol search
+
+            // Panels
+            "space e": "project_panel::ToggleFocus",    // File explorer
+            "space o o": "agent::ToggleFocus",          // AI agent
+            "space x x": "diagnostics::Deploy"          // Diagnostics (quickfix)
+        }
+    },
+
+    // ============================================================================
+    // LSP NAVIGATION & ACTIONS
+    // ============================================================================
+    {
+        "context": "VimControl && !menu",
+        "bindings": {
+            // Navigation
+            "g d": "editor::GoToDefinition",
+            "g shift-d": "editor::GoToDeclaration",
+            "g i": "editor::GoToImplementation",
+            "g r": "editor::FindAllReferences",
+            "g o": "editor::GoToTypeDefinition",
+            "shift-k": "editor::Hover",
+
+            // Actions
+            "space r n": "editor::Rename",
+            "space v a": "editor::ToggleCodeActions",
+            "space v d": "editor::Hover",
+
+            // Formatting
+            "space f f": "editor::Format",
+            "space f l": "editor::Format"
+        }
+    },
+
+    // ============================================================================
+    // DIAGNOSTICS
+    // ============================================================================
+    {
+        "context": "VimControl && !menu",
+        "bindings": {
+            "space d j": "editor::GoToDiagnostic",
+            "space d k": "editor::GoToPreviousDiagnostic"
+        }
+    },
+
+    // ============================================================================
+    // GIT OPERATIONS
+    // ============================================================================
+    {
+        "context": "VimControl && !menu",
+        "bindings": {
+            "space g g": "git_panel::ToggleFocus",      // Git status
+            "space g s": "git::StageAndNext",           // Stage hunk
+            "space g u": "git::UnstageAndNext",         // Unstage hunk
+            "space g x": "git::Restore",                // Restore hunk
+            "space g b": "git::Blame",                  // Git blame
+            "space g d": "git::Diff",                   // Git diff
+            "space g h": "git::FileHistory"             // Git file history
+        }
+    },
+
+    // Git panel lists (Changes + History tabs).
+    // The branch/repo popovers render *inside* the panel, so focus in their
+    // search box still carries the GitPanel/ChangesList context.
+    // `!Editor && !Picker` keeps these keys from firing while typing there.
+    // Zed's vim defaults still apply: x toggle stage, X stage all, U unstage all,
+    // h/l collapse/expand, gg/G, i/tab commit editor, enter/gf open diff.
+    {
+        "context": "GitPanel && (ChangesList || HistoryList) && !Editor && !Picker",
+        "bindings": {
+            "g t": "git_panel::ActivateHistoryTab",
+            "g shift-t": "git_panel::ActivateChangesTab",
+            "q": "git_panel::Close",
+            "b": "git::Branch",                 // centred modal, not the in-panel popover
+            "p": "git::Pull",
+            "shift-p": "git::Push",
+            "f": "git::Fetch"
+        }
+    },
+    {
+        "context": "GitPanel && ChangesList && !Editor && !Picker",
+        "bindings": {
+            "j": "git_panel::NextEntry",        // also scrolls an already-open diff
+            "k": "git_panel::PreviousEntry",
+            "shift-j": "menu::SelectNext",      // shift held => extends the mark range
+            "shift-k": "menu::SelectPrevious",
+            "s": "git::StageFile",
+            "u": "git::UnstageFile",
+            "-": "git::ToggleStaged",
+            "d": ["git::RestoreFile", { "skip_prompt": false }],
+            "o": "menu::SecondaryConfirm",      // single-file diff
+            "e": "git::ViewFile",
+            "c c": "git_panel::FocusEditor",    // then ctrl-enter / ctrl-shift-enter
+            "z z": "git::StashAll",
+            "z p": "git::StashPop"
+        }
+    },
+
+    // ============================================================================
+    // AI AGENT OPERATIONS
+    // ============================================================================
+    {
+        // Agent leader keys: any editor in normal mode (incl. the prompt box)
+        // and the agent panel's non-text parts (thread output, sidebar).
+        "context": "(VimControl && !menu) || (AgentPanel && !Editor)",
+        "bindings": {
+            "space o y": "agent::AllowOnce",
+            "space o shift-y": "agent::AllowAlways",
+            "space o x": "agent::RejectOnce",
+            "space o shift-x": "agent::RejectAll",
+            "space o k": "agent::KeepAll",
+            "space o n": "agent::NewThread",
+            "space o c": "agent::ToggleNewThreadMenu",          // pick the agent (Zed Agent, Claude, ...) for a new thread
+            "space o d": "agent::OpenAgentDiff",
+            "space o s": "multi_workspace::FocusWorkspaceSidebar",
+            "space o ]": "multi_workspace::NextThread",      // needs the threads sidebar (ctrl-alt-j) to exist
+            "space o [": "multi_workspace::PreviousThread",
+            // Opened without a held modifier, the switcher stays open until enter/escape.
+            "space o t": "agents_sidebar::ToggleThreadSwitcher"
+        }
+    },
+    {
+        // Prompt box in normal mode drives the conversation output.
+        // Zed's vim keymap nulls / n N in auto-height editors, so they are free here.
+        "context": "AcpThread > Editor && vim_mode == normal",
+        "bindings": {
+            "ctrl-d": "agent::ScrollOutputPageDown",
+            "ctrl-u": "agent::ScrollOutputPageUp",
+            "ctrl-e": "agent::ScrollOutputLineDown",
+            "ctrl-y": "agent::ScrollOutputLineUp",
+            "] ]": "agent::ScrollOutputToNextMessage",
+            "[ [": "agent::ScrollOutputToPreviousMessage",
+            "/": "agent::ToggleSearch",
+            "n": "agent::SelectNextThreadMatch",
+            "shift-n": "agent::SelectPreviousThreadMatch",
+            "space o m": "agent::OpenActiveThreadAsMarkdown",   // whole thread as a buffer: yank/search with vim
+            "space o e": "agent::ExpandMessageEditor"
+        }
+    },
+    {
+        // Thread output focused (only reachable by clicking it).
+        // !Editor leaves the edit-earlier-message box, search bar and elicitation forms alone.
+        "context": "AcpThread && !Editor",
+        "bindings": {
+            "j": "agent::ScrollOutputLineDown",
+            "k": "agent::ScrollOutputLineUp",
+            "ctrl-d": "agent::ScrollOutputPageDown",
+            "ctrl-u": "agent::ScrollOutputPageUp",
+            "g g": "agent::ScrollOutputToTop",
+            "shift-g": "agent::ScrollOutputToBottom",
+            "] ]": "agent::ScrollOutputToNextMessage",
+            "[ [": "agent::ScrollOutputToPreviousMessage",
+            "/": "agent::ToggleSearch",
+            "y": "markdown::Copy",                  // copies the mouse selection
+            "shift-y": "markdown::CopyAsMarkdown",
+            "i": "agent::FocusAgent",               // back to the prompt box
+            "space o m": "agent::OpenActiveThreadAsMarkdown"
+        }
+    },
+    {
+        // Threads sidebar (ctrl-alt-j / space o s). Zed's vim `d d` deletes permanently;
+        // make it archive instead and move delete to D.
+        "context": "ThreadsSidebar && not_searching && !Editor",
+        "bindings": {
+            "d d": "agent::ArchiveSelectedThread",
+            "shift-d": "agent::RemoveSelectedThread",
+            "r": "agent::RenameSelectedThread",
+            "q": "multi_workspace::CloseWorkspaceSidebar"
+        }
+    },
+    {
+        // MRU thread switcher opened via space o t: j/k move, enter opens, escape cancels.
+        // ctrl-n/ctrl-p also work while still holding ctrl after ctrl-tab
+        // (releasing ctrl confirms). select_last moves one up, wrapping, once open.
+        "context": "ThreadSwitcher",
+        "bindings": {
+            "j": "agents_sidebar::ToggleThreadSwitcher",
+            "k": ["agents_sidebar::ToggleThreadSwitcher", { "select_last": true }],
+            "ctrl-n": "agents_sidebar::ToggleThreadSwitcher",
+            "ctrl-p": ["agents_sidebar::ToggleThreadSwitcher", { "select_last": true }]
+        }
+    },
+
+    // // Agent diff view bindings
+    // {
+    //     "context": "Editor && editor_agent_diff",
+    //     "bindings": {
+    //         "space o y": "agent::Keep",
+    //         "space o shift-y": "agent::KeepAll",
+    //         "space o x": "agent::Reject",
+    //         "space o shift-x": "agent::RejectAll"
+    //     }
+    // },
+
+    // ============================================================================
+    // EDITOR - NORMAL + VISUAL MODE
+    // ============================================================================
+    {
+        "context": "VimControl && !menu",
+        "bindings": {
+            // Selection
+            "space a": "editor::SelectAll",
+
+            // Focus mode - hide all panels
+            "space space": "workspace::ToggleAllDocks",
+
+            // System clipboard (vim.use_system_clipboard is "never")
+            "space y": ["workspace::SendKeystrokes", "\" + y"],
+            "space p": ["workspace::SendKeystrokes", "\" + p"]
+        }
+    },
+
+    // ============================================================================
+    // EDITOR - VISUAL MODE
+    // ============================================================================
+    {
+        "context": "vim_mode == visual",
+        "bindings": {
+            // Move lines
+            "shift-j": "editor::MoveLineDown",
+            "shift-k": "editor::MoveLineUp",
+
+            // Indentation
+            "<": "editor::Outdent",
+            ">": "editor::Indent"
+        }
+    },
+
+    // ============================================================================
+    // COMPLETION MENU
+    // ============================================================================
+    {
+        "context": "showing_completions",
+        "bindings": {
+            "ctrl-y": "editor::ConfirmCompletion"
+        }
+    },
+
+    // ============================================================================
+    // TERMINAL
+    // Toggle with ctrl-ñ: a plain key on the latam layout (ctrl-` / ctrl-\ need
+    // AltGr there), same convention VS Code uses on Spanish keyboards.
+    // On Linux, Zed names non-ASCII keys after the US key in the same physical
+    // position (gpui_linux guess_ascii), so ctrl-ñ arrives as "ctrl-;".
+    // ctrl-z stays with the shell for job suspension.
+    // ============================================================================
+    {
+        // Workspace: panels (git, project, agent output...).
+        "context": "Workspace",
+        "bindings": {
+            "ctrl-;": "terminal_panel::ToggleFocus"
+        }
+    },
+    {
+        // Editors bind ctrl-; by default (ToggleLineNumbers; in the agent prompt,
+        // OpenAddContextMenu, which `@` also opens). User bindings win at equal depth.
+        "context": "Editor",
+        "bindings": {
+            "ctrl-;": "terminal_panel::ToggleFocus"
+        }
+    },
+    {
+        "context": "Terminal",
+        "bindings": {
+            "ctrl-;": "terminal_panel::Toggle",     // hide and return to the editor
+            // Deshabilitar ctrl-n y ctrl-p para permitir navegación en fzf
+            "ctrl-n": null,
+            "ctrl-p": null
+        }
+    },
+
+    // ============================================================================
+    // PROJECT PANEL
+    // ============================================================================
+    {
+        "context": "ProjectPanel && not_editing",
+        "bindings": {
+            "a": "project_panel::NewFile",
+            "shift-a": "project_panel::NewDirectory",
+            "r": "project_panel::Rename",
+            "d": "project_panel::Trash",
+            "x": "project_panel::Cut",
+            "y": "project_panel::Copy",
+            "p": "project_panel::Paste",
+            "o": "project_panel::Open",
+            "enter": "project_panel::OpenPermanent",
+            "v": "project_panel::OpenSplitVertical",
+            "s": "project_panel::OpenSplitHorizontal",
+            "-": "project_panel::SelectParent",
+            "q": "workspace::ToggleLeftDock"
+        }
+    }
+]
