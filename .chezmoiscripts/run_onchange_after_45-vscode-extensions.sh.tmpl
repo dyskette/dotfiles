@@ -1,0 +1,8 @@
+{{ if not .wsl -}}
+#!/usr/bin/env bash
+# VS Code extensions (.chezmoidata/vscode.yaml); WSL uses Windows' VS Code through Remote-WSL.
+flatpak info com.visualstudio.code >/dev/null 2>&1 || exit 0
+for e in {{ concat .vscode.extensions .vscode.linux | join " " }}; do
+  flatpak run com.visualstudio.code --install-extension "$e" >/dev/null || echo "vscode: could not install $e" >&2
+done
+{{ end -}}

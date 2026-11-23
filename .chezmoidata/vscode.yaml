@@ -1,0 +1,5 @@
+# VS Code extensions, installed by run_onchange_after_45-vscode-extensions (.sh / .ps1).
+vscode:
+  extensions: [vscodevim.vim, kahole.magit, haphazarddev.oil-code, mthierman.theme-flexoki]
+  linux: [ms-vscode-remote.remote-containers]
+  windows: [ms-vscode-remote.remote-wsl]

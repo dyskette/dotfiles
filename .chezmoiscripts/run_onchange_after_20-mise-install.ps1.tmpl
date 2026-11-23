@@ -1,5 +1,9 @@
 # hash: {{ include "dot_config/mise/config.toml" | sha256sum }}
 $env:PATH = "$env:LOCALAPPDATA\mise\shims;$HOME\.dotnet\tools;$env:PATH"; $env:XDG_CONFIG_HOME = "$HOME\.config"
+# mise's shims on the user PATH, for apps started outside PowerShell (VS Code, Zed).
+$shims = "$env:LOCALAPPDATA\mise\shims"
+$user = [Environment]::GetEnvironmentVariable('PATH', 'User')
+if (($user -split ';') -notcontains $shims) { [Environment]::SetEnvironmentVariable('PATH', "$shims;$user", 'User') }
 mise trust --yes "$HOME\.config\mise\config.toml"
 mise install --yes
 mise exec rust -- rustup component add rust-analyzer rust-src clippy rustfmt

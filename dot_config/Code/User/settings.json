@@ -7,16 +7,8 @@
 
   // ── Theme (auto light/dark) ───────────────────────────────────────────────────
   "window.autoDetectColorScheme": true,
-  "workbench.preferredDarkColorTheme": "Everforest Dark",
-  "workbench.preferredLightColorTheme": "Everforest Light",
-  "everforest.darkContrast": "medium",
-  "everforest.lightContrast": "medium",
-  // Upstream light bright black equals fg; use grey2 like ghostty/windows_terminal.
-  "workbench.colorCustomizations": {
-    "[Everforest Light]": {
-      "terminal.ansiBrightBlack": "#829181"
-    }
-  },
+  "workbench.preferredDarkColorTheme": "Flexoki Dark Cyan",
+  "workbench.preferredLightColorTheme": "Flexoki Light Cyan",
 
   // ── Editor ────────────────────────────────────────────────────────────────────
   "editor.fontSize": 14,
@@ -37,7 +29,9 @@
 
   // ── Terminal ──────────────────────────────────────────────────────────────────
   "terminal.integrated.minimumContrastRatio": 1,
-  "terminal.integrated.defaultProfile.linux": "bash",
+  // Linux: the host's bash (with mise) instead of the Flatpak sandbox's. Windows: PowerShell 7 and its profile.
+  "terminal.integrated.defaultProfile.linux": "bash (host)",
+  "terminal.integrated.defaultProfile.windows": "PowerShell",
   "terminal.integrated.profiles.linux": {
     "sh (flatpak)": {
       "path": "/usr/bin/sh"

@@ -1,0 +1,4 @@
+# VS Code extensions (.chezmoidata/vscode.yaml).
+$env:PATH = [Environment]::GetEnvironmentVariable('PATH', 'Machine') + ';' + [Environment]::GetEnvironmentVariable('PATH', 'User')
+if (-not (Get-Command code -ErrorAction Ignore)) { exit }
+foreach ($e in '{{ concat .vscode.extensions .vscode.windows | join "', '" }}') { code --install-extension $e | Out-Null }

@@ -50,6 +50,15 @@ else
   warn "Unsupported distro. Install manually: bash-completion tmux git gcc make ghostty wl-clipboard"
 fi
 
+{{ if not .wsl -}}
+# VS Code from Flathub everywhere, for this user only: one path, no root, nothing layered on Atomic.
+if command -v apt-get >/dev/null && ! command -v flatpak >/dev/null; then sudo apt-get install -y flatpak; fi
+if command -v flatpak >/dev/null; then
+  { flatpak --user remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo &&
+    flatpak --user install -y --noninteractive flathub com.visualstudio.code; } || warn "Could not install VS Code from Flathub"
+fi
+{{ end -}}
+
 # Roslyn and other LSP file watchers.
 if [ ! -f /etc/sysctl.d/90-dev-inotify.conf ]; then
   log "Raising inotify limits"
