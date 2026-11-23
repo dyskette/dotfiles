@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# sesh-dir — use lf as a folder picker and open a sesh session in the chosen folder.
+# Bound to prefix+a in tmux (inside a popup that starts in the pane's directory).
+#
+# Walk with h/j/k/l and press Enter on a folder to open its session; q cancels.
+# The Enter mapping comes from ~/.config/lf/sesh-dir, sourced only here.
+set -euo pipefail
+start="${1:-$PWD}"
+out="$(mktemp -t sesh-dir.XXXXXX)"
+trap 'rm -f -- "$out"' EXIT
+
+SESH_DIR_OUT="$out" lf -command "source \"$HOME/.config/lf/sesh-dir\"" "$start"
+dir="$(<"$out")"
+[[ -n "$dir" ]] || exit 0
+exec sesh connect "$dir"

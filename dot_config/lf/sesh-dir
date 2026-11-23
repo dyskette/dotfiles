@@ -1,0 +1,10 @@
+# Extra lf config loaded only by ~/.local/bin/sesh-dir (lf -command 'source ...'), so plain
+# `lf` keeps its usual Enter. Enter on a folder picks it: sesh-dir reads the path from
+# $SESH_DIR_OUT and opens a session there. q quits without picking anything.
+cmd sesh-dir-pick &{{
+    if [ -d "$f" ]; then
+        printf '%s' "$f" > "$SESH_DIR_OUT"
+        lf -remote "send $id quit"
+    fi
+}}
+map <enter> sesh-dir-pick

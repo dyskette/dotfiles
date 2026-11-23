@@ -23,3 +23,8 @@
     url = "https://github.com/gosxrgxx/flexoki-dark.yazi/archive/649e569d9e78f7573703a04135c6c62942b98a34.tar.gz"
     stripComponents = 1
     include = ["*/flavor.toml", "*/tmtheme.xml", "*/LICENSE*"]
+
+# lf's Nerd Font icons (lf's built-in defaults are plain letters). Pinned to tag r42.
+[".config/lf/icons"]
+    type = "file"
+    url = "https://raw.githubusercontent.com/gokcehan/lf/5b6c393d547970a264bd4f0a78fd6513227f8e10/etc/icons.example"

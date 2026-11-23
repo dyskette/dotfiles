@@ -1,0 +1,15 @@
+# lf — used as the folder chooser behind tmux prefix+a (~/.local/bin/sesh-dir).
+# Look follows LazyVim/snacks: rounded outer border, Nerd Font icons (~/.config/lf/icons,
+# fetched by .chezmoiexternal.toml), ANSI colours so it follows Ghostty's light/dark.
+set drawbox true
+set borderstyle roundbox
+set borderfmt "\033[90m"
+set icons true
+set dirfirst true
+set hidden false
+set scrolloff 5
+set ratios 1:2:3
+set mouse true
+
+# As the tmux folder chooser, sesh-dir also sources ./sesh-dir: Enter on a folder opens its
+# session, q cancels.
