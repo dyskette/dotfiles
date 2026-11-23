@@ -11,6 +11,7 @@ poetry = "latest"
 go = "latest"
 dotnet = "10"
 rust = "stable"
+java = "temurin-21"
 
 chezmoi = "latest"
 github-cli = "latest"
