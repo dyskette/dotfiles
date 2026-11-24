@@ -1,7 +1,7 @@
 # 0004 — smart-splits.nvim for moving and resizing across Neovim and tmux
 
 ## Status
-Accepted — 2026-11-22
+Accepted — 2026-11-22. Loading amended by ADR 0008: smart-splits loads on its keys and a non-blocking `tmux` call sets `@pane-is-vim`.
 
 ## Context
 `M-h/j/k/l` moves between Neovim splits and tmux panes as if they were one layout (vim-tmux-navigator). We also want `M-H/J/K/L` (Alt-Shift) to resize them the same way: a Neovim split when Neovim has one in that direction, otherwise the tmux pane. vim-tmux-navigator only moves.
