@@ -23,3 +23,8 @@ elseif is_win then
   require("fast.clipboard").setup()
 end
 
+-- Started from Git Bash, Neovim takes $SHELL (bash) but keeps cmd.exe's '/s /c' flags, which
+-- breaks :! and system(). cmd.exe is also the fastest shell to start on Windows.
+if is_win and vim.o.shellcmdflag == "/s /c" and not vim.o.shell:lower():find("cmd") then
+  vim.o.shell = "cmd.exe"
+end
