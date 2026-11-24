@@ -11,6 +11,11 @@ command = [
   { name = "Tmux",     run = "sesh list -t --icons" },
   { name = "Zoxide",   run = "sesh list -z --icons" },
 ]
+{{- if eq .chezmoi.os "windows" }}
+# tv defaults to Windows PowerShell 5.1, which picks projects.ps1 (blocked by its execution
+# policy) over the projects.cmd shim; cmd resolves the shim, which runs it with pwsh.
+shell = "cmd"
+{{- end }}
 ansi = true
 no_sort = true   # sesh orders them
 frecency = false
