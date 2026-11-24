@@ -24,7 +24,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - WSL: SSH through the Windows OpenSSH agent (systemd relay) and SSH config/public keys synced from Windows (ADR 0005).
 - Windows setup from the same repo: `install.ps1`, Noctty, psmux (shared `tmux/common.conf`), a PowerShell profile with the same pickers and commands, and `.ps1` setup scripts (ADR 0006).
 - Windows: Visual Studio Enterprise 2026 with the components in `.chezmoidata/visualstudio.toml`, installed or completed on `chezmoi apply`.
-- Visual Studio extensions from `.chezmoidata/visualstudio.toml`: VsVim 2026 from the Marketplace and VsNerdX from its GitHub release, installed into the VS 2026 instance only (not SSMS).
+- Visual Studio extensions from `.chezmoidata/visualstudio.toml`: VsVim 2026 from the Marketplace, VsNerdX and the Flexoki theme from their GitHub releases, installed into the VS 2026 instance only (not SSMS). Visual Studio follows the system light/dark mode with Flexoki Dark and Light.
 - `~/.vsvimrc` (Windows): VsVim with the IdeaVim config's LazyVim options and keys, through Visual Studio commands.
 - pandoc through mise, with bash completion.
 - Windows: `less` from winget, so `bat` and `delta` page outside git.

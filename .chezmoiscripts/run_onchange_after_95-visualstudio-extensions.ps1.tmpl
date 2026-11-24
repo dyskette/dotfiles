@@ -1,5 +1,5 @@
-# Visual Studio 2026 extensions from .chezmoidata/visualstudio.toml. Numbered last: when Visual Studio
-# is open it fails, and that shouldn't stop the scripts after it.
+# Visual Studio 2026 extensions from .chezmoidata/visualstudio.toml, and the Flexoki theme. Numbered last:
+# when Visual Studio is open it fails, and that shouldn't stop the scripts after it.
 $urls = '{{ .visualstudio.extensions | join "', '" }}'
 $vs = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -products Microsoft.VisualStudio.Product.Enterprise -version '[18.0,19.0)' -format json |
   ConvertFrom-Json | Select-Object -First 1
@@ -31,3 +31,18 @@ try {
     if ($p.ExitCode) { throw "VSIXInstaller exited with $($p.ExitCode) for $url; logs: $env:TEMP\dd_VSIXInstaller_*.log" }
   }
 } finally { Remove-Item $dir -Recurse -Force }
+
+# Flexoki following Windows' light/dark mode, as everywhere else (ADR 0003).
+$settings = "$env:LOCALAPPDATA\Microsoft\VisualStudio\18.0_$($vs.instanceId)\settings.json"
+$json = if (Test-Path $settings) { Get-Content $settings -Raw | ConvertFrom-Json -AsHashtable } else { [ordered]@{} }
+$theme = [ordered]@{
+  'environment.visualExperience.colorTheme'       = 'system'
+  'environment.visualExperience.systemDarkTheme'  = 'flexoki-dark'
+  'environment.visualExperience.systemLightTheme' = 'flexoki-light'
+}
+if (@($theme.Keys | Where-Object { $json[$_] -ne $theme[$_] })) {
+  # Visual Studio writes settings.json when it exits, which would undo this.
+  if (Get-Process devenv -ErrorAction Ignore) { throw 'Close Visual Studio and run chezmoi apply again to set the Flexoki theme.' }
+  foreach ($k in $theme.Keys) { $json[$k] = $theme[$k] }
+  $json | ConvertTo-Json -Depth 50 | Set-Content $settings
+}
