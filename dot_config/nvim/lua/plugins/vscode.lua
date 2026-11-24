@@ -28,7 +28,8 @@ vim.g.clipboard = vim.g.vscode_clipboard
 
 local function lazygit()
   vscode.call("workbench.action.createTerminalEditor")
-  vscode.action("workbench.action.terminal.sendSequence", { args = { text = "lazygit && exit\r" } })
+  -- `;`, not `&&`: PowerShell (VS Code's terminal on Windows) can't chain exit after &&.
+  vscode.action("workbench.action.terminal.sendSequence", { args = { text = "lazygit; exit\r" } })
 end
 
 local function debug_continue()
