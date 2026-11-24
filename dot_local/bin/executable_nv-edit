@@ -3,6 +3,10 @@
 set -u
 file="${1:?usage: nv-edit FILE [LINE]}"
 line="${2:-}"
+# In VS Code's terminal (lazygit from <leader>gg there), open it in that VS Code window instead.
+if [ "${TERM_PROGRAM:-}" = vscode ]; then
+  exec code --reuse-window --goto "$(realpath "$file")${line:+:$line}"
+fi
 id="$(tmux display -p '#{session_id}' 2>/dev/null | tr -d '$')"
 sock="${XDG_RUNTIME_DIR:-/tmp}/nvim-tmux-${id:-none}.sock"
 if [ -S "$sock" ] && nvim --server "$sock" --remote-expr 1 >/dev/null 2>&1; then

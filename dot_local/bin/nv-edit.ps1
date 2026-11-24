@@ -1,5 +1,7 @@
 # nv-edit FILE [LINE]: open FILE in this psmux session's Neovim (`nv`), else a new nvim.
 param([Parameter(Mandatory)][string]$File, [string]$Line)
+# In VS Code's terminal (lazygit from <leader>gg there), open it in that VS Code window instead.
+if ($env:TERM_PROGRAM -eq 'vscode') { code --reuse-window --goto "$((Resolve-Path $File).Path)$(if ($Line) { ":$Line" })"; exit }
 $id = (tmux display -p '#{session_id}' 2>$null) -replace '\$'
 $pipe = "\\.\pipe\nvim-tmux-$(if ($id) { $id } else { 'none' })"
 if (Test-Path $pipe) {
