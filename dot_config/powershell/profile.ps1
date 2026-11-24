@@ -75,7 +75,8 @@ function gl { tv git-log }
 
 # --- Sessions (psmux + sesh) ---
 # tm and sesh-dir are scripts in ~/.local/bin: psmux runs its popups without this profile.
-# nv stays a function, as ~/.local/bin/nv on Linux.
+# nv stays a function, as ~/.local/bin/nv on Linux. PowerShell's own nv alias (New-Variable) would win over it.
+Remove-Item Alias:nv -Force -ErrorAction Ignore
 function nv {
   $id = (tmux display -p '#{session_id}' 2>$null) -replace '\$'
   $pipe = "\\.\pipe\nvim-tmux-$(if ($id) { $id } else { 'none' })"
