@@ -1,10 +1,17 @@
-# JAVA_HOME for programs that don't look in PATH (IDEs finding a JDK).
-# Runs on every apply: the value names an exact version, so `mise up` + `chezmoi apply` refreshes it.
+# User variables for programs started outside PowerShell (the Start menu, VS Code's Neovim, IDEs).
+# Runs on every apply: JAVA_HOME names an exact version, so `mise up` + `chezmoi apply` refreshes it.
 # No DOTNET_ROOT: .NET is the machine-wide install in Program Files, where .NET looks by default.
 $env:PATH = "$env:LOCALAPPDATA\mise\shims;$env:PATH"
-$java = (mise env --json | ConvertFrom-Json).JAVA_HOME
-if ($java -and [Environment]::GetEnvironmentVariable('JAVA_HOME', 'User') -ne $java) {
-  [Environment]::SetEnvironmentVariable('JAVA_HOME', $java, 'User')
+$vars = @{
+  JAVA_HOME       = (mise env --json | ConvertFrom-Json).JAVA_HOME
+  # Neovim and the other XDG tools read ~/.config, as in the profile; without it, Neovim started from a
+  # program that didn't come through PowerShell looks in %LOCALAPPDATA%\nvim and finds no config.
+  XDG_CONFIG_HOME = "$HOME\.config"
+}
+foreach ($v in $vars.GetEnumerator()) {
+  if ($v.Value -and [Environment]::GetEnvironmentVariable($v.Key, 'User') -ne $v.Value) {
+    [Environment]::SetEnvironmentVariable($v.Key, $v.Value, 'User')
+  }
 }
 # Earlier applies pointed DOTNET_ROOT at mise's .NET, which global tools would keep using.
 if ([Environment]::GetEnvironmentVariable('DOTNET_ROOT', 'User') -like '*\mise\*') {

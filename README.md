@@ -64,7 +64,7 @@ Flexoki follows Ghostty's light/dark; tmux (≥ 3.6) and Neovim switch live ([AD
 | `PATH`, `EDITOR`, `VISUAL`, `XDG_CONFIG_HOME` | `~/.bash_profile`, mise | |
 | `RIPGREP_CONFIG_PATH` | `~/.bash_profile` | `rg` uses snacks' grep defaults |
 | `DOTNET_ROOT`, `JAVA_HOME` | `~/.bash_profile`; Windows: `JAVA_HOME` only, a user variable refreshed on every `chezmoi apply` (.NET is the machine-wide install) | .NET global tools and IDEs find mise's SDKs outside terminals |
-| `XDG_CONFIG_HOME`, `LF_CONFIG_HOME`, `BAT_CONFIG_DIR` | Windows: PowerShell profile | tools read `~/.config` as on Linux |
+| `XDG_CONFIG_HOME`, `LF_CONFIG_HOME`, `BAT_CONFIG_DIR` | Windows: PowerShell profile; `XDG_CONFIG_HOME` is also a user variable, for programs started outside PowerShell (VS Code's Neovim from the Start menu) | tools read `~/.config` as on Linux |
 | `DISABLE_AUTOUPDATER`, `COPILOT_AUTO_UPDATE` | mise `[env]` | mise updates Claude Code and Copilot CLI |
 | `PROJECT_ROOTS`, `PROJECT_DEPTH` | optional | override what `projects` scans |
 | `WIN_SSH_DIR`, `NPIPERELAY` | WSL: `~/.config/environment.d`, resolved by `chezmoi apply` | Windows `~/.ssh` and `npiperelay.exe` for the SSH relay ([ADR 0005](docs/adr/0005-wsl-ssh-through-windows-agent.md)) |
