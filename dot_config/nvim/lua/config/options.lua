@@ -18,5 +18,8 @@ end
 vim.opt.clipboard = "unnamedplus"
 if vim.env.SSH_TTY then
   vim.g.clipboard = "osc52"
+elseif is_win then
+  -- Win32 clipboard API instead of a win32yank.exe process per yank/put (ADR 0008).
+  require("fast.clipboard").setup()
 end
 
