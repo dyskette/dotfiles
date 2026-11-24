@@ -14,9 +14,10 @@ foreach ($d in "$HOME\.dotnet\tools", "$HOME\.local\bin") {
 if (Get-Command mise -ErrorAction Ignore) { mise activate pwsh | Out-String | Invoke-Expression }
 $completions = "$env:LOCALAPPDATA\powershell-completions.ps1"
 if (Test-Path $completions) { . $completions }
-# tv before atuin, which takes Ctrl-R back from tv.
-foreach ($t in 'tv', 'zoxide', 'atuin', 'starship') {
-  if (Get-Command $t -ErrorAction Ignore) { & $t init powershell | Out-String | Invoke-Expression }
+# tv before atuin, which takes Ctrl-R back from tv. tv names the shell power-shell.
+foreach ($init in 'tv power-shell', 'zoxide powershell', 'atuin powershell', 'starship powershell') {
+  $t, $shell = -split $init
+  if (Get-Command $t -ErrorAction Ignore) { & $t init $shell | Out-String | Invoke-Expression }
 }
 # Emacs-style keys bash has too; none collide with tv's or atuin's (Ctrl+T, Ctrl+R, Up).
 Set-PSReadLineKeyHandler -Key 'Ctrl+p' -Function HistorySearchBackward  # previous line starting with what's typed

@@ -6,7 +6,10 @@ $gen = 'mise completion powershell', 'chezmoi completion powershell', 'gh comple
   'starship completions powershell', 'lefthook completion powershell', 'sesh completion powershell',
   'yq shell-completion powershell', 'uv generate-shell-completion powershell', 'dotnet completions script pwsh',
   'opencode --completions pwsh', 'rustup completions powershell rustup', 'rustup completions powershell cargo'
-$gen | ForEach-Object {
+$lines = $gen | ForEach-Object {
   $exe, $rest = -split $_
-  if (Get-Command $exe -ErrorAction Ignore) { & $exe @rest 2>$null | Out-String }
-} | Set-Content "$env:LOCALAPPDATA\powershell-completions.ps1"
+  if (Get-Command $exe -ErrorAction Ignore) { & $exe @rest 2>$null }
+}
+# clap's scripts each start with `using namespace` lines, which PowerShell only accepts at the top of a file.
+$using = $lines | Where-Object { $_ -match '^\s*using\s' } | ForEach-Object Trim | Sort-Object -Unique
+@($using) + @($lines | Where-Object { $_ -notmatch '^\s*using\s' }) | Set-Content "$env:LOCALAPPDATA\powershell-completions.ps1"

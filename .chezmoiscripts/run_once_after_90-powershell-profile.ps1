@@ -2,4 +2,5 @@
 $p = $PROFILE.CurrentUserAllHosts
 $line = '. "$HOME\.config\powershell\profile.ps1"'
 New-Item -ItemType Directory -Force (Split-Path $p) | Out-Null
-if (-not (Select-String -Quiet -SimpleMatch $line $p -ErrorAction Ignore)) { Add-Content $p $line }
+# Select-String throws on a missing file even with -ErrorAction Ignore, so check for the file first.
+if (-not ((Test-Path $p) -and (Select-String -Quiet -SimpleMatch $line $p))) { Add-Content $p $line }
