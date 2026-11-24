@@ -15,6 +15,6 @@ components = [
 # GitHub releases: pinned to a tag, so changing the URL here is what updates them.
 extensions = [
   "https://marketplace.visualstudio.com/_apis/public/gallery/publishers/JaredParMSFT/vsextensions/VsVim2022Preview/latest/vspackage",  # VsVim 2026
-  "https://github.com/dyskette/vs-nerdx/releases/download/v1.0.2/VsNerdX.vsix",
+  "https://github.com/dyskette/vs-nerdx/releases/download/v1.0.3/VsNerdX.vsix",
   "https://github.com/dyskette/vs-flexoki/releases/download/v1.0.0/Flexoki.vsix",
 ]
