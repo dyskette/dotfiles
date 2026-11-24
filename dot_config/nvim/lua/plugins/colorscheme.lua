@@ -8,6 +8,7 @@ return {
     priority = 1000,
     opts = {
       variant = "auto",
+      styles = { italic = true }, -- off by default: comments, parameters, properties, emphasis
       -- The port keeps rose-pine's violet float "surface"; use Flexoki bg-2.
       palette = {
         moon = { surface = "#1c1b1a" },
