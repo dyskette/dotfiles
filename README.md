@@ -103,3 +103,4 @@ No secrets live in this repo: per-repo secrets go in `mise.local.toml` (git-igno
 - [ADR 0005 — WSL uses the Windows OpenSSH agent](docs/adr/0005-wsl-ssh-through-windows-agent.md)
 - [ADR 0006 — Windows from the same repo](docs/adr/0006-windows-from-the-same-repo.md)
 - [ADR 0007 — VS Code runs LazyVim through vscode-neovim](docs/adr/0007-vscode-runs-lazyvim.md)
+- [ADR 0008 — Keep LazyVim, remove its Windows startup and lookup costs](docs/adr/0008-lazyvim-speed-on-windows.md)

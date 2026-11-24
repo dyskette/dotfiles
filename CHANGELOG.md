@@ -42,11 +42,14 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Windows: .NET comes from winget (SDK 10) and Visual Studio instead of mise, and `DOTNET_ROOT` is no longer set; mise installs .NET only on Linux and macOS (ADR 0001).
 - Windows: the television sesh channel runs its sources through `cmd`, so its Projects source finds the `projects.cmd` shim instead of a `projects.ps1` that Windows PowerShell's execution policy blocks.
 - `project-template/mise.toml` skips .NET on Windows too, so entering a project made from it no longer installs a second SDK and `dotnet` shim through mise.
+- Neovim on Windows: lookups, Mason tool starts, clipboard and the ps1 ftplugin no longer cost a PATH walk or a process each; LSP, gitsigns, nvim-lint and todo-comments load after the first screen, blink.cmp while idle, smart-splits on its keys, gitsigns without a `git --version` per start (ADR 0008).
+- Neovim: lualine and bufferline replaced by a cached statusline and tabline with the same layout and keys (ADR 0008).
 
 ### Removed
 - fzf and yazi (television and lf replace them).
 
 ### Fixed
+- Neovim on Windows: the mise shims were appended to PATH with `:`, corrupting its last entry.
 - .NET global tools (easy-dotnet, roslyn-language-server) and JDK lookups failed outside interactive terminals: `DOTNET_ROOT` and `JAVA_HOME` are now set for the whole session.
 - Login-shell script aborted when `$USER` is unset; falls back to `id -un`.
 - .NET SDK crashed on fresh Debian/Ubuntu for lack of ICU.
