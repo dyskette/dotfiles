@@ -40,6 +40,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - `M-h/j/k/l` moves and `M-H/J/K/L` resizes across Neovim and tmux; smart-splits.nvim replaces vim-tmux-navigator (ADR 0004).
 - Flexoki replaces Catppuccin.
 - Windows: .NET comes from winget (SDK 10) and Visual Studio instead of mise, and `DOTNET_ROOT` is no longer set; mise installs .NET only on Linux and macOS (ADR 0001).
+- `project-template/mise.toml` skips .NET on Windows too, so entering a project made from it no longer installs a second SDK and `dotnet` shim through mise.
 
 ### Removed
 - fzf and yazi (television and lf replace them).

@@ -7,7 +7,7 @@ pnpm = "10"
 python = "3.13"
 uv = "latest"
 go = "1.26"
-dotnet = "10"
+dotnet = { version = "10", os = ["linux", "macos"] }  # Windows: Visual Studio and winget own it (ADR 0001)
 cargo-nextest = "latest"
 gotestsum = "latest"
 golangci-lint = "latest"
