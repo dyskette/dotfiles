@@ -10,7 +10,7 @@ A blank Linux machine needs a terminal IDE for five languages. The same binary (
 - Manage dotfiles with **chezmoi**: templates for machine data, `run_onchange_` scripts for idempotent installs, password-manager integration for any future secrets.
 - Each binary has exactly one owner:
   - OS packages: system and GUI pieces.
-  - mise: runtimes, CLIs and Neovim itself.
+  - mise: runtimes, CLIs and Neovim itself. On Windows, .NET instead comes from Microsoft's machine-wide install (winget and Visual Studio): Visual Studio puts its SDKs there regardless, and that `dotnet` comes first on `PATH` outside mise's shells, while the `dotnet` launcher already picks the SDK from `global.json`.
   - Mason: editor-only servers and adapters.
   - `dotnet tool`: .NET editor tooling.
   - rustup: rust-analyzer.

@@ -9,7 +9,7 @@ python = "3.13"
 uv = "latest"
 poetry = "latest"
 go = "latest"
-dotnet = "10"
+dotnet = { version = "10", os = ["linux", "macos"] }  # Windows: Visual Studio and winget own it, machine-wide
 rust = "stable"
 java = "temurin-21"
 

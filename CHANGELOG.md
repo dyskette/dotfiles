@@ -39,6 +39,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - tmux prefix is `M-a` instead of `C-Space`; the sesh picker moved from `prefix T` to `prefix s`.
 - `M-h/j/k/l` moves and `M-H/J/K/L` resizes across Neovim and tmux; smart-splits.nvim replaces vim-tmux-navigator (ADR 0004).
 - Flexoki replaces Catppuccin.
+- Windows: .NET comes from winget (SDK 10) and Visual Studio instead of mise, and `DOTNET_ROOT` is no longer set; mise installs .NET only on Linux and macOS (ADR 0001).
 
 ### Removed
 - fzf and yazi (television and lf replace them).

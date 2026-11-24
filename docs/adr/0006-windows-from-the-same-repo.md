@@ -8,7 +8,7 @@ The same workflow is needed on Windows machines owned by different companies: sa
 
 ## Decision
 - One chezmoi repo for both systems; `.chezmoiignore` picks files by OS, and chezmoi runs `.ps1` scripts with `pwsh -NoProfile -ExecutionPolicy Bypass`.
-- Same mise config; winget only for what mise can't provide (Noctty, psmux, npiperelay, less, MSVC Build Tools) and the bootstrap (Git, PowerShell 7, mise).
+- Same mise config; winget only for what mise can't provide (Noctty, psmux, npiperelay, less, the .NET SDK, MSVC Build Tools) and the bootstrap (Git, PowerShell 7, mise).
 - **Noctty** (Ghostty's core on Windows) reads the Ghostty config through an include template, plus `command = pwsh.exe`.
 - **psmux** as the multiplexer: `tmux/common.conf` holds what tmux and psmux both support, sourced by `tmux.conf` and `~/.psmux.conf`.
 - The PowerShell profile sets `XDG_CONFIG_HOME` (and lf's and bat's equivalents) so tools read `~/.config` as on Linux; VS Code, Zed and Noctty get one-line include templates for their AppData paths. The profile is loaded from `$PROFILE`, so a OneDrive-redirected Documents folder works.

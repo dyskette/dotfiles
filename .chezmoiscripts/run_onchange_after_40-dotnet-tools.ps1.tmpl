@@ -1,4 +1,0 @@
-# .NET editor tools, as easy-dotnet.nvim expects them. hash: {{ include "dot_config/mise/config.toml" | sha256sum }}
-$env:PATH = "$env:LOCALAPPDATA\mise\shims;$HOME\.dotnet\tools;$env:PATH"; $env:XDG_CONFIG_HOME = "$HOME\.config"
-mise exec dotnet -- dotnet tool update -g EasyDotnet
-mise exec dotnet -- dotnet tool update -g roslyn-language-server --prerelease
