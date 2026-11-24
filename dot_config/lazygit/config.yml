@@ -19,6 +19,9 @@ git:
   commitPrefix:                  # feat/auth-login -> "feat(auth-login): "
     - pattern: "^(feat|fix|chore|docs|refactor|test|ci|perf|style|build)/([^/]+)"
       replace: "$1($2): "
+# Back to lazygit as soon as a command returns: nv-edit hands the file to Neovim or VS Code and exits,
+# so "Press enter to return to lazygit" only cost a key press.
+promptToReturnFromSubprocess: false
 os:
   edit: "nv-edit {{filename}}"
   editAtLine: "nv-edit {{filename}} {{line}}"
