@@ -1,5 +1,9 @@
+# Restore Neovim plugins headlessly. Mason servers/adapters install on the first interactive start:
+# its "Installation was aborted" here only means +qa came first.
 # hash: {{ include "dot_config/nvim/lazyvim.json" | sha256sum }}
 {{- if stat (joinPath .chezmoi.sourceDir "dot_config/nvim/lazy-lock.json") }} lock: {{ include "dot_config/nvim/lazy-lock.json" | sha256sum }}{{ end }}
 $env:PATH = "$env:LOCALAPPDATA\mise\shims;$HOME\.dotnet\tools;$env:PATH"; $env:XDG_CONFIG_HOME = "$HOME\.config"
 if (Test-Path "$HOME\.config\nvim\lazy-lock.json") { nvim --headless "+Lazy! restore" +qa } else { nvim --headless "+Lazy! sync" +qa }
-nvim --headless "+TSUpdate" "+sleep 20" +qa
+# nvim-treesitter's build starts compiling parsers and +qa cuts it short, leaving temp folders that make the
+# next install's renames fail (EPERM). Clear them, then install LazyVim's parsers and wait until they're done.
+nvim --headless "+lua for _, d in ipairs(vim.fn.glob(vim.fn.stdpath('cache') .. '/tree-sitter-*', false, true)) do vim.fn.delete(d, 'rf') end" "+lua require('nvim-treesitter').install(LazyVim.opts('nvim-treesitter').ensure_installed):wait(600000)" +qa

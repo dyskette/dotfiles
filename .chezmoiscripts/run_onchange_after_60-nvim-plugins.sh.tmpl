@@ -11,4 +11,6 @@ else
   nvim --headless "+Lazy! sync" +qa
   echo "No lazy-lock.json yet: commit ~/.config/nvim/lazy-lock.json back with 'chezmoi re-add'."
 fi
-nvim --headless "+TSUpdate" "+sleep 20" +qa || true
+# nvim-treesitter's build starts compiling parsers and +qa cuts it short, leaving temp folders behind.
+# Clear them, then install LazyVim's parsers and wait until they're done.
+nvim --headless "+lua for _, d in ipairs(vim.fn.glob(vim.fn.stdpath('cache') .. '/tree-sitter-*', false, true)) do vim.fn.delete(d, 'rf') end" "+lua require('nvim-treesitter').install(LazyVim.opts('nvim-treesitter').ensure_installed):wait(600000)" +qa || true
