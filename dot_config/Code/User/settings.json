@@ -8,6 +8,24 @@
   "window.autoDetectColorScheme": true,
   "workbench.preferredDarkColorTheme": "Flexoki Dark Cyan",
   "workbench.preferredLightColorTheme": "Flexoki Light Cyan",
+  // Flexoki's list selection is too close to the sidebar background to see in the explorer;
+  // tint it with the theme's cyan (focused) and a fainter cyan (sidebar not focused).
+  "workbench.colorCustomizations": {
+    "[Flexoki Dark Cyan]": {
+      "list.activeSelectionBackground": "#164F4A",
+      "list.inactiveSelectionBackground": "#122F2C",
+      "list.focusBackground": "#164F4A",
+      "list.focusOutline": "#3AA99F",
+      "list.focusAndSelectionOutline": "#3AA99F"
+    },
+    "[Flexoki Light Cyan]": {
+      "list.activeSelectionBackground": "#BFE8D9",
+      "list.inactiveSelectionBackground": "#DDF1E4",
+      "list.focusBackground": "#BFE8D9",
+      "list.focusOutline": "#24837B",
+      "list.focusAndSelectionOutline": "#24837B"
+    }
+  },
 
   // ── Editor ────────────────────────────────────────────────────────────────────
   "editor.fontSize": 14,
