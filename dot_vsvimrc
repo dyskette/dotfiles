@@ -1,0 +1,128 @@
+" VsVim (Visual Studio) with LazyVim's options and keys, section by section as ~/.ideavimrc.
+" Commands: Tools > Options > Environment > Keyboard. A Ctrl key reaches these maps only when
+" Tools > Options > VsVim > Keyboard gives it to VsVim; that choice isn't settable here.
+let mapleader = "\<Space>"
+nnoremap <Space> <Nop>
+
+" --- Options (LazyVim's; VsVim has no sidescrolloff or shiftround) ---
+set number
+set relativenumber
+set scrolloff=4
+set ignorecase
+set smartcase
+set incsearch
+set hlsearch
+set nowrap
+set clipboard=unnamed             " the Windows clipboard, as unnamedplus
+set vsvim_useeditordefaults       " tabs and indent from Visual Studio and .editorconfig, not Vim's 8
+
+" --- Editing ---
+nnoremap · ^
+vnoremap · ^
+vnoremap < <gv
+vnoremap > >gv
+vnoremap <A-j> :vsc Edit.MoveSelectedLinesDown<CR>
+vnoremap <A-k> :vsc Edit.MoveSelectedLinesUp<CR>
+nnoremap gcc :vsc Edit.ToggleLineComment<CR>
+vnoremap gc :vsc Edit.ToggleLineComment<CR>
+nnoremap <C-o> :vsc View.NavigateBackward<CR>
+nnoremap <C-i> :vsc View.NavigateForward<CR>
+
+" --- Find / search ---
+nnoremap <leader><Space> :vsc Edit.GoToFile<CR>
+nnoremap <leader>ff :vsc Edit.GoToFile<CR>
+nnoremap <leader>fr :vsc Edit.GoToRecentFile<CR>
+nnoremap <leader>, :vsc Window.NextDocumentWindowNav<CR>
+nnoremap <leader>fb :vsc Window.NextDocumentWindowNav<CR>
+nnoremap <leader>/ :vsc Edit.FindinFiles<CR>
+nnoremap <leader>sg :vsc Edit.FindinFiles<CR>
+nnoremap <leader>sw :vsc Edit.FindinFiles<CR>
+nnoremap <leader>ss :vsc Edit.GoToMember<CR>
+nnoremap <leader>sS :vsc Edit.GoToSymbol<CR>
+nnoremap <leader>sC :vsc Window.QuickLaunch<CR>
+nnoremap <leader>e :vsc View.SolutionExplorer<CR>
+nnoremap <leader>E :vsc SolutionExplorer.SyncWithActiveDocument<CR>
+nnoremap <leader>ft :vsc View.Terminal<CR>
+
+" --- Code (LSP) ---
+nnoremap gd :vsc Edit.GoToDefinition<CR>
+nnoremap gD :vsc Edit.GoToDeclaration<CR>
+nnoremap gr :vsc Edit.FindAllReferences<CR>
+nnoremap gI :vsc Edit.GoToImplementation<CR>
+nnoremap gy :vsc Edit.GoToTypeDefinition<CR>
+nnoremap K :vsc Edit.QuickInfo<CR>
+nnoremap gK :vsc Edit.ParameterInfo<CR>
+nnoremap <leader>ca :vsc View.QuickActions<CR>
+vnoremap <leader>ca :vsc View.QuickActions<CR>
+nnoremap <leader>cr :vsc Refactor.Rename<CR>
+nnoremap <leader>cf :vsc Edit.FormatDocument<CR>
+vnoremap <leader>cf :vsc Edit.FormatSelection<CR>
+nnoremap <leader>cs :vsc Edit.GoToMember<CR>
+nnoremap <leader>cd :vsc Edit.QuickInfo<CR>
+nnoremap ]] :vsc Edit.NextHighlightedReference<CR>
+nnoremap [[ :vsc Edit.PreviousHighlightedReference<CR>
+
+" --- Diagnostics ---
+nnoremap ]d :vsc Edit.GoToNextIssueinFile<CR>
+nnoremap [d :vsc Edit.GoToPreviousIssueinFile<CR>
+nnoremap ]e :vsc Edit.GoToNextIssueinFile<CR>
+nnoremap [e :vsc Edit.GoToPreviousIssueinFile<CR>
+nnoremap ]q :vsc Edit.GoToNextLocation<CR>
+nnoremap [q :vsc Edit.GoToPrevLocation<CR>
+nnoremap <leader>xx :vsc View.ErrorList<CR>
+nnoremap <leader>sd :vsc View.ErrorList<CR>
+
+" --- Git (no command for next/previous change, so no ]h/[h) ---
+nnoremap <leader>gg :vsc View.GitRepositoryWindow<CR>
+nnoremap <leader>gs :vsc Team.Git.GoToGitChanges<CR>
+nnoremap <leader>gb :vsc Team.Git.Annotate<CR>
+nnoremap <leader>gl :vsc Team.Git.ViewHistory<CR>
+
+" --- Buffers and windows ---
+nnoremap <S-h> :vsc Window.PreviousTab<CR>
+nnoremap <S-l> :vsc Window.NextTab<CR>
+nnoremap [b :vsc Window.PreviousTab<CR>
+nnoremap ]b :vsc Window.NextTab<CR>
+nnoremap <leader>bd :vsc Window.CloseDocumentWindow<CR>
+nnoremap <leader>bo :vsc File.CloseOtherTabs<CR>
+nnoremap <leader>- :vsc Window.NewHorizontalTabGroup<CR>
+nnoremap <leader><Bar> :vsc Window.NewVerticalTabGroup<CR>
+nnoremap <leader>wd :vsc Window.CloseDocumentWindow<CR>
+nnoremap <leader>wm :vsc Window.AutoHideAll<CR>
+" Ctrl-h/j/k/l (LazyVim) and Alt-h/j/k/l (as across Neovim and tmux) move between splits.
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+nnoremap <A-h> <C-w>h
+nnoremap <A-j> <C-w>j
+nnoremap <A-k> <C-w>k
+nnoremap <A-l> <C-w>l
+
+" --- Debug (dap.core) ---
+nnoremap <leader>db :vsc Debug.ToggleBreakpoint<CR>
+nnoremap <leader>dB :vsc EditorContextMenus.CodeWindow.Breakpoint.InsertConditionalBreakpoint<CR>
+nnoremap <leader>dc :vsc Debug.Start<CR>
+nnoremap <leader>dC :vsc Debug.RunToCursor<CR>
+nnoremap <leader>di :vsc Debug.StepInto<CR>
+nnoremap <leader>dO :vsc Debug.StepOver<CR>
+nnoremap <leader>do :vsc Debug.StepOut<CR>
+nnoremap <leader>dP :vsc Debug.BreakAll<CR>
+nnoremap <leader>dt :vsc Debug.StopDebugging<CR>
+nnoremap <leader>du :vsc Debug.Locals<CR>
+nnoremap <leader>de :vsc Debug.QuickWatch<CR>
+vnoremap <leader>de :vsc Debug.QuickWatch<CR>
+
+" --- Tests (test.core) ---
+nnoremap <leader>tr :vsc TestExplorer.RunAllTestsInContext<CR>
+nnoremap <leader>tt :vsc TestExplorer.RunAllTestsInContext<CR>
+nnoremap <leader>tT :vsc TestExplorer.RunAllTests<CR>
+nnoremap <leader>td :vsc TestExplorer.DebugAllTestsInContext<CR>
+nnoremap <leader>tl :vsc TestExplorer.RepeatLastRun<CR>
+nnoremap <leader>ts :vsc TestExplorer.ShowTestExplorer<CR>
+nnoremap <leader>tS :vsc TestExplorer.CancelTests<CR>
+
+" --- UI / quit ---
+nnoremap <leader>uw :vsc Edit.ToggleWordWrap<CR>
+nnoremap <leader>uz :vsc View.FullScreen<CR>
+nnoremap <leader>qq :vsc File.Exit<CR>

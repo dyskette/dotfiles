@@ -37,5 +37,6 @@ project-template/**
 .local/bin/*.ps1
 .local/bin/*.cmd
 .psmux.conf
+.vsvimrc
 AppData
 {{ end }}
