@@ -122,6 +122,12 @@ function ocm {                                   # opencode session picker; "+ N
   $s = tv opencode-sessions
   if ($s -eq 'new') { opencode mini } elseif ($s) { opencode mini --session $s }
 }
+# cd pickers, searching from the current directory: a folder, or the folder holding a file.
+function cdd { $d = @(tv dirs --input "$args")[0]; if ($d) { Set-Location -LiteralPath $d } }
+function cdf {
+  $f = @(tv files --input "$args")[0]
+  if ($f -and ($d = Split-Path -Parent $f)) { Set-Location -LiteralPath $d }
+}
 
 # --- Sessions (psmux + sesh) ---
 # tm and sesh-dir are scripts in ~/.local/bin: psmux runs its popups without this profile.

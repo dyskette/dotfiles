@@ -91,6 +91,16 @@ ocm() {                                    # opencode session picker; "+ New ses
   local s; s="$(tv opencode-sessions)" && [[ -n $s ]] || return 0
   if [[ $s == new ]]; then opencode mini; else opencode mini --session "$s"; fi
 }
+# cd pickers, searching from the current directory: a folder, or the folder holding a file.
+cdd() {
+  local d; d="$(tv dirs --input "$*")" && [[ -n $d ]] || return 0
+  cd -- "${d%%$'\n'*}"
+}
+cdf() {
+  local f; f="$(tv files --input "$*")" && [[ -n $f ]] || return 0
+  f=${f%%$'\n'*}
+  [[ $f == */* ]] && cd -- "${f%/*}"
+}
 
 alias vim=nvim
 command -v ghostty >/dev/null && alias ssh='ghostty +ssh --'

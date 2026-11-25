@@ -50,6 +50,7 @@ Repos under `~/Proyectos`, `~/Projects`, `~/source/repos` and `/c/s` are auto-tr
 | `prefix g`, `<leader>gg` | lazygit |
 | `ff`/`fF`, `sg`/`sG`, `gb`, `gl` | shell pickers (tv), named after LazyVim's keys |
 | `ocm` | pick an opencode session in the current project, or start one, in `opencode mini` (tv) |
+| `cdd`, `cdf` | `cd` into a folder, or into the folder holding a file, found under the current directory (tv) |
 | `e`, `gg`, `ee` | lf, lazygit, desktop file manager |
 
 VS Code runs the same LazyVim config through vscode-neovim, with LazyVim's keys mapped to VS Code commands ([ADR 0007](docs/adr/0007-vscode-runs-lazyvim.md)); uninstall VSCodeVim first.
