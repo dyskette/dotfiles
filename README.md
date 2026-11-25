@@ -31,7 +31,7 @@ powershell -ExecutionPolicy Bypass -File $HOME\.local\share\chezmoi\install.ps1
 
 `install.ps1` installs Git, PowerShell 7 and mise with winget, enables the Windows OpenSSH agent (one UAC prompt), and runs `chezmoi init --apply`. The `.ps1` scripts in `.chezmoiscripts/` install Noctty, psmux, npiperelay, less, and VS Code, put mise's shims on the user `PATH` (for VS Code and other apps started outside PowerShell), set Explorer to show file extensions and hidden files, then the same mise toolchain, fonts, .NET tools and Neovim plugins. They also install Visual Studio Enterprise 2026, which also provides MSVC ([ADR 0009](docs/adr/0009-msvc-from-visual-studio.md)), with the components and extensions (VsVim, VsNerdX, Flexoki) in `.chezmoidata/visualstudio.toml`, with Flexoki following the system light/dark mode. Then open Noctty and run `psmux`.
 
-The keys and shell commands below are the same; the PowerShell profile is `~/.config/powershell/profile.ps1`, loaded from `$PROFILE`. On company machines: trust the corporate root certificate for mise, uv and npm (`SSL_CERT_FILE`, `NODE_EXTRA_CA_CERTS`) if TLS is inspected; a Defender exclusion for `%LOCALAPPDATA%\mise` and `LongPathsEnabled` speed up and unblock installs (both need admin).
+The keys and shell commands below are the same; the PowerShell profile is `~/.config/powershell/profile.ps1`, loaded from `$PROFILE`. It renders its own prompt instead of starship, caches the tools' init scripts and loads completions on first Tab ([ADR 0010](docs/adr/0010-fast-powershell-profile.md)). On company machines: trust the corporate root certificate for mise, uv and npm (`SSL_CERT_FILE`, `NODE_EXTRA_CA_CERTS`) if TLS is inspected; a Defender exclusion for `%LOCALAPPDATA%\mise` and `LongPathsEnabled` speed up and unblock installs (both need admin).
 
 ## Per-project setup
 
@@ -70,6 +70,7 @@ Flexoki follows Ghostty's light/dark; tmux (≥ 3.6) and Neovim switch live ([AD
 | `PROJECT_ROOTS`, `PROJECT_DEPTH` | optional | override what `projects` scans |
 | `WIN_SSH_DIR`, `NPIPERELAY` | WSL: `~/.config/environment.d`, resolved by `chezmoi apply` | Windows `~/.ssh` and `npiperelay.exe` for the SSH relay ([ADR 0005](docs/adr/0005-wsl-ssh-through-windows-agent.md)) |
 | `SSH_AUTH_SOCK` | WSL: `~/.bash_profile` | the relay to the Windows OpenSSH agent |
+| `PWSH_INTERACTIVE` | optional, Windows | `1`/`0` overrides the PowerShell profile's interactive detection (`pwsh -c`/`-File` skip prompt, keys and completions) |
 
 No secrets live in this repo: per-repo secrets go in `mise.local.toml` (git-ignored) from your vault; dotfiles secrets use chezmoi's password-manager functions.
 
@@ -89,6 +90,7 @@ No secrets live in this repo: per-repo secrets go in `mise.local.toml` (git-igno
 | "No version is set" inside Neovim | `mise trust` in the repo |
 | neotest-golang finds no tests | `:TSUpdate go` |
 | Completions stale after `mise up` | `chezmoi state delete-bucket --bucket=scriptState && chezmoi apply` |
+| PowerShell: a tool's shell integration is out of date after changing its config | delete `%LOCALAPPDATA%\pwsh-init`; the next shell regenerates it |
 | tmux bindings can't find `sesh`/`tv` | `tmux kill-server`, start tmux from a shell that has them on `PATH` |
 | tmux or Neovim stays dark | needs tmux ≥ 3.6; `prefix r` |
 | WSL: `ssh-add -l` fails | `systemctl --user status ssh-agent-relay`; needs systemd, interop and npiperelay on Windows; after moving them, `chezmoi apply` and log in again |
@@ -106,3 +108,4 @@ No secrets live in this repo: per-repo secrets go in `mise.local.toml` (git-igno
 - [ADR 0007 — VS Code runs LazyVim through vscode-neovim](docs/adr/0007-vscode-runs-lazyvim.md)
 - [ADR 0008 — Keep LazyVim, remove its Windows startup and lookup costs](docs/adr/0008-lazyvim-speed-on-windows.md)
 - [ADR 0009 — MSVC from Visual Studio, not Build Tools](docs/adr/0009-msvc-from-visual-studio.md)
+- [ADR 0010 — A faster PowerShell profile without a build step](docs/adr/0010-fast-powershell-profile.md)

@@ -30,7 +30,7 @@ difftastic = "latest"
 ast-grep = "latest"
 television = "latest"
 atuin = "latest"
-starship = "latest"
+starship = { version = "latest", os = ["linux", "macos"] }  # Windows: the PowerShell profile renders its own prompt (ADR 0010)
 lefthook = "latest"
 gotestsum = "latest"
 "github:joshmedeski/sesh" = "latest"

@@ -35,6 +35,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - ADRs 0001–0006 and `docs/testing.md`.
 
 ### Changed
+- Windows: the PowerShell profile starts in ~1.0 s instead of ~1.9 s and renders each prompt in ~1 ms instead of ~260 ms: cached tool init scripts, completions and tv loaded on first use, an in-process prompt instead of starship, and `pwsh -c`/`-File` skip the interactive setup (ADR 0010). starship is installed only on Linux and macOS.
 - The shell is bash instead of zsh.
 - Ghostty no longer starts tmux on its own.
 - tmux prefix is `M-a` instead of `C-Space`; the sesh picker moved from `prefix T` to `prefix s`.

@@ -1,15 +1,46 @@
-# PowerShell completions for the mise-managed CLIs, loaded by the profile. hash: {{ include "dot_config/mise/config.toml" | sha256sum }}
+# PowerShell completions for the mise-managed CLIs: one file per command in %LOCALAPPDATA%\powershell-completions,
+# which the profile loads on that command's first Tab (ADR 0010). hash: {{ include "dot_config/mise/config.toml" | sha256sum }}
 $env:PATH = "$env:LOCALAPPDATA\mise\shims;$env:ProgramFiles\dotnet;$HOME\.dotnet\tools;$env:PATH"; $env:XDG_CONFIG_HOME = "$HOME\.config"
+# lefthook and cargo are left out: neither generates PowerShell completions.
 $gen = 'mise completion powershell', 'chezmoi completion powershell', 'gh completion -s powershell',
   'rg --generate complete-powershell', 'fd --gen-completions powershell', 'bat --completion ps1',
   'delta --generate-completion powershell', 'ast-grep completions powershell', 'atuin gen-completions --shell powershell',
-  'starship completions powershell', 'lefthook completion powershell', 'sesh completion powershell',
-  'yq shell-completion powershell', 'uv generate-shell-completion powershell', 'dotnet completions script pwsh',
-  'opencode --completions pwsh', 'rustup completions powershell rustup', 'rustup completions powershell cargo'
-$lines = $gen | ForEach-Object {
-  $exe, $rest = -split $_
-  if (Get-Command $exe -ErrorAction Ignore) { & $exe @rest 2>$null }
+  'sesh completion powershell', 'yq shell-completion powershell', 'uv generate-shell-completion powershell',
+  'dotnet completions script pwsh', 'opencode --completions pwsh', 'rustup completions powershell rustup'
+$dir = "$env:LOCALAPPDATA\powershell-completions"
+$stage = "$dir.new"
+Remove-Item -Recurse -Force $stage -ErrorAction Ignore
+New-Item -ItemType Directory $stage | Out-Null
+
+# Saves a script under each command it registers a completer for. Its Register-ArgumentCompleter calls
+# become __pwsh_register_completer (profile.ps1), which also hands the completer to the first Tab.
+function Save-Completion([string]$Text, [string]$Origin) {
+  $ast = [Management.Automation.Language.Parser]::ParseInput($Text, [ref]$null, [ref]$null)
+  $names = foreach ($r in $ast.FindAll({ param($n) $n -is [Management.Automation.Language.CommandAst] -and $n.GetCommandName() -eq 'Register-ArgumentCompleter' }, $true)) {
+    $els = $r.CommandElements
+    for ($i = 1; $i -lt $els.Count - 1; $i++) {
+      if ($els[$i] -is [Management.Automation.Language.CommandParameterAst] -and $els[$i].ParameterName -eq 'CommandName') { $els[$i + 1].SafeGetValue() }
+    }
+  }
+  if (-not $names) { Write-Warning "$($Origin): no completer found, skipped"; return }
+  $Text = $Text -replace '(?<![\w-])Register-ArgumentCompleter(?![\w-])', '__pwsh_register_completer'
+  foreach ($n in $names) { Set-Content "$stage\$([IO.Path]::GetFileNameWithoutExtension($n)).ps1" $Text }
 }
-# clap's scripts each start with `using namespace` lines, which PowerShell only accepts at the top of a file.
-$using = $lines | Where-Object { $_ -match '^\s*using\s' } | ForEach-Object Trim | Sort-Object -Unique
-@($using) + @($lines | Where-Object { $_ -notmatch '^\s*using\s' }) | Set-Content "$env:LOCALAPPDATA\powershell-completions.ps1"
+
+foreach ($g in $gen) {
+  $exe, $rest = -split $g
+  if (-not (Get-Command $exe -ErrorAction Ignore)) { continue }
+  $text = & $exe @rest 2>$null | Out-String
+  if ($text) { Save-Completion $text $g } else { Write-Warning "$($g): no output, skipped" }
+}
+# tv's completer is part of its init script, which the profile loads only on Ctrl+T.
+if (Get-Command tv -ErrorAction Ignore) {
+  $ast = [Management.Automation.Language.Parser]::ParseInput((tv init power-shell | Out-String), [ref]$null, [ref]$null)
+  $reg = $ast.EndBlock.Statements | Where-Object { $_.Extent.Text -like 'Register-ArgumentCompleter*' } | Select-Object -First 1
+  if ($reg) { Save-Completion ((@($ast.UsingStatements.Extent.Text) + $reg.Extent.Text) -join "`n") 'tv init' }
+}
+
+# Swap in the new set whole, so a shell never sees half of it.
+Remove-Item -Recurse -Force $dir -ErrorAction Ignore
+Move-Item $stage $dir
+Remove-Item "$env:LOCALAPPDATA\powershell-completions.ps1" -ErrorAction Ignore  # the old single file
