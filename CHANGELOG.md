@@ -53,6 +53,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - fzf and yazi (television and lf replace them).
 
 ### Fixed
+- Windows: the first snacks picker that previewed an image could type `P>|ghostty …` into its input. psmux handed Noctty's XTVERSION reply to snacks' image detection as keys; with `extended-keys on` in `~/.psmux.conf`, snacks asks psmux for the terminal name instead.
 - Windows: `chezmoi apply` run from Git Bash set git's `sshCommand` to Git's own `ssh.exe`, which doesn't use the Windows SSH agent. It now points at Windows OpenSSH by its fixed path, from any shell.
 - Windows: a commented-out profile loader in `$PROFILE` counted as present, so a tool that rewrote `$PROFILE` silently replaced this repo's profile. The loader check now needs an active line and runs on every `chezmoi apply`.
 - Windows: `nuget.exe restore` and `vswhere -latest -requires Microsoft.Component.MSBuild` scripts picked the MSVC Build Tools' MSBuild, which has no .NET SDK resolver, and skipped SDK-style projects. MSVC now comes from Visual Studio Enterprise 2026 and the Build Tools are no longer installed (ADR 0009).
