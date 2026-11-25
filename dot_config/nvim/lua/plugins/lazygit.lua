@@ -1,22 +1,22 @@
 -- <leader>gg: open edited files in the current window instead of a new tab
 -- (snacks' default "nvim-remote" preset uses --remote-tab).
--- lazygit runs these through sh, or cmd on Windows, which expands %NVIM% rather than $NVIM.
-local server = vim.fn.has("win32") == 1 and '"%NVIM%"' or '"$NVIM"'
-local remote = "nvim --server " .. server
+-- On Windows lazygit escapes % & < > with ^ before handing the command to cmd, so neither %NVIM%
+-- nor && work there: nv-edit.ps1 does the same through $env:NVIM instead.
+local os_config = vim.fn.has("win32") == 1
+    and { edit = "nv-edit {{filename}}", editAtLine = "nv-edit {{filename}} {{line}}" }
+  or {
+    edit = 'nvim --server "$NVIM" --remote-send "<C-\\><C-n><cmd>close<cr>" && nvim --server "$NVIM" --remote "{{filename}}"',
+    editAtLine = 'nvim --server "$NVIM" --remote-send "<C-\\><C-n><cmd>close<cr>" && nvim --server "$NVIM" --remote "{{filename}}"'
+      .. ' && nvim --server "$NVIM" --remote-send ":{{line}}<CR>"',
+  }
+os_config.editPreset = ""
 
 ---@type LazySpec
 return {
   "folke/snacks.nvim",
   opts = {
     lazygit = {
-      config = {
-        os = {
-          editPreset = "",
-          edit = remote .. ' --remote-send "<C-\\><C-n><cmd>close<cr>" && ' .. remote .. ' --remote "{{filename}}"',
-          editAtLine = remote .. ' --remote-send "<C-\\><C-n><cmd>close<cr>" && ' .. remote .. ' --remote "{{filename}}" && '
-            .. remote .. ' --remote-send ":{{line}}<CR>"',
-        },
-      },
+      config = { os = os_config },
     },
   },
 }
