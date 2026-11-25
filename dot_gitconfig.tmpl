@@ -8,8 +8,10 @@
 	excludesFile = ~/.config/git/ignore
 {{- if eq .chezmoi.os "windows" }}
 	# Windows OpenSSH, so git uses the Windows agent instead of Git for Windows' own ssh.
-{{- with lookPath "ssh.exe" }}
-	sshCommand = {{ . | replace "\\" "/" }}
+	# A fixed path, not a PATH lookup: from Git Bash, PATH finds Git's ssh.exe first.
+{{- $ssh := joinPath (env "SystemRoot") "System32" "OpenSSH" "ssh.exe" }}
+{{- if stat $ssh }}
+	sshCommand = {{ $ssh | replace "\\" "/" }}
 {{- end }}
 {{- end }}
 [interactive]
