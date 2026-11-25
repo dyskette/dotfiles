@@ -87,6 +87,10 @@ gb() {                                     # origin/x → a local x tracking it
   git switch "$b"
 }
 gl() { tv git-log; }
+ocm() {                                    # opencode session picker; "+ New session" starts one
+  local s; s="$(tv opencode-sessions)" && [[ -n $s ]] || return 0
+  if [[ $s == new ]]; then opencode mini; else opencode mini --session "$s"; fi
+}
 
 alias vim=nvim
 command -v ghostty >/dev/null && alias ssh='ghostty +ssh --'

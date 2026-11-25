@@ -28,6 +28,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - `~/.vsvimrc` (Windows): VsVim with the IdeaVim config's LazyVim options and keys, through Visual Studio commands.
 - pandoc through mise, with bash completion.
 - Windows: `less` from winget, so `bat` and `delta` page outside git.
+- `ocm`: a tv channel (`opencode-sessions`) listing the current project's opencode sessions, newest first, plus a new-session entry, opened in `opencode mini`.
 - Windows: `tm` and `sesh-dir` are `~/.local/bin` scripts instead of profile functions, so psmux's `prefix s` and `prefix a` popups find them.
 - PowerShell profile: UTF-8 console encoding with native programs; `Ctrl+p`/`Ctrl+n` prefix history search, `Ctrl+y` accept suggestion, `Ctrl+d` delete or exit.
 - Windows Explorer settings for the user: file extensions and hidden files shown, taskbar and Alt+Tab across all virtual desktops, Alt+Tab without browser tabs.

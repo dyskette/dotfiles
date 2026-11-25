@@ -72,6 +72,10 @@ function gb {                                    # origin/x → a local x tracki
   git switch $b
 }
 function gl { tv git-log }
+function ocm {                                   # opencode session picker; "+ New session" starts one
+  $s = tv opencode-sessions
+  if ($s -eq 'new') { opencode mini } elseif ($s) { opencode mini --session $s }
+}
 
 # --- Sessions (psmux + sesh) ---
 # tm and sesh-dir are scripts in ~/.local/bin: psmux runs its popups without this profile.

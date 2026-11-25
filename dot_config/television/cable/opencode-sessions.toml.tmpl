@@ -1,0 +1,20 @@
+# opencode sessions in the current project, newest first, plus a "+ New session" entry.
+# Outputs the session id, or "new"; the ocm shell function opens it with opencode mini.
+[metadata]
+name = "opencode-sessions"
+description = "opencode sessions in the current project"
+requirements = ["opencode", "jq"]
+
+[source]
+# The jq program lives in its own file, so its quotes don't nest inside cmd's and TOML's. Its path stays
+# unquoted: tv passes the command to cmd with quotes escaped as \", which cmd doesn't unescape.
+command = "opencode session list --format json --max-count 50 | jq -r -f {{ .chezmoi.homeDir }}/.config/television/opencode-sessions.jq"
+{{- if eq .chezmoi.os "windows" }}
+# tv defaults to Windows PowerShell 5.1, whose pipe re-encodes text and garbles non-ASCII titles;
+# cmd passes jq the bytes opencode wrote.
+shell = "cmd"
+{{- end }}
+display = "{split:\t:0}"
+output = "{split:\t:1}"
+no_sort = true   # newest first, with "+ New session" on top
+frecency = false
