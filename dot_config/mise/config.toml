@@ -34,6 +34,9 @@ starship = { version = "latest", os = ["linux", "macos"] }  # Windows: the Power
 lefthook = "latest"
 gotestsum = "latest"
 "github:joshmedeski/sesh" = "latest"
+# psmux (Windows): built from a pinned master commit until a release after 3.4.0 ships the U+FFFD fix (#978,
+# 3b6d80b5); then back to winget (marlocarlo.psmux in run_onchange_before_10-packages.ps1). Cargo with MSVC builds it.
+"cargo:https://github.com/psmux/psmux" = { version = "rev:7d7dd94ca919b6111774150fbbd18bba325fd0f1", crate = "psmux", os = ["windows"] }
 claude = "latest"
 copilot = "latest"
 "aqua:anomalyco/opencode" = "latest"
