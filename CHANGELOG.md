@@ -51,6 +51,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - fzf and yazi (television and lf replace them).
 
 ### Fixed
+- Windows: a commented-out profile loader in `$PROFILE` counted as present, so a tool that rewrote `$PROFILE` silently replaced this repo's profile. The loader check now needs an active line and runs on every `chezmoi apply`.
 - Windows: `nuget.exe restore` and `vswhere -latest -requires Microsoft.Component.MSBuild` scripts picked the MSVC Build Tools' MSBuild, which has no .NET SDK resolver, and skipped SDK-style projects. MSVC now comes from Visual Studio Enterprise 2026 and the Build Tools are no longer installed (ADR 0009).
 - Neovim on Windows: the mise shims were appended to PATH with `:`, corrupting its last entry.
 - .NET global tools (easy-dotnet, roslyn-language-server) and JDK lookups failed outside interactive terminals: `DOTNET_ROOT` and `JAVA_HOME` are now set for the whole session.
