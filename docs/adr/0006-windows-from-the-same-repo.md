@@ -2,6 +2,7 @@
 
 ## Status
 Accepted — 2026-11-23
+MSVC Build Tools superseded by [ADR 0009](0009-msvc-from-visual-studio.md) — 2026-11-25
 
 ## Context
 The same workflow is needed on Windows machines owned by different companies: same keys, tools and editor config, with as little extra code as possible and no hard-coded machine paths. Ghostty and tmux don't run on Windows.

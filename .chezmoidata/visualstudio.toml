@@ -1,5 +1,6 @@
 # Visual Studio Enterprise 2026 components, installed by run_onchange_after_47-visualstudio.ps1.tmpl.
-# No MSVC here: the Build Tools own it (10-packages), so rust and tree-sitter don't depend on this IDE.
+# MSVC lives here too (ADR 0009): a separate Build Tools install is a second, newer MSBuild without the
+# .NET SDK resolver, and nuget.exe and vswhere -latest scripts pick it and skip SDK-style projects.
 [visualstudio]
 components = [
   "Microsoft.VisualStudio.Workload.CoreEditor",
@@ -8,6 +9,8 @@ components = [
   "Microsoft.Net.Component.4.8.TargetingPack",  # .NET Framework projects
   "Microsoft.Net.Component.4.8.SDK",
   "Microsoft.NetCore.Component.Runtime.10.0",
+  "Microsoft.VisualStudio.Component.VC.Tools.x86.x64",   # MSVC: rust's linker, tree-sitter's C compiler
+  "Microsoft.VisualStudio.Component.Windows11SDK.26100",  # Windows libraries the linker needs
 ]
 
 # VSIX URLs, installed by run_onchange_after_95-visualstudio-extensions.ps1.tmpl.

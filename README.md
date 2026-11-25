@@ -29,7 +29,7 @@ git clone <this-repo-url> $HOME\.local\share\chezmoi
 powershell -ExecutionPolicy Bypass -File $HOME\.local\share\chezmoi\install.ps1
 ```
 
-`install.ps1` installs Git, PowerShell 7 and mise with winget, enables the Windows OpenSSH agent (one UAC prompt), and runs `chezmoi init --apply`. The `.ps1` scripts in `.chezmoiscripts/` install Noctty, psmux, npiperelay, less, VS Code and the MSVC Build Tools, put mise's shims on the user `PATH` (for VS Code and other apps started outside PowerShell), set Explorer to show file extensions and hidden files, then the same mise toolchain, fonts, .NET tools and Neovim plugins. They also install Visual Studio Enterprise 2026 with the components and extensions (VsVim, VsNerdX, Flexoki) in `.chezmoidata/visualstudio.toml`, with Flexoki following the system light/dark mode. Then open Noctty and run `psmux`.
+`install.ps1` installs Git, PowerShell 7 and mise with winget, enables the Windows OpenSSH agent (one UAC prompt), and runs `chezmoi init --apply`. The `.ps1` scripts in `.chezmoiscripts/` install Noctty, psmux, npiperelay, less, and VS Code, put mise's shims on the user `PATH` (for VS Code and other apps started outside PowerShell), set Explorer to show file extensions and hidden files, then the same mise toolchain, fonts, .NET tools and Neovim plugins. They also install Visual Studio Enterprise 2026, which also provides MSVC ([ADR 0009](docs/adr/0009-msvc-from-visual-studio.md)), with the components and extensions (VsVim, VsNerdX, Flexoki) in `.chezmoidata/visualstudio.toml`, with Flexoki following the system light/dark mode. Then open Noctty and run `psmux`.
 
 The keys and shell commands below are the same; the PowerShell profile is `~/.config/powershell/profile.ps1`, loaded from `$PROFILE`. On company machines: trust the corporate root certificate for mise, uv and npm (`SSL_CERT_FILE`, `NODE_EXTRA_CA_CERTS`) if TLS is inspected; a Defender exclusion for `%LOCALAPPDATA%\mise` and `LongPathsEnabled` speed up and unblock installs (both need admin).
 
@@ -104,3 +104,4 @@ No secrets live in this repo: per-repo secrets go in `mise.local.toml` (git-igno
 - [ADR 0006 — Windows from the same repo](docs/adr/0006-windows-from-the-same-repo.md)
 - [ADR 0007 — VS Code runs LazyVim through vscode-neovim](docs/adr/0007-vscode-runs-lazyvim.md)
 - [ADR 0008 — Keep LazyVim, remove its Windows startup and lookup costs](docs/adr/0008-lazyvim-speed-on-windows.md)
+- [ADR 0009 — MSVC from Visual Studio, not Build Tools](docs/adr/0009-msvc-from-visual-studio.md)

@@ -49,6 +49,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - fzf and yazi (television and lf replace them).
 
 ### Fixed
+- Windows: `nuget.exe restore` and `vswhere -latest -requires Microsoft.Component.MSBuild` scripts picked the MSVC Build Tools' MSBuild, which has no .NET SDK resolver, and skipped SDK-style projects. MSVC now comes from Visual Studio Enterprise 2026 and the Build Tools are no longer installed (ADR 0009).
 - Neovim on Windows: the mise shims were appended to PATH with `:`, corrupting its last entry.
 - .NET global tools (easy-dotnet, roslyn-language-server) and JDK lookups failed outside interactive terminals: `DOTNET_ROOT` and `JAVA_HOME` are now set for the whole session.
 - Login-shell script aborted when `$USER` is unset; falls back to `id -un`.
