@@ -4,7 +4,7 @@
 -- tmux sends Alt-h/j/k/l to Neovim only while the pane has @pane-is-vim. smart-splits sets it
 -- when it activates, with two blocking tmux calls (~100 ms under psmux on Windows). Here a
 -- non-blocking spawn sets it right after startup and smart-splits loads on the first key
--- (ADR 0008).
+-- (ADR 0008). Under psmux, fast/psmux.lua skips that activation and moves over psmux's socket.
 
 ---@param fn string smart-splits function name
 local function ss(fn)
@@ -63,7 +63,8 @@ return {
     },
   },
   opts = {
-    mux = { backend = "smart-splits-backend-tmux" },
+    -- psmux: one socket request per move instead of 3-4 `tmux` runs (fast/psmux.lua).
+    mux = { backend = vim.env.PSMUX_SESSION and "fast.psmux" or "smart-splits-backend-tmux" },
     move = { at_edge = "wrap" },
   },
   keys = {
