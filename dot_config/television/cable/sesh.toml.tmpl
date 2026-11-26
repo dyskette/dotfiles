@@ -31,3 +31,14 @@ ctrl-d = ["actions:kill_session", "reload_source"]
 description = "Kill the highlighted tmux session"
 command = "tmux kill-session -t \"{strip_ansi|split: :1..|join: }\""
 mode = "fork"
+
+# Bound to Enter only by psmux's prefix s popup (`tv sesh -k 'enter="actions:connect"'`), which then runs
+# tv alone instead of a script around it. Unquoted: tv escapes quotes in a way cmd doesn't undo, and sesh
+# joins its arguments with spaces.
+[actions.connect]
+description = "Open the highlighted session"
+command = "sesh connect {strip_ansi|split: :1..|join: }"
+mode = "execute"
+{{- if eq .chezmoi.os "windows" }}
+shell = "cmd"   # tv's default, Windows PowerShell 5.1, would start slower than sesh itself
+{{- end }}

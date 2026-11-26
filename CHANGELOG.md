@@ -50,6 +50,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Neovim under psmux: `M-h/j/k/l` into another pane takes ~12 ms instead of ~135 ms. A move is one request on psmux's socket instead of 3–4 `tmux` runs, which still run as the fallback (`lua/fast/psmux.lua`).
 - psmux: `prefix L` runs `sesh last` through `cmd` instead of PowerShell, ~350 ms sooner.
 - psmux: `prefix g` starts lazygit directly instead of through PowerShell, ~350 ms sooner.
+- psmux: `prefix s` and `prefix a` start tv and lf directly instead of `tm`/`sesh-dir` in PowerShell, ~350 ms sooner; Enter opens the session from the picker through `cmd` (tv's sesh channel `connect` action, `~/.config/lf/sesh-dir-cmd`, which replaces `sesh-dir-pwsh` and its second PowerShell). `tm` and `sesh-dir` no longer rebuild `TMUX`: psmux gives popups the right one now.
 - Neovim: lualine and bufferline replaced by a cached statusline and tabline with the same layout and keys (ADR 0008).
 
 ### Removed
