@@ -58,6 +58,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - fzf and yazi (television and lf replace them).
 
 ### Fixed
+- Windows: `python` and `python3` could resolve to the Microsoft Store stubs in `WindowsApps`. The Windows settings script turns off those app execution aliases.
 - Windows: Noctty ignored the shared config (Flexoki theme, font, pwsh). With `XDG_CONFIG_HOME` set as a user variable, it reads `~/.config/noctty/config.ghostty` instead of `%LOCALAPPDATA%\noctty`; the include template now lives there.
 - Windows: a session opened with `prefix a` started in cmd instead of pwsh. lf exports `SHELL=cmd` to its commands, and psmux takes `SHELL` as a new session's shell; `sesh-dir-cmd` clears it before `sesh connect`.
 - Windows: the first snacks picker that previewed an image could type `P>|ghostty …` into its input. psmux handed Noctty's XTVERSION reply to snacks' image detection as keys; with `extended-keys on` in `~/.psmux.conf`, snacks asks psmux for the terminal name instead.
