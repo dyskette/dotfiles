@@ -33,6 +33,7 @@ project-template/**
 {{ else }}
 .chezmoiscripts/*.ps1
 .config/lf/sesh-dir-cmd
+.config/noctty
 .config/powershell
 .local/bin/*.ps1
 .local/bin/*.cmd
