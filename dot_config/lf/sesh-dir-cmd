@@ -1,6 +1,7 @@
 # Windows counterpart of ./sesh-dir, sourced by psmux's prefix a popup and ~/.local/bin/sesh-dir.ps1.
 # Enter on a folder opens its sesh session from here through cmd, so nothing waits on PowerShell.
 # lf hands cmd %f% already quoted: "%f:"=%\" tests the bare path for a folder, & and spaces included.
+# lf also exports SHELL=cmd, which psmux would take as a new session's shell: cleared, it picks pwsh.
 set shell cmd
-cmd sesh-dir-pick &{{ if exist "%f:"=%\" (sesh connect %f% & lf -remote "send %id% quit") }}
+cmd sesh-dir-pick &{{ if exist "%f:"=%\" (set "SHELL=" & sesh connect %f% & lf -remote "send %id% quit") }}
 map <enter> sesh-dir-pick
