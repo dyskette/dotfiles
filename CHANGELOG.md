@@ -48,6 +48,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - `project-template/mise.toml` skips .NET on Windows too, so entering a project made from it no longer installs a second SDK and `dotnet` shim through mise.
 - Neovim on Windows: lookups, Mason tool starts, clipboard and the ps1 ftplugin no longer cost a PATH walk or a process each; LSP, gitsigns, nvim-lint and todo-comments load after the first screen, blink.cmp while idle, smart-splits on its keys, gitsigns without a `git --version` per start (ADR 0008).
 - Neovim under psmux: `M-h/j/k/l` into another pane takes ~12 ms instead of ~135 ms. A move is one request on psmux's socket instead of 3–4 `tmux` runs, which still run as the fallback (`lua/fast/psmux.lua`).
+- psmux: `prefix L` runs `sesh last` through `cmd` instead of PowerShell, ~350 ms sooner.
 - Neovim: lualine and bufferline replaced by a cached statusline and tabline with the same layout and keys (ADR 0008).
 
 ### Removed
