@@ -7,7 +7,7 @@ Ghostty → tmux + sesh (one session per repo) → bash + mise → nvim (LazyVim
 Noctty  → psmux + sesh                     → pwsh + mise → nvim (LazyVim)     (Windows, ADR 0006)
 ```
 
-Each binary has one owner: OS packages, mise, Mason (editor-only servers, appended to Neovim's `PATH` so a repo's mise pins win), `dotnet tool` or rustup ([ADR 0001](docs/adr/0001-chezmoi-and-tool-ownership.md)).
+Each binary has one owner: OS packages, mise, Mason (editor-only servers, appended to Neovim's `PATH` so a repo's mise pins win), `dotnet tool` or rustup ([ADR 0001](docs/adr/0001-chezmoi-and-tool-ownership.md)). basedpyright and debugpy stay out of Mason's pip venvs, which break when their Python changes ([ADR 0011](docs/adr/0011-python-editor-tools-without-mason-venvs.md)).
 
 ## Setup
 
@@ -110,3 +110,4 @@ No secrets live in this repo: per-repo secrets go in `mise.local.toml` (git-igno
 - [ADR 0008 — Keep LazyVim, remove its Windows startup and lookup costs](docs/adr/0008-lazyvim-speed-on-windows.md)
 - [ADR 0009 — MSVC from Visual Studio, not Build Tools](docs/adr/0009-msvc-from-visual-studio.md)
 - [ADR 0010 — A faster PowerShell profile without a build step](docs/adr/0010-fast-powershell-profile.md)
+- [ADR 0011 — Python editor tools without Mason's pip venvs](docs/adr/0011-python-editor-tools-without-mason-venvs.md)

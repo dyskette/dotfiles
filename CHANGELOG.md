@@ -58,6 +58,10 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - fzf and yazi (television and lf replace them).
 
 ### Fixed
+- Windows: debugging Python in Neovim failed with `ENOENT`. nvim-dap starts adapters with `uv.spawn`, which can't run Mason's `debugpy-adapter.cmd`; debugpy now runs through `uvx`.
+- basedpyright quit with exit code 103 once the Python its Mason venv was built on was removed. basedpyright now comes from npm through mise, and debugpy runs as `uvx --from debugpy debugpy-adapter`; neither depends on a particular Python install (ADR 0011).
+- Windows: a cold first start of the Python debug adapter (uvx, debugpy and Python all scanned by Defender) passed nvim-dap's 4 s limit and warned "Debug adapter didn't respond"; it now gets 20 s.
+- Windows: debugging Python opened a terminal tab titled `…\uv.exe`. nvim-dap starts adapters detached, which on Windows means without a console, so the `uv.exe` that `uvx` starts got a visible one of its own; the adapter now starts attached with nvim-dap's hidden console, as nvim-dap-go does for delve.
 - Windows: Neovim's executable lookup let a `.exe` later on `PATH` (e.g. a mise shim) beat a `.cmd` in an earlier directory, unlike Windows itself. It now picks the first directory with any match, so npm tools from mise skip the shim and `mise.exe`.
 - Windows: `python` and `python3` could resolve to the Microsoft Store stubs in `WindowsApps`. The Windows settings script turns off those app execution aliases.
 - Windows: Noctty ignored the shared config (Flexoki theme, font, pwsh). With `XDG_CONFIG_HOME` set as a user variable, it reads `~/.config/noctty/config.ghostty` instead of `%LOCALAPPDATA%\noctty`; the include template now lives there.

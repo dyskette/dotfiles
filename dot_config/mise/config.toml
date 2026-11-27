@@ -8,6 +8,7 @@ node = "lts"
 python = "3.13"
 uv = "latest"
 poetry = "latest"
+"npm:basedpyright" = "latest" # Neovim's Python LSP; on node, not a pip venv pinned to one Python (ADR 0011)
 go = "latest"
 dotnet = { version = "10", os = ["linux", "macos"] }  # Windows: Visual Studio and winget own it, machine-wide
 rust = "stable"

@@ -11,7 +11,7 @@ A blank Linux machine needs a terminal IDE for five languages. The same binary (
 - Each binary has exactly one owner:
   - OS packages: system and GUI pieces.
   - mise: runtimes, CLIs and Neovim itself. On Windows, .NET instead comes from Microsoft's machine-wide install (winget and Visual Studio): Visual Studio puts its SDKs there regardless, and that `dotnet` comes first on `PATH` outside mise's shells, while the `dotnet` launcher already picks the SDK from `global.json`.
-  - Mason: editor-only servers and adapters.
+  - Mason: editor-only servers and adapters, except pip-based ones, whose venvs break when their Python changes: basedpyright comes from mise (npm) and debugpy from `uvx` ([ADR 0011](0011-python-editor-tools-without-mason-venvs.md)).
   - `dotnet tool`: .NET editor tooling.
   - rustup: rust-analyzer.
 - Mason's bin dir is **appended** to `PATH` so repo-pinned (mise) tools win inside Neovim.
