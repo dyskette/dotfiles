@@ -34,6 +34,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - PowerShell profile: UTF-8 console encoding with native programs; `Ctrl+p`/`Ctrl+n` prefix history search, `Ctrl+y` accept suggestion, `Ctrl+d` delete or exit.
 - Windows Explorer settings for the user: file extensions and hidden files shown, taskbar and Alt+Tab across all virtual desktops, Alt+Tab without browser tabs.
 - ADRs 0001–0006 and `docs/testing.md`.
+- neotest runs Node's built-in test runner (`node --test`) through neotest-nodejs, only for files that import `node:test`. Its reporter is passed as a `file://` URL (on Windows node rejects a `C:/` path and ran nothing), and `reporters/neotest-nodejs.cjs` replaces it so failures show the assertion message instead of `testCodeFailure`.
 
 ### Changed
 - Windows: the PowerShell profile starts in ~1.0 s instead of ~1.9 s and renders each prompt in ~1 ms instead of ~260 ms: cached tool init scripts, completions and tv loaded on first use, an in-process prompt instead of starship, and `pwsh -c`/`-File` skip the interactive setup (ADR 0010). starship is installed only on Linux and macOS.
