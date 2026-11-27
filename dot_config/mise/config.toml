@@ -34,6 +34,7 @@ atuin = "latest"
 starship = { version = "latest", os = ["linux", "macos"] }  # Windows: the PowerShell profile renders its own prompt (ADR 0010)
 lefthook = "latest"
 gotestsum = "latest"
+golangci-lint = "latest"     # nvim-lint's Go linter too; a repo's pin wins (ADR 0001)
 "github:joshmedeski/sesh" = "latest"
 # psmux (Windows): built from a pinned master commit until a release after 3.4.0 ships the U+FFFD fix (#978,
 # 3b6d80b5); then back to winget (marlocarlo.psmux in run_onchange_before_10-packages.ps1). Cargo with MSVC builds it.
