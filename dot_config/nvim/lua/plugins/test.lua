@@ -3,6 +3,10 @@
 return {
   {
     "nvim-neotest/neotest",
+    -- Windows: buffers opened as C:/x/test.py were "No tests found" (fast/neotest_paths.lua).
+    init = jit.os == "Windows" and function()
+      require("fast.neotest_paths").setup()
+    end or nil,
     dependencies = { "marilari88/neotest-vitest", "nvim-neotest/neotest-jest" },
     opts = {
       adapters = {
