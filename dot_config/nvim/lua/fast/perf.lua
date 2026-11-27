@@ -46,6 +46,7 @@ local function index_lookups()
   local index ---@type string?
   local built_path, built_at = nil, 0
   local exts = {}
+  local ranks = {} ---@type table<string, integer> PATH position of each (normalized) dir
 
   ---@param path string
   ---@return string
@@ -75,9 +76,15 @@ local function index_lookups()
 
   local function set(str, path)
     index, built_path, built_at, results = str, path, uv.now(), {}
-    exts = {}
+    exts, ranks = {}, {}
     for ext in ((uv.os_getenv("PATHEXT") or ".EXE"):lower()):gmatch("[^;]+") do
       exts[#exts + 1] = ext
+    end
+    local i = 0
+    for dir in path:gmatch("[^;]+") do
+      i = i + 1
+      local d = dir:gsub("[/\\]+$", ""):lower()
+      ranks[d] = ranks[d] or i
     end
   end
 
@@ -128,10 +135,15 @@ local function index_lookups()
       hit = lookup(key)
     end
     if not hit then
+      -- Like Windows: the first PATH dir that has any PATHEXT match wins, and within that dir the
+      -- PATHEXT order decides. (Trying each extension across all of PATH would let a later dir's
+      -- .exe, e.g. a mise shim, beat an earlier dir's .cmd, e.g. an npm tool's bin.)
+      local best_rank
       for _, e in ipairs(exts) do
-        hit = lookup(key .. e)
-        if hit then
-          break
+        local p = lookup(key .. e)
+        local rank = p and (ranks[p:match("^(.*)\\[^\\]*$")] or math.huge)
+        if rank and (not best_rank or rank < best_rank) then
+          hit, best_rank = p, rank
         end
       end
     end

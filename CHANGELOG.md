@@ -58,6 +58,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - fzf and yazi (television and lf replace them).
 
 ### Fixed
+- Windows: Neovim's executable lookup let a `.exe` later on `PATH` (e.g. a mise shim) beat a `.cmd` in an earlier directory, unlike Windows itself. It now picks the first directory with any match, so npm tools from mise skip the shim and `mise.exe`.
 - Windows: `python` and `python3` could resolve to the Microsoft Store stubs in `WindowsApps`. The Windows settings script turns off those app execution aliases.
 - Windows: Noctty ignored the shared config (Flexoki theme, font, pwsh). With `XDG_CONFIG_HOME` set as a user variable, it reads `~/.config/noctty/config.ghostty` instead of `%LOCALAPPDATA%\noctty`; the include template now lives there.
 - Windows: a session opened with `prefix a` started in cmd instead of pwsh. lf exports `SHELL=cmd` to its commands, and psmux takes `SHELL` as a new session's shell; `sesh-dir-cmd` clears it before `sesh connect`.
