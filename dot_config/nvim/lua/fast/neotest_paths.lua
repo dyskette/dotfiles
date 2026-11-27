@@ -6,6 +6,10 @@
 --- Renaming such buffers isn't an option: a renamed buffer counts as "not edited" and :write fails
 --- with E13. Instead, each place that turns a buffer name into a lookup key retries with backslashes
 --- when the name as given finds nothing, so adapters whose ids use forward slashes still match first.
+---
+--- The same mismatch hits results: adapters that build result ids from their runner's report
+--- (neotest-vitest: vitest reports C:/x/a.test.ts) matched no position, and neotest marked every
+--- test that had just passed as failed. Results are re-keyed to the position ids they resolve to.
 local M = {}
 
 --- The id with backslashes in its path part (before "::"), or nil when that changes nothing.
@@ -71,8 +75,41 @@ local function patch(new_client)
     return fixed and self.adapter_states[adapter_id].buffers[fixed] or state
   end
 
+  --- Results keyed by ids that only resolve through `native` (C:/x/a.ts::t) moved to the
+  --- position's own id (C:\x\a.ts::t); the rest are kept as they are.
+  ---@param tree neotest.Tree tree of the run the results belong to
+  ---@param results table<string, neotest.Result>?
+  ---@return table<string, neotest.Result>?
+  local function rekey(tree, results)
+    if not results then
+      return results
+    end
+    local out = {}
+    for id, result in pairs(results) do
+      local node = native(id) and tree:get_key(id)
+      out[node and node:data().id or id] = result
+    end
+    return out
+  end
+
   return function(...)
     local client = new_client(...)
+    -- The runner is created when the client starts; every adapter result passes through _run_spec.
+    local start = client._start
+    client._start = function(self, ...)
+      local res = vim.F.pack_len(start(self, ...))
+      local runner = self._runner
+      if runner and not runner._native_results then
+        runner._native_results = true
+        local run_spec = runner._run_spec
+        runner._run_spec = function(r, spec, tree, args, adapter_id, adapter, results_callback)
+          return run_spec(r, spec, tree, args, adapter_id, adapter, function(root, results, output)
+            return results_callback(root, rekey(tree, results), output)
+          end)
+        end
+      end
+      return vim.F.unpack_len(res)
+    end
     for _, method in ipairs({ "get_nearest", "get_position", "get_adapter", "_get_adapter", "is_running" }) do
       retry_native(client, method)
     end
