@@ -1,9 +1,10 @@
 --- Resolve Windows `.cmd` shims (Mason's bin/, npm's .bin/) to what they would run.
 ---
 --- Spawning a `.cmd` starts cmd.exe, which then starts the tool: an extra process and
---- 30-80 ms per LSP server, formatter or linter run. Both shim formats end in one line:
+--- 30-80 ms per LSP server, formatter or linter run. The known formats run one line:
 ---   mason: ... & "%dp0%\..\packages\gopls\gopls.exe" %*
 ---   npm:   ... & "%_prog%"  "%dp0%\..\@vtsls\language-server\bin\vtsls.js" %*
+---   mise npm backend: node "%~dp0\..\.mise\<pkg>@<ver>\node_modules\<pkg>\x.js" %*
 --- Unknown formats return nil and the caller keeps the shim.
 local M = {}
 
@@ -36,7 +37,10 @@ local function resolve(path, depth)
   end
   local dir = path:match("^(.*)[/\\]")
   local last = src:match('[^\n]*%%dp0%%[^\n]*"%s+%%%*%s*$') or ""
+  -- The mise form also sets NODE_PATH to its package store. Node only falls back to it for
+  -- modules it can't find next to the script; basedpyright (bundled) never needs it.
   local npm_js = last:match('"%%_prog%%"%s+"%%dp0%%([^"]+%.[cm]?js)"')
+    or src:match('\n%s*node%s+"%%~dp0([^"]+%.[cm]?js)"%s+%%%*')
   if npm_js then
     local node = vim.fn.exepath("node")
     local js = dir .. npm_js
