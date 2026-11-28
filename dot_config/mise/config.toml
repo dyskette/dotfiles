@@ -12,6 +12,7 @@ poetry = "latest"
 go = "latest"
 dotnet = { version = "10", os = ["linux", "macos"] }  # Windows: Visual Studio and winget own it, machine-wide
 rust = "stable"
+cargo-nextest = "latest"     # rustaceanvim runs tests with it once its shim is on PATH; a repo's pin wins
 java = "temurin-21"
 
 chezmoi = "latest"
